@@ -5,9 +5,11 @@ const pool = new Pool({
   password: process.env.DATABASE_PASS,
   host: "localhost",
   port: 5432,
-  database: "solid",
+  database: process.env.DATABASE
 });
 
+
 module.exports = {
-  query: (text, params) => pool.query(text, params),
+  pool,
+  // query: (text, params) => pool.query(text, params),
 };

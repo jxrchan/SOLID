@@ -1,5 +1,7 @@
 const multer = require("multer");
 const { cloudinary } = require("../utils/cloudinary");
+const {promisify} = require('util');
+const fs = require('fs');
 // const streamifier = require("streamifier");
 
 const storage = multer.diskStorage({
@@ -21,7 +23,47 @@ const multerUpload = multer({
   },
 });
 
-/* For use with memoryStorage as opposed to diskStorage
+
+const removeFileFromDisk = promisify(fs.unlink);
+
+const cloudinaryProcessImageAndUpload =  (req, res, next) => {
+  if (!req.file) {
+    console.log("No file uploaded");
+    return res.status(400).json({ message: "No file uploaded" });
+  }
+
+  console.log(req.file);
+
+   cloudinary.uploader.upload(
+    req.file.path,
+    {
+      asset_folder: "solid_profilepics",
+      transformation: [
+        { gravity: "face", aspect_ratio: "1.0", height: "200", crop: "auto" },
+        { radius: "max" },
+      ],
+    },
+    async (error, result) => {
+      if (error) {
+        console.error("Error uploading image:", error); 
+        await removeFileFromDisk(req.file.path);
+        return res
+          .status(400)
+          .json({
+            status: "error",
+            msg: "Error uploading image to Cloudinary",
+          });
+      }
+      console.log("Upload result:", result);
+      await removeFileFromDisk(req.file.path);
+      req.result = result.secure_url;
+      next();
+    }
+  ); 
+};
+
+/* for uploading of memory storage which uses a buffer, and streamify
+
 const storage = multer.memoryStorage()
 
 const multerUpload = multer({
@@ -34,44 +76,7 @@ const multerUpload = multer({
         else cb(new Error('File is not an image. Please choose only images'))
     }
 });
- */
 
-const cloudinaryProcessImageAndUpload = (req, res) => {
-  if (!req.file) {
-    console.log("No file uploaded");
-    return res.status(400).json({ message: "No file uploaded" });
-  }
-
-  console.log(req.file);
-
-  cloudinary.uploader.upload(
-    req.file.path,
-    {
-      asset_folder: "solid_profilepics",
-      transformation: [
-        { gravity: "face", aspect_ratio: "1.0", height: "200", crop: "auto" },
-        { radius: "max" },
-      ],
-    },
-    (error, result) => {
-      if (error) {
-        console.error("Error uploading image:", error);
-        return res
-          .status(400)
-          .json({
-            status: "error",
-            msg: "Error uploading image to Cloudinary",
-          });
-      }
-      console.log("Upload result:", result);
-      res
-        .status(200)
-        .json({ status: "successful upload", url: result.secure_url });
-    }
-  );
-};
-
-/* for uploading of memory storage which uses a buffer, and streamify
 const cloudinaryMiddleware = (buffer, options = {}) => {
     return new Promise((resolve, reject) => {
       console.log('Cloudinary Middleware');

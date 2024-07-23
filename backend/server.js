@@ -4,7 +4,9 @@ const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
-const appointments = require("./src/routers/appointments");
+
+const auth = require('./src/routers/auth')
+const users = require("./src/routers/users");
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
@@ -25,7 +27,8 @@ app.use(limiter);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use('/api', appointments)
+app.use('/auth', auth);
+app.use('/users', users);
 //routing goes here
 
 const PORT = process.env.PORT || 5001;

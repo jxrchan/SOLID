@@ -1,0 +1,79 @@
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const { v4: uuidv4 } = require("uuid");
+const {pool} = require('../db/db')
+
+const register = async (req, res) => {
+    const client = await pool.connect();
+  try {
+    await client.query('BEGIN')
+    const {rows: user} = await client.query('SELECT * FROM users WHERE email = $1 LIMIT 1', 
+        [req.body.email]);
+    if (user.length !== 0) {
+      return res.status(400).json({ status: "error", msg: "duplicate email" });
+    }
+    const hash = await bcrypt.hash(req.body.password, 12);
+    await client.query('INSERT INTO users (email, password, role) VALUES ($1, $2, $3)', 
+        [req.body.email, hash, req.body.role] );
+    await client.query('COMMIT');
+    res.json({ status: "ok", msg: "user created" });
+  } catch (error) {
+    await client.query('ROLLBACK')
+    console.error(error.message);
+    res.status(400).json({ status: "error", msg: "error registering" });
+  } finally 
+  {client.release();}
+};
+
+const login = async (req, res) => {
+const client = await pool.connect();
+  try {
+    const {rows: user} = await client.query('SELECT * FROM users WHERE email = $1 LIMIT 1',[req.body.email]);
+    if (user.length = 0) {
+      return res.status(401).json({ status: "error", msg: "not registered" });
+    }
+    const result = await bcrypt.compare(req.body.password, user[0].password);
+    if (!result) {
+      console.log("email or password error");
+      return res.status(401).json({ status: "error", msg: "login failed" });
+    }
+    const claims = {
+      email: user[0].email,
+      role: user[0].role,
+    };
+    const access = jwt.sign(claims, process.env.ACCESS_SECRET, {
+      expiresIn: "20m",
+      jwtid: uuidv4(),
+    });
+
+    const refresh = jwt.sign(claims, process.env.REFRESH_SECRET, {
+      expiresIn: "30d",
+      jwtid: uuidv4(),
+    });
+
+    res.json({ access, refresh });
+  } catch (error) {
+    console.error(error.message);
+    res.status(400).json({ status: "error", msg: "login failed" });
+  } finally {
+    client.release();
+  }
+};
+
+const refresh = async (req, res) => {
+  try {
+    const decoded = jwt.verify(req.body.refresh, process.env.REFRESH_SECRET);
+    //Checks if access token (true)
+    const claims = { email: decoded.email, role: decoded.role };
+    const access = jwt.sign(claims, process.env.ACCESS_SECRET, {
+      expiresIn: "20m",
+      jwtid: uuidv4(),
+    });
+    res.json({ access });
+  } catch (error) {
+    console.error(error.message);
+    res.status(400).json({ status: "error", msg: "refresh error" });
+  }
+};
+
+module.exports = {register, login, refresh };
