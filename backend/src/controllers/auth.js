@@ -38,6 +38,7 @@ const client = await pool.connect();
       return res.status(401).json({ status: "error", msg: "login failed" });
     }
     const claims = {
+      id: user[0].id,
       email: user[0].email,
       role: user[0].role,
     };

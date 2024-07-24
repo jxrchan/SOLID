@@ -23,25 +23,24 @@ const { checkErrors } = require("../validators/checkErrors");
 const { authAthlete, authUser, authCoach } = require("../middleware/auth");
 
 /*-------- for all Users -------------*/
-router.get('/profile', authUser, checkErrors, getProfile);
-router.patch('/profile', authUser, checkErrors, updateProfile);
-router.post('/profile', authUser, checkErrors, updateProfilePicture);
-router.get('/activities', authUser, checkErrors, getActivities);
-router.post('/upload/:id', authUser, multerUpload.single('image'), cloudinaryProcessImageAndUpload, updateProfilePicture);
+router.get('/profile/:id', getProfile);
+router.patch('/profile/:id', updateProfile);
+router.get('/activities', getActivities);
+router.post('/upload/:id', multerUpload.single('image'), cloudinaryProcessImageAndUpload, updateProfilePicture);
 
 /*-------- for Athletes -------------*/
-router.get('/coaches', authAthlete, checkErrors, getCoaches);
-router.get('/coaches/:id', authAthlete, checkErrors, getOwnCoaches);
-router.put('/coaches', authAthlete, checkErrors, addReview);
-router.post('/activity/:id', authAthlete, checkErrors, commentOwnActivity);
+router.get('/coaches', getCoaches);
+router.get('/coaches/:id', getOwnCoaches);
+router.put('/coaches/:id', addReview);
+router.post('/activity/:id', commentOwnActivity);
 
 /*-------- for Coaches -------------*/
-router.get('/activity_types', authCoach, checkErrors, getActivityTypes);
-router.get('/athletes/:id', authCoach, checkErrors, getOwnAthletes);
-router.put('/athletes', authCoach, checkErrors, addAthlete);
-router.delete('/athletes', authCoach, checkErrors, deleteAthlete);
-router.put('/activity', authCoach, checkErrors, addActivity);
-router.delete('/activity/:id', authCoach, checkErrors, deleteActivity);
-router.patch('/activity/:id',authCoach, checkErrors, updateActivity)
+router.get('/activity_types', getActivityTypes);
+router.get('/athletes/:id', getOwnAthletes);
+router.put('/athletes', addAthlete);
+router.delete('/athletes/:id', deleteAthlete);
+router.put('/activity', addActivity);
+router.delete('/activity/:id', deleteActivity);
+router.patch('/activity/:id', updateActivity)
 
 module.exports = router;

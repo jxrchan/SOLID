@@ -6,6 +6,7 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET,
   });
 
+  /* ------ Testing Connection is established ---- */
   // const testConnection = async () => {
   //   try {
   //     const result = await cloudinary.api.resources();
@@ -14,8 +15,7 @@ cloudinary.config({
   //   } catch (error) {
   //     console.error('Error connecting to Cloudinary:', error.message);
   //   }
-  // };
-  
+  // }; 
   // testConnection();
 
 module.exports = {cloudinary};
