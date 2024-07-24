@@ -29,7 +29,8 @@ const login = async (req, res) => {
 const client = await pool.connect();
   try {
     const {rows: user} = await client.query('SELECT * FROM users WHERE email = $1 LIMIT 1',[req.body.email]);
-    if (user.length = 0) {
+    console.log(JSON.stringify(user));
+    if (user.length === 0) {
       return res.status(401).json({ status: "error", msg: "not registered" });
     }
     const result = await bcrypt.compare(req.body.password, user[0].password);
@@ -65,7 +66,7 @@ const refresh = async (req, res) => {
   try {
     const decoded = jwt.verify(req.body.refresh, process.env.REFRESH_SECRET);
     //Checks if access token (true)
-    const claims = { email: decoded.email, role: decoded.role };
+    const claims = { id: decoded.id, email: decoded.email, role: decoded.role };
     const access = jwt.sign(claims, process.env.ACCESS_SECRET, {
       expiresIn: "20m",
       jwtid: uuidv4(),
