@@ -105,6 +105,30 @@ const getActivities = async (req, res) => {
   }
 };
 
+const updateActivity = async (req, res) => {
+  const client = await pool.connect();
+  try {
+   await client.query(`UPDATE activities SET name = $1, type = $2, date = $3, duration = $4, 
+    coach_comment = $5, athlete_comment = $6, activity_link = $7, WHERE id = $8`,
+    [req.body.name,
+        req.body.type,
+        req.body.date,
+        req.body.duration,
+        req.body.coach_comment,
+        req.body.athlete_comment,
+        req.body.activity_link,
+      req.params.id]
+   );
+   res.status(200).json({status: 'success', msg: 'Updated activity'})
+} catch (error) {
+    console.error(error);
+    res.status(400).json({ status: "error", msg: "Error updating activity" });
+  } finally {
+    client.release();
+  }
+};
+
+
 
 /* ------ functions for athletes ------ */
 
@@ -173,19 +197,19 @@ const getOwnCoaches = async (req, res) => {
   }
 };
 
-const commentOwnActivity = async (req, res) => {
-  const client = await pool.connect();
-  try {
-    await client.query(`UPDATE activities SET athlete_comment = $1 WHERE id = $2`, 
-        [req.body.comment, req.params.id]);
-    res.status(200).json({status: 'success', msg: 'User commented on activity'})
-  } catch (error) {
-    console.error(error);
-    res.status(400).json({ status: "error", msg: "Error commenting on activity" });
-  } finally {
-    client.release();
-  }
-};
+// const commentOwnActivity = async (req, res) => {
+//   const client = await pool.connect();
+//   try {
+//     await client.query(`UPDATE activities SET athlete_comment = $1 WHERE id = $2`, 
+//         [req.body.comment, req.params.id]);
+//     res.status(200).json({status: 'success', msg: 'User commented on activity'})
+//   } catch (error) {
+//     console.error(error);
+//     res.status(400).json({ status: "error", msg: "Error commenting on activity" });
+//   } finally {
+//     client.release();
+//   }
+// };
 
 const addReview= async (req, res) => {
     const client = await pool.connect();
@@ -295,27 +319,6 @@ const addActivity = async (req, res) => {
   }
 };
 
-const updateActivity = async (req, res) => {
-    const client = await pool.connect();
-    try {
-     await client.query(`UPDATE activities SET name = $1, type = $2, date = $3, duration = $4, coach_comment = $5 WHERE id = $6`,
-      [req.body.name,
-          req.body.type,
-          req.body.date,
-          req.body.duration,
-          req.body.comment,
-        req.params.id]
-     );
-     res.status(200).json({status: 'success', msg: 'Updated activity'})
-  } catch (error) {
-      console.error(error);
-      res.status(400).json({ status: "error", msg: "Error updating activity" });
-    } finally {
-      client.release();
-    }
-  };
-  
-
 const deleteActivity = async (req, res) => {
   const client = await pool.connect();
   try {
@@ -336,7 +339,7 @@ getActivityTypes,
   updateProfile,
   updateActivity,
   getActivities,
-  commentOwnActivity,
+  // commentOwnActivity,
   addReview,
   getCoachReviews,
   getOwnCoaches,

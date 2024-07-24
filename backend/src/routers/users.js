@@ -36,13 +36,14 @@ router.post(
   cloudinaryProcessImageAndUpload,
   updateProfilePicture
 );
+router.patch("/activity/:id", updateActivity);
 
 /*-------- for Athletes -------------*/
 router.get("/coaches", getCoaches);
 router.get("/coaches/:id", getOwnCoaches);
 router.put("/coaches/:id", addReview);
 router.get("/coaches/review", getCoachReviews);
-router.post("/activity/:id", commentOwnActivity);
+// router.post("/activity/:id", commentOwnActivity);
 
 /*-------- for Coaches -------------*/
 router.get("/activity_types", getActivityTypes);
@@ -51,6 +52,5 @@ router.put("/athletes", addAthlete);
 router.delete("/athletes/:id", deleteAthlete);
 router.put("/activity", addActivity);
 router.delete("/activity/:id", deleteActivity);
-router.patch("/activity/:id", updateActivity);
 
 module.exports = router;
