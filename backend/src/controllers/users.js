@@ -139,13 +139,19 @@ const getCoaches = async (req, res) => {
 const getCoachReviews = async (req, res) => {
   const client = await pool.connect();
   try {
+  const {rows: athleteAndCoach} = await client.query(`
+    SELECT * FROM users_users WHERE coach_id = $1`, [req.body.coach_id]);
+  const reviews = athleteAndCoach.map((item) => item.review);
+  res.json(reviews);
   }
   catch(error) {
     console.error(error)
     res.status(400).json({status: 'error', msg: 'Error obtaining reviews'})
+  } 
+  finally {
+    client.release();
   }
-
-}
+};
 
 const getOwnCoaches = async (req, res) => {
   const client = await pool.connect();
@@ -326,12 +332,13 @@ const deleteActivity = async (req, res) => {
 module.exports = {
 getActivityTypes, 
   getProfile,
-  addReview,
   updateProfilePicture,
   updateProfile,
   updateActivity,
   getActivities,
   commentOwnActivity,
+  addReview,
+  getCoachReviews,
   getOwnCoaches,
   getOwnAthletes,
   getCoaches,
