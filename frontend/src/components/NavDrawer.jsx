@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 const NavBar = (props) => {
   return (
     <header className={styles.navbar}>
-        <img src="../../images/App-Logo.png"/>
+      <img src="../../images/App-Logo.png" />
       <nav>
         <ul>
           <li>
@@ -32,7 +32,7 @@ const NavBar = (props) => {
               Collection
             </NavLink>
           </li>
-          <li style={{fontSize: "20px", textTransform: "none",}}>
+          <li style={{ fontSize: "20px", textTransform: "none" }}>
             Welcome, {props.username}
           </li>
         </ul>
