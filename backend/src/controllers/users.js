@@ -55,7 +55,7 @@ const updateProfile = async (req, res) => {
         req.body.description,
         req.body.sports,
         req.body.goals,
-        req.body.number,
+        req.body.contact,
         req.body.facebook,
         req.body.instagram,
         req.params.id,
@@ -82,13 +82,13 @@ const getActivities = async (req, res) => {
     filters.push(` $${filters.length + 1})`);
     params.push(req.body.dateStart, req.body.dateEnd);
   }
-  if (req.body.coach_id) {
+  if (req.body.coachId) {
     filters.push("coach_id = $" + (filters.length + 1));
-    params.push(req.body.coach_id);
+    params.push(req.body.coachId);
   }
-  if (req.body.athlete_id) {
+  if (req.body.athleteId) {
     filters.push("athlete_id = $" + (filters.length + 1));
-    params.push(req.body.athlete_id);
+    params.push(req.body.athleteId);
   }
   if (filters.length > 0) {
     console.log(JSON.stringify(filters));
@@ -121,9 +121,9 @@ const updateActivity = async (req, res) => {
         req.body.type,
         req.body.date,
         req.body.duration,
-        req.body.coach_comment,
-        req.body.athlete_comment,
-        req.body.activity_link,
+        req.body.coachComment,
+        req.body.athleteComment,
+        req.body.activityLink,
         req.params.id,
       ]
     );
@@ -172,7 +172,7 @@ const getCoachReviews = async (req, res) => {
     const { rows: athleteAndCoach } = await client.query(
       `
     SELECT * FROM users_users WHERE coach_id = $1`,
-      [req.body.coach_id]
+      [req.body.coachId]
     );
     const reviews = athleteAndCoach.map((item) => item.review);
     res.json(reviews);
@@ -226,7 +226,7 @@ const addReview = async (req, res) => {
     await client.query(
       `UPDATE users_users SET review = $1 WHERE athlete_id = $2 
           AND coach_id = $3`,
-      [req.body.review, req.params.id, req.body.coach_id]
+      [req.body.review, req.params.id, req.body.coachId]
     );
     res.status(200).json({ status: "success", msg: "Added coach review" });
   } catch (error) {
@@ -328,8 +328,8 @@ const addActivity = async (req, res) => {
       `INSERT INTO activities (athlete_id, coach_id, name, type, 
     date, duration, coach_comment) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
       [
-        req.body.athlete_id,
-        req.body.coach_id,
+        req.body.athleteId,
+        req.body.coachId,
         req.body.name,
         req.body.type,
         req.body.date,

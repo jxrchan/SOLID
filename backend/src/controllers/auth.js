@@ -3,22 +3,32 @@ const jwt = require("jsonwebtoken");
 const { v4: uuidv4 } = require("uuid");
 const {pool} = require('../db/db')
 
+const checkEmailValidity = async (req, res) => {
+  const client = await pool.connect();
+    try {
+      await client.query('BEGIN')
+      const {rows: user} = await client.query('SELECT * FROM users WHERE email = $1 LIMIT 1', 
+          [req.body.email]);
+      if (user.length !== 0) {
+        return res.status(400).json({ status: "error", msg: "duplicate email" });
+  }
+      else res.json({status:'ok', msg: 'Email is valid, user can proceed to complete registration'})
+} catch(error) {
+  console.error(error);
+  res.json({status: 'error', msg: 'Error retrieving emaisl'})
+} finally {
+  client.release()
+}}
+
+
 const register = async (req, res) => {
     const client = await pool.connect();
   try {
-    await client.query('BEGIN')
-    const {rows: user} = await client.query('SELECT * FROM users WHERE email = $1 LIMIT 1', 
-        [req.body.email]);
-    if (user.length !== 0) {
-      return res.status(400).json({ status: "error", msg: "duplicate email" });
-    }
     const hash = await bcrypt.hash(req.body.password, 12);
-    await client.query('INSERT INTO users (email, password, role) VALUES ($1, $2, $3)', 
-        [req.body.email, hash, req.body.role] );
-    await client.query('COMMIT');
+    await client.query('INSERT INTO users (email, password, role, name, gender, description ) VALUES ($1, $2, $3)', 
+        [req.body.email, hash, req.body.role, req.body.name, req.body.gender, req.body.description] );
     res.json({ status: "ok", msg: "user created" });
   } catch (error) {
-    await client.query('ROLLBACK')
     console.error(error.message);
     res.status(400).json({ status: "error", msg: "error registering" });
   } finally 
@@ -78,4 +88,4 @@ const refresh = async (req, res) => {
   }
 };
 
-module.exports = {register, login, refresh };
+module.exports = {checkEmailValidity, register, login, refresh };

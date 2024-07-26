@@ -1,34 +1,42 @@
-import React, { Suspense, useState } from "react";
-import UserContext from "./context/user";
+import React, { Suspense, useState, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import NavDrawer from "./components/NavDrawer";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {jwtDecode} from "jwt-decode";
+import { Box, CssBaseline, Toolbar } from "@mui/material";
 
-// const Home = React.lazy(() => import("./pages/Home"));
-// const Profile = React.lazy(() => import("./pages/Profile"));
-// const Athletes = React.lazy(() => import("./pages/Athletes"));
-// const Coaches = React.lazy(() => import("./pages/Coaches"));
-// const NotFound = React.lazy(() => import("./pages/NotFound"));
-// const Login = React.lazy(() => import("./pages/Login"));
-// const Register = React.lazy(() => import("./pages/Register"));
+import UserContext from "./context/user";
+import NavDrawer from "./components/NavDrawer";
 
-import Home from "./pages/Home";
-import Profile from "./pages/Profile";
-import Athletes from "./pages/Athletes";
-import Coaches from "./pages/Coaches";
-import NotFound from "./pages/NotFound";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
+const Home = React.lazy(() => import("./pages/Home"));
+const Profile = React.lazy(() => import("./pages/Profile"));
+const Athletes = React.lazy(() => import("./pages/Athletes"));
+const Coaches = React.lazy(() => import("./pages/Coaches"));
+const NotFound = React.lazy(() => import("./pages/NotFound"));
+const Login = React.lazy(() => import("./pages/Login"));
+const Register = React.lazy(() => import("./pages/Register"));
+
+const drawerWidth = 300;
 
 function App() {
   const queryClient = new QueryClient();
 
-  const [accessToken, setAccessToken] = useState("");
-  const [email, setEmail] = useState("");
-  const [role, setRole] = useState("");
+  const [accessToken, setAccessToken] = useState('');
+  const [decoded, setDecoded] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const checkLoggedIn = () => {};
+  const checkLoggedIn = (token) => {
+    setAccessToken(token);
+    const decoded = jwtDecode(token);
+    setDecoded(decoded);
+    setIsLoggedIn(true);
+  };
+
+  useEffect(() => {
+    const token = window.localStorage.getItem('token');
+    if (token) {
+      checkLoggedIn(token);
+    }
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -36,57 +44,65 @@ function App() {
         value={{
           accessToken,
           setAccessToken,
-          email,
-          setEmail,
-          role,
-          setRole,
-          isLoggedIn,
-          setIsLoggedIn,
+          decoded,
+          setDecoded,
         }}
       >
-        {/* <Suspense fallback={<div>Loading...</div>}> */}
-        {/* {isLoggedIn && <NavDrawer />} */}
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route
-            path="/"
-            element={<Navigate replace to={isLoggedIn ? "/home" : "/login"} />}
-          />
-          <Route path="/register" element={<Register />} />
-          <Route
-            path="/home"
-            element={isLoggedIn ? <Home /> : <Navigate replace to="/login" />}
-          />
-          <Route
-            path="/profile"
-            element={
-              isLoggedIn ? <Profile /> : <Navigate replace to="/login" />
-            }
-          />
-          <Route
-            path="/coaches"
-            element={
-              isLoggedIn && role === "COACH" ? (
-                <Coaches />
-              ) : (
-                <Navigate replace to="/login" />
-              )
-            }
-          />
-          <Route
-            path="/athletes"
-            element={
-              isLoggedIn && role === "ATHLETE" ? (
-                <Athletes />
-              ) : (
-                <Navigate replace to="/login" />
-              )
-            }
-          />
-
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        {/* </Suspense> */}
+        <CssBaseline />
+        <Box sx={{ display: 'flex' }}>
+          {/* {isLoggedIn && <NavDrawer />} */}
+          <NavDrawer/>
+          <Box
+            component="main"
+            sx={{
+              flexGrow: 1,
+              p: 3,
+              ml: isLoggedIn ? `${drawerWidth}px` : 0,
+              transition: 'margin 0.3s',
+            }}
+          >
+            <Toolbar />
+            <Suspense fallback={<div>Loading...</div>}>
+              <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route
+                  path="/"
+                  element={<Navigate replace to={isLoggedIn ? "/home" : "/login"} />}
+                />
+                <Route path="/register" element={<Register />} />
+                <Route
+                  path="/home"
+                  element={isLoggedIn ? <Home /> : <Navigate replace to="/login" />}
+                />
+                <Route
+                  path="/profile"
+                  element={isLoggedIn ? <Profile /> : <Navigate replace to="/login" />}
+                />
+                <Route
+                  path="/coaches"
+                  element={
+                    isLoggedIn && decoded.role === "COACH" ? (
+                      <Coaches />
+                    ) : (
+                      <Navigate replace to="/login" />
+                    )
+                  }
+                />
+                <Route
+                  path="/athletes"
+                  element={
+                    isLoggedIn && decoded.role === "ATHLETE" ? (
+                      <Athletes />
+                    ) : (
+                      <Navigate replace to="/login" />
+                    )
+                  }
+                />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
+          </Box>
+        </Box>
       </UserContext.Provider>
     </QueryClientProvider>
   );

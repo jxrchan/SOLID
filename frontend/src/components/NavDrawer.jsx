@@ -1,44 +1,101 @@
-import React from "react";
-import styles from "./NavBar.module.css";
-import { NavLink } from "react-router-dom";
+import React, { useState } from 'react';
+import {
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  Divider,
+  Box,
+  Toolbar,
+  Link as MuiLink
+} from '@mui/material';
+import HomeIcon from '@mui/icons-material/Home';
+import PersonIcon from '@mui/icons-material/Person';
+import GroupIcon from '@mui/icons-material/Group';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import InfoIcon from '@mui/icons-material/Info';
+import { Link } from 'react-router-dom'; // assuming you're using react-router-dom
+import AboutDialog from './AboutDialog';
 
-const NavBar = (props) => {
+const NavDrawer = () => {
+  const [showAboutDialog, setShowAboutDialog] = useState(false);
+
   return (
-    <header className={styles.navbar}>
-      <img src="../../images/App-Logo.png" />
-      <nav>
-        <ul>
-          <li>
-            <NavLink
-              to="/main"
-              className={(navData) => (navData.isActive ? styles.active : "")}
+    <>
+      {showAboutDialog && <AboutDialog />}
+      <Drawer
+        variant="permanent"
+        sx={{
+          width: 300,
+          flexShrink: 0,
+          '& .MuiDrawer-paper': {
+            width: 300,
+            boxSizing: 'border-box',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between', // to align items at the bottom
+          },
+        }}
+      >
+        <Box>
+          <Toolbar />
+          <Box sx={{ overflow: 'auto' }}>
+            <List>
+              <ListItem sx={{ justifyContent: 'center', py: 2 }}>
+                <Box
+                  component="img"
+                  src="../../images/SolidLogoWithTitle.png"
+                  alt="App Logo"
+                  sx={{ width: '80%', height: 'auto' }}
+                />
+              </ListItem>
+              <Divider />
+              <ListItem button component={Link} to="/home">
+                <ListItemIcon><HomeIcon /></ListItemIcon>
+                <ListItemText primary="Home" />
+              </ListItem>
+              <ListItem button component={Link} to="/profile">
+                <ListItemIcon><PersonIcon /></ListItemIcon>
+                <ListItemText primary="Profile" />
+              </ListItem>
+              <ListItem button component={Link} to="/coaches">
+                <ListItemIcon><GroupIcon /></ListItemIcon>
+                <ListItemText primary="Coaches" />
+              </ListItem>
+            </List>
+          </Box>
+        </Box>
+        <Box sx={{ mb: 2, textAlign: 'center' }}>
+          <Divider />
+          <Box
+            sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
+          >
+            <MuiLink
+              component={Link}
+              to="/login"
+              sx={{ display: 'flex', alignItems: 'center', py: 1 }}
+              underline="none"
+              color="inherit"
             >
-              Home
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/about"
-              className={(navData) => (navData.isActive ? styles.active : "")}
+              <ExitToAppIcon sx={{ mr: 1 }} />
+              Logout
+            </MuiLink>
+            <MuiLink
+              component="button"
+              onClick={() => setShowAboutDialog(true)}
+              sx={{ display: 'flex', alignItems: 'center', py: 1 }}
+              underline="none"
+              color="inherit"
             >
-              About
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/collection"
-              className={(navData) => (navData.isActive ? styles.active : "")}
-            >
-              Collection
-            </NavLink>
-          </li>
-          <li style={{ fontSize: "20px", textTransform: "none" }}>
-            Welcome, {props.username}
-          </li>
-        </ul>
-      </nav>
-    </header>
+              <InfoIcon sx={{ mr: 1 }} />
+              What is SOLID?
+            </MuiLink>
+          </Box>
+        </Box>
+      </Drawer>
+    </>
   );
 };
 
-export default NavBar;
+export default NavDrawer;

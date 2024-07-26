@@ -10,12 +10,9 @@ import IconButton from "@mui/material/IconButton";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
-import Input from "@mui/material/Input";
-import FilledInput from "@mui/material/FilledInput";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import InputAdornment from "@mui/material/InputAdornment";
-import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import Visibility from "@mui/icons-material/Visibility";
@@ -62,12 +59,12 @@ function Login({}) {
     <Box
       sx={{
         minHeight: "100vh",
-        backgroundImage: "url(../images/LoginBg.jpeg)", // Replace with your background image URL
+        backgroundImage: "url(../images/LandingPage.jpeg)", // Replace with your background image URL
         backgroundSize: "cover",
         display: "flex",
         justifyContent: "flex-end",
         alignItems: "center",
-        padding: 2,
+        padding: 4,
       }}
     >
       <Grid container justifyContent="flex-end">
@@ -114,6 +111,15 @@ function Login({}) {
                 sx={{ mt: 2 }}
               >
                 Submit
+              </Button>
+              <Button
+                fullWidth
+                variant="contained"
+                color="secondary"
+                onClick={()=>{navigate("/register")}}
+                sx={{ mt: 2 }}
+              >
+                Register
               </Button>
             </form>
           </Paper>
