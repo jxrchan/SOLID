@@ -16,7 +16,7 @@ const Profile = () => {
   const [contact, setContact] = useState("");
   const [facebook, setFacebook] = useState("");
   const [instagram, setInstagram] = useState("");
-  const [showUpdateProfileDialog, setShowUpdateProfileDialog] = useState(false);
+  const [showProfileDialog, setShowProfileDialog] = useState(false);
 
   const usingFetch = useFetch();
   const userCtx = useContext(UserContext);
@@ -48,7 +48,7 @@ const Profile = () => {
 
   return (
     <>
-      {showUpdateProfileDialog && (
+      {showProfileDialog && (
         <ProfileDialog
           name={name}
           gender={gender}
@@ -59,7 +59,7 @@ const Profile = () => {
           sports = {sports}
           facebook={facebook}
           instagram={instagram}
-          setShowUpdateProfileDialog={setShowUpdateProfileDialog}
+          setShowProfileDialog={setShowProfileDialog}
         />
       )}
 
@@ -85,7 +85,7 @@ const Profile = () => {
             mb: 3,
           }}
         >
-          <img src={profilePicture} alt="Profile" style={{ width: '100%', height: '100%' }} />
+          <img src={profilePicture} alt="" style={{ width: '100%', height: '100%' }} />
         </Box>
 
         {/* {userCtx.decoded.role === "ATHLETE" && (
@@ -95,7 +95,7 @@ const Profile = () => {
             <Typography>Description: {description}</Typography>
             <Typography>Sports: {sports}</Typography>
             <Typography>Goals: {goals}</Typography>
-            <Typography>Mobile: {contact}</Typography>
+            <Typography>Contact Number: {contact}</Typography>
           {/* </>
         )} */}
 
@@ -105,7 +105,7 @@ const Profile = () => {
             <Typography>Gender: {gender}</Typography>
             <Typography>Description: {description}</Typography>
             <Typography>Sports: {sports}</Typography>
-            <Typography>Mobile: {contact}</Typography>
+            <Typography>Contact Number: {contact}</Typography>
             <Typography>Facebook: {facebook}</Typography>
             <Typography>Instagram: {instagram}</Typography>
           </>
@@ -115,7 +115,7 @@ const Profile = () => {
           variant="contained"
           color="primary"
           onClick={() => {
-            setShowUpdateProfileDialog(true);
+            setShowProfileDialog(true);
           }}
           sx={{ mt: 3 }}
         >

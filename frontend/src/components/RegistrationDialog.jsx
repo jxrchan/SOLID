@@ -47,9 +47,9 @@ const RegistrationDialog = ({ email, setShowRegistrationDialog }) => {
       password &&
       repeatPassword &&
       role &&
-      name &&
+      name.trim() &&
       gender &&
-      description &&
+      description.trim() &&
       password === repeatPassword;
 
     setIsFormValid(isFormComplete);

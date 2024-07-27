@@ -7,26 +7,28 @@ import {
   Button,
   TextField,
   Box,
+  Typography,
 } from "@mui/material";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useFetch from "../hooks/useFetch";
 import UserContext from "../context/user";
 
 
 const ProfileDialog = (props) => {
   const [name, setName] = useState(props.name);
-  const [gender, setGender] = useState(props.gender);
   const [description, setDescription] = useState(props.description);
-  const [profilePicture, setProfilePicture] = useState(props.profilePicture);
   const [goals, setGoals] = useState(props.goals);
+  const [sports, setSports] = useState(props.sports);
   const [contact, setContact] = useState(props.contact);
   const [facebook, setFacebook] = useState(props.facebook);
   const [instagram, setInstagram] = useState(props.instagram);
-  const [isUploadPicture, setIsUploadPicture] = useState(false);
+  const [isNewPictureUploaded, setIsNewPictureUploaded] = useState(false);
+  const [fileName, setFileName] = useState('');
   const [isFormValid, setIsFormValid] = useState(false);
 
 const usingFetch = useFetch();
 const userCtx = useContext(UserContext);
+const queryClient = useQueryClient();
 
 const updateProfile = useMutation({
   mutationFn: async () => {
@@ -53,21 +55,26 @@ catch {error}
   console.error(error.message);
 }
 
-const handleFileChange = async () => {
-  setIsUploadPicture(true);
+const handleFileChange = async (e) => {
+  setIsNewPictureUploaded(true);
+  setFileName(e.name);
 }
 
 const handleUpdate = async (event) => {
  updateProfile.mutate();
-  if (isUploadPicture) {
+  if (isNewPictureUploaded) {
    const formData = new FormData()
    formData.append('image', event.target.files[0]);
    await updateProfilePicture();
   }
+  queryClient.invalidateQueries('profile');
 }
 
-
-
+useEffect (()=>{
+  if (name.trim() && description.trim()) {
+    setIsFormValid(true);
+  }
+}, [name, description]);
 
 
   return (
@@ -76,6 +83,7 @@ const handleUpdate = async (event) => {
       <DialogTitle> Update your Profile </DialogTitle>
       <DialogContent>
       <Box component="form" noValidate autoComplete="off">
+        {/* {userCtx.decoded.role === "ATHLETE" && <> */}
       <Button
             variant="contained"
             component="label"
@@ -85,9 +93,12 @@ const handleUpdate = async (event) => {
             <input
               type="file"
               hidden
-              onChange={handleFileChange}
+              onChange={(e)=> {handleFileChange(e.target.files[0])}}
             />
           </Button>
+
+          {fileName && (<Typography sx ={{mt: 2}}> {fileName} </Typography>)}
+
         <TextField
           fullWidth
           variant="outlined"
@@ -140,7 +151,88 @@ const handleUpdate = async (event) => {
           inputProps={{ maxLength: 10 }}
           
         />
-        </Box>
+        {/* </> } */}
+
+
+        {/* {userCtx.decoded.role === "COACH" && <>
+      <Button
+            variant="contained"
+            component="label"
+            sx={{ mt: 2 }}
+          >
+            Upload Profile Picture
+            <input
+              type="file"
+              hidden
+              onChange={(e)=> {handleFileChange(e.target.files[0])}}
+            />
+          </Button>
+
+          {fileName && (<Typography sx ={{mt: 2}}> {fileName} </Typography>)}
+
+        <TextField
+          fullWidth
+          variant="outlined"
+          label="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          margin="normal"
+        />
+        <TextField
+          fullWidth
+          variant="outlined"
+          label="Description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          margin="normal"
+          multiline
+          rows={4}
+          inputProps={{ maxLength: 200 }}
+          helperText={`${description.length}/200`}
+        />
+        <TextField
+          fullWidth
+          variant="outlined"
+          label="Sports (separate each sport with a comma)"
+          value={sports}
+          onChange={(e) => setSports(e.target.value)}
+          margin="normal"
+          inputProps={{ maxLength: 200 }}
+          helperText={`${sports.length}/200`}
+          
+        />
+           <TextField
+          fullWidth
+          variant="outlined"
+          label="Contact Number"
+          value={contact}
+          onChange={(e) => setContact(e.target.value)}
+          margin="normal"
+          inputProps={{ maxLength: 10 }}
+          
+        />
+                   <TextField
+          fullWidth
+          variant="outlined"
+          label="Facebook"
+          value={facebook}
+          onChange={(e) => setFacebook(e.target.value)}
+          margin="normal"
+          
+        />
+                   <TextField
+          fullWidth
+          variant="outlined"
+          label="Instagram"
+          value={instagram}
+          onChange={(e) => setInstagram(e.target.value)}
+          margin="normal"
+          
+        />
+        </> } */}
+
+        </Box> 
+
       </DialogContent>
       <DialogActions>
         <Button

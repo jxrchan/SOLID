@@ -26,8 +26,8 @@ function App() {
 
   const checkLoggedIn = (token) => {
     setAccessToken(token);
-    const decoded = jwtDecode(token);
-    setDecoded(decoded);
+    const decodedToken = jwtDecode(token);
+    setDecoded(decodedToken);
     setIsLoggedIn(true);
   };
 
