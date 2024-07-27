@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Drawer,
   List,
@@ -15,15 +15,25 @@ import PersonIcon from '@mui/icons-material/Person';
 import GroupIcon from '@mui/icons-material/Group';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import InfoIcon from '@mui/icons-material/Info';
-import { Link } from 'react-router-dom'; // assuming you're using react-router-dom
 import AboutDialog from './AboutDialog';
+import UserContext from '../context/user';
+import { Link as RouterLink } from 'react-router-dom';
 
 const NavDrawer = () => {
   const [showAboutDialog, setShowAboutDialog] = useState(false);
+  const userCtx = useContext(UserContext);
+
+  const handleLogout = () => {
+    window.localStorage.removeItem('token');
+    userCtx.setAccessToken('');
+    userCtx.setDecode('');
+    userCtx.setIsLoggedIn(false);
+    window.location.reload();
+  };
 
   return (
     <>
-      {showAboutDialog && <AboutDialog />}
+      {showAboutDialog && <AboutDialog setShowAboutDialog={setShowAboutDialog} />}
       <Drawer
         variant="permanent"
         sx={{
@@ -51,18 +61,24 @@ const NavDrawer = () => {
                 />
               </ListItem>
               <Divider />
-              <ListItem button component={Link} to="/home">
+              <ListItem button component={RouterLink} to="/home">
                 <ListItemIcon><HomeIcon /></ListItemIcon>
                 <ListItemText primary="Home" />
               </ListItem>
-              <ListItem button component={Link} to="/profile">
+              <ListItem button component={RouterLink} to="/profile">
                 <ListItemIcon><PersonIcon /></ListItemIcon>
                 <ListItemText primary="Profile" />
               </ListItem>
-              <ListItem button component={Link} to="/coaches">
+              {userCtx.decoded.role === "ATHLETE" &&
+              <ListItem button component={RouterLink} to="/coaches">
                 <ListItemIcon><GroupIcon /></ListItemIcon>
                 <ListItemText primary="Coaches" />
-              </ListItem>
+              </ListItem>}
+              {userCtx.decoded.role === "COACH" &&
+              <ListItem button component={RouterLink} to="/athletes">
+                <ListItemIcon><GroupIcon /></ListItemIcon>
+                <ListItemText primary="Athletes" />
+              </ListItem>}
             </List>
           </Box>
         </Box>
@@ -72,8 +88,8 @@ const NavDrawer = () => {
             sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
           >
             <MuiLink
-              component={Link}
-              to="/login"
+              component="button"
+              onClick={handleLogout}
               sx={{ display: 'flex', alignItems: 'center', py: 1 }}
               underline="none"
               color="inherit"

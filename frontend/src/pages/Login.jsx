@@ -17,20 +17,26 @@ import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import AboutDialog from "../components/AboutDialog";
+import {Link} from '@mui/material';
 
 function Login({}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showAboutDialog, setShowAboutDialog] = useState(false);
+
+
   const usingFetch = useFetch();
   const userCtx = useContext(UserContext);
   const navigate = useNavigate();
+
 
   const handleClickShowPassword = () => setShowPassword((initial)=>(!initial));
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
-  };
+  }
 
   const { isError, error, data, refetch } = useQuery({
     queryKey: ["login"],
@@ -56,15 +62,19 @@ function Login({}) {
   }, [data]);
 
   return (
+    <>
+    {showAboutDialog && <AboutDialog setShowAboutDialog = {setShowAboutDialog} />}
     <Box
       sx={{
         minHeight: "100vh",
         backgroundImage: "url(../images/LandingPage.jpeg)", // Replace with your background image URL
         backgroundSize: "cover",
+        backgroundPosition: "center",
         display: "flex",
         justifyContent: "flex-end",
         alignItems: "center",
         padding: 4,
+     
       }}
     >
       <Grid container justifyContent="flex-end">
@@ -122,10 +132,20 @@ function Login({}) {
                 Register
               </Button>
             </form>
+            <Link
+              component="button"
+              onClick={() => setShowAboutDialog(true)}
+              sx={{ display: 'flex', alignItems: 'center', py: 1 }}
+              underline="none"
+              color="inherit"
+            >
+              What is SOLID?
+            </Link>
           </Paper>
         </Grid>
       </Grid>
     </Box>
+    </>
   );
 }
 

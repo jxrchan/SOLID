@@ -2,7 +2,8 @@ import React, { Suspense, useState, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {jwtDecode} from "jwt-decode";
-import { Box, CssBaseline, Toolbar } from "@mui/material";
+
+
 
 import UserContext from "./context/user";
 import NavDrawer from "./components/NavDrawer";
@@ -15,14 +16,13 @@ const NotFound = React.lazy(() => import("./pages/NotFound"));
 const Login = React.lazy(() => import("./pages/Login"));
 const Register = React.lazy(() => import("./pages/Register"));
 
-const drawerWidth = 300;
 
 function App() {
   const queryClient = new QueryClient();
 
   const [accessToken, setAccessToken] = useState('');
   const [decoded, setDecoded] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   const checkLoggedIn = (token) => {
     setAccessToken(token);
@@ -46,28 +46,18 @@ function App() {
           setAccessToken,
           decoded,
           setDecoded,
+          setIsLoggedIn,
         }}
       >
-        <CssBaseline />
-        <Box sx={{ display: 'flex' }}>
           {/* {isLoggedIn && <NavDrawer />} */}
           <NavDrawer/>
-          <Box
-            component="main"
-            sx={{
-              flexGrow: 1,
-              p: 3,
-              ml: isLoggedIn ? `${drawerWidth}px` : 0,
-              transition: 'margin 0.3s',
-            }}
-          >
-            <Toolbar />
             <Suspense fallback={<div>Loading...</div>}>
               <Routes>
-                <Route path="/login" element={<Login />} />
-                <Route
-                  path="/"
-                  element={<Navigate replace to={isLoggedIn ? "/home" : "/login"} />}
+                <Route path="/login" 
+                  element={isLoggedIn ? <Home/> : <Navigate replace to="/login" />}/>
+               
+                  <Route path="/"
+                  element={isLoggedIn ? <Home/> : <Navigate replace to="/login" />}
                 />
                 <Route path="/register" element={<Register />} />
                 <Route
@@ -101,8 +91,6 @@ function App() {
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>
-          </Box>
-        </Box>
       </UserContext.Provider>
     </QueryClientProvider>
   );

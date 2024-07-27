@@ -6,7 +6,6 @@ const {pool} = require('../db/db')
 const checkEmailValidity = async (req, res) => {
   const client = await pool.connect();
     try {
-      await client.query('BEGIN')
       const {rows: user} = await client.query('SELECT * FROM users WHERE email = $1 LIMIT 1', 
           [req.body.email]);
       if (user.length !== 0) {
