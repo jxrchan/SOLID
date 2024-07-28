@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [email, setEmail] = useState("");
-  const [showRegistrationDialog, setShowRegistrationDialog] = useState(true);
+  const [showRegistrationDialog, setShowRegistrationDialog] = useState(false);
 
   const usingFetch = useFetch();
   const navigate = useNavigate();
@@ -45,7 +45,7 @@ const Register = () => {
       <Box
         sx={{
           minHeight: "100vh",
-          backgroundImage: "url(../images/LandingPage.jpeg)", // Replace with your background image URL
+          backgroundImage: "url(../images/LandingPage.jpeg)",
           backgroundSize: "cover",
           display: "flex",
           justifyContent: "center",

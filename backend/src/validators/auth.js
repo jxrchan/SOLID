@@ -1,5 +1,9 @@
 const { body } = require("express-validator");
 
+const validateEmailCheck = [
+  body("email", "valid email is required").notEmpty().isEmail(),
+];
+
 const validateRegistrationData = [
   body("email", "valid email is required").notEmpty().isEmail(),
   body("password", "password is required").notEmpty(),
@@ -7,7 +11,10 @@ const validateRegistrationData = [
     "password",
     "password length min is 8 characters and max is 50 characters"
   ).isLength({ min: 8, max: 50 }),
-  body('role','role is required').notEmpty().isString(),
+  body("role", "role is required").notEmpty().isString(),
+  body("name", "name is required").notEmpty().isString(),
+  body("description", "description is required").notEmpty(),
+  body("gender", "gender is required").notEmpty(),
 ];
 
 const validateLoginData = [
@@ -20,6 +27,7 @@ const validateRefreshToken = [
 ];
 
 module.exports = {
+  validateEmailCheck,
   validateLoginData,
   validateRefreshToken,
   validateRegistrationData,

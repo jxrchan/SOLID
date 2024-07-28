@@ -14,7 +14,7 @@ const checkEmailValidity = async (req, res) => {
       else res.json({status:'ok', msg: 'Email is valid, user can proceed to complete registration'})
 } catch(error) {
   console.error(error);
-  res.json({status: 'error', msg: 'Error retrieving emaisl'})
+  res.json({status: 'error', msg: 'Error retrieving emails'})
 } finally {
   client.release()
 }}

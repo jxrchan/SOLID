@@ -2,7 +2,6 @@ const multer = require("multer");
 const { cloudinary } = require("../utils/cloudinary");
 const {promisify} = require('util');
 const fs = require('fs');
-// const streamifier = require("streamifier");
 
 const storage = multer.diskStorage({
   filename: (req, file, cb) => cb(null, file.originalname),

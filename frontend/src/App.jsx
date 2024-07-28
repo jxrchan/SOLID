@@ -22,7 +22,7 @@ function App() {
 
   const [accessToken, setAccessToken] = useState('');
   const [decoded, setDecoded] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const checkLoggedIn = (token) => {
     setAccessToken(token);
@@ -49,15 +49,14 @@ function App() {
           setIsLoggedIn,
         }}
       >
-          {/* {isLoggedIn && <NavDrawer />} */}
-          <NavDrawer/>
+          {isLoggedIn && <NavDrawer />}
             <Suspense fallback={<div>Loading...</div>}>
               <Routes>
                 <Route path="/login" 
-                  element={isLoggedIn ? <Home/> : <Navigate replace to="/login" />}/>
+                  element= { !isLoggedIn ? <Login/>  : <Navigate replace to="/home" />}/>
                
                   <Route path="/"
-                  element={isLoggedIn ? <Home/> : <Navigate replace to="/login" />}
+                  element={ !isLoggedIn ? <Login/> : <Navigate replace to="/home" />}
                 />
                 <Route path="/register" element={<Register />} />
                 <Route

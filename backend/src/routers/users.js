@@ -27,11 +27,11 @@ const { checkErrors } = require("../validators/checkErrors");
 const { authAthlete, authUser, authCoach } = require("../middleware/auth");
 
 /*-------- for all Users -------------*/
-router.get("/profile/:id", getProfile);
-router.patch("/profile/:id", updateProfile);
-router.get("/activities", getActivities);
+router.get("/profile/:id", authUser, getProfile);
+router.patch("/profile/:id", authUser, updateProfile);
+router.get("/activities", authUser, getActivities);
 router.post(
-  "/upload/:id",
+  "/upload/:id", authUser,
   multerUpload.single("image"),
   cloudinaryProcessImageAndUpload,
   updateProfilePicture
@@ -39,18 +39,18 @@ router.post(
 router.patch("/activity/:id", updateActivity);
 
 /*-------- for Athletes -------------*/
-router.get("/coaches", getCoaches);
-router.get("/coaches/:id", getOwnCoaches);
-router.put("/coaches/:id", addReview);
-router.get("/coaches/review", getCoachReviews);
+router.get("/coaches", authAthlete, getCoaches);
+router.get("/coaches/:id", authAthlete, getOwnCoaches);
+router.put("/coaches/:id", authAthlete, addReview);
+router.get("/coaches/review", authAthlete, getCoachReviews);
 // router.post("/activity/:id", commentOwnActivity);
 
 /*-------- for Coaches -------------*/
-router.get("/activity_types", getActivityTypes);
-router.get("/athletes/:id", getOwnAthletes);
-router.put("/athletes", addAthlete);
-router.delete("/athletes/:id", deleteAthlete);
-router.put("/activity", addActivity);
-router.delete("/activity/:id", deleteActivity);
+router.get("/activity_types", authCoach, getActivityTypes);
+router.get("/athletes/:id", authCoach, getOwnAthletes);
+router.put("/athletes", authCoach, addAthlete);
+router.delete("/athletes/:id", authCoach, deleteAthlete);
+router.put("/activity", authCoach, addActivity);
+router.delete("/activity/:id", authCoach, deleteActivity);
 
 module.exports = router;
