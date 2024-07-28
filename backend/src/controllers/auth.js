@@ -11,7 +11,7 @@ const checkEmailValidity = async (req, res) => {
       if (user.length !== 0) {
         return res.status(400).json({ status: "error", msg: "duplicate email" });
   }
-      else res.json({status:'ok', msg: 'Email is valid, user can proceed to complete registration'})
+      else res.status(200).json({status:'ok', msg: 'Email is valid, user can proceed to complete registration'})
 } catch(error) {
   console.error(error);
   res.json({status: 'error', msg: 'Error retrieving emails'})
@@ -24,9 +24,9 @@ const register = async (req, res) => {
     const client = await pool.connect();
   try {
     const hash = await bcrypt.hash(req.body.password, 12);
-    await client.query('INSERT INTO users (email, password, role, name, gender, description ) VALUES ($1, $2, $3)', 
+    await client.query('INSERT INTO users (email, password, role, name, gender, description ) VALUES ($1, $2, $3, $4, $5, $6)', 
         [req.body.email, hash, req.body.role, req.body.name, req.body.gender, req.body.description] );
-    res.json({ status: "ok", msg: "user created" });
+    res.status(200).json({ status: "ok", msg: "user created" });
   } catch (error) {
     console.error(error.message);
     res.status(400).json({ status: "error", msg: "error registering" });
@@ -62,7 +62,7 @@ const client = await pool.connect();
       jwtid: uuidv4(),
     });
 
-    res.json({ access, refresh });
+    res.status(200).json({ access, refresh });
   } catch (error) {
     console.error(error.message);
     res.status(400).json({ status: "error", msg: "login failed" });

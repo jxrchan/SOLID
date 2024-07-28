@@ -12,7 +12,6 @@ const {
   getOwnCoaches,
   getCoaches,
   addReview,
-  commentOwnActivity,
   getOwnAthletes,
   addActivity,
   updateActivity,

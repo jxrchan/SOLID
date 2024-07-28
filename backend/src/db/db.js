@@ -8,8 +8,20 @@ const pool = new Pool({
   database: process.env.DATABASE
 });
 
+// const checkConnection = async () => {
+//   try {
+//     const res = await pool.query("SELECT NOW()");
+//     console.log("Successfully connected to the database at:", res.rows[0].now);
+//   } catch (err) {
+//     console.error("Error connecting to the database:", err);
+//   } finally {
+//     await pool.end();
+//   }
+// };
+
+// checkConnection();
+
 
 module.exports = {
-  pool,
-  // query: (text, params) => pool.query(text, params),
+  pool
 };

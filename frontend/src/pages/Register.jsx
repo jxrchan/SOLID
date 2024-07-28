@@ -1,37 +1,42 @@
-import {
-  Box,
-  Button,
-  Grid,
-  Paper,
-  TextField,
-  Typography
-} from "@mui/material";
+import { Box, Button, Grid, Paper, TextField, Typography } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import useFetch from "../hooks/useFetch";
 import RegistrationDialog from "../components/RegistrationDialog";
 import { useNavigate } from "react-router-dom";
 
-
 const Register = () => {
   const [email, setEmail] = useState("");
   const [showRegistrationDialog, setShowRegistrationDialog] = useState(false);
+  const [isEmailValid, setIsEmailValid] = useState(false);
 
   const usingFetch = useFetch();
   const navigate = useNavigate();
 
-  const { mutate, isSuccess } = useMutation({
-    mutationFn: async () => {
-      const response = await usingFetch("/auth/checkEmail", "POST", { email });
-      return response;
-    }
+  const { isFetching, isSuccess, error, isError, data, refetch } = useQuery({
+    queryKey: ["email", email],
+    queryFn: async () => {
+      console.log("Fetching email validity...");
+      const res = await usingFetch("/auth/email", "POST", { email });
+      console.log(res);
+      return res;
+    },
+    enabled: false,
   });
 
-  useEffect(() => {
-    if (email) {
-      mutate();
-    }
-  }, [email, mutate]);
+
+
+  const checkEmail = async () => {
+    setIsEmailValid(false);
+    console.log("email set to invalid");
+    await refetch();
+  };
+
+  useEffect(()=>{
+   if (isSuccess && data) {
+    setIsEmailValid(true)
+   }
+  }, [isSuccess, data])
 
   return (
     <>
@@ -58,6 +63,7 @@ const Register = () => {
             <Paper sx={{ padding: 4 }}>
               <form>
                 <TextField
+                  autoComplete="off"
                   fullWidth
                   variant="outlined"
                   label="Email"
@@ -65,25 +71,38 @@ const Register = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   margin="normal"
                 />
-                {isSuccess && (
-                  <Typography>
-                    Email is available. Click Register to complete registration.
-                  </Typography>
+
+                {/* {isFetching && <Typography> Fetching </Typography>} */}
+                {isError && <Typography> Email already exists </Typography>}
+                {isSuccess && <Typography> Email is available. Click continue to complete registration. </Typography>}
+                {!isEmailValid ? (
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    onClick={() => {
+                      checkEmail();
+                    }}
+                    sx={{ mt: 2 }}
+                  >
+                    CHECK EMAIL VALIDITY
+                  </Button>
+                ) : (
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    onClick={() => setShowRegistrationDialog(true)}
+                    sx={{ mt: 2 }}
+                  >
+                    CONTINUE
+                  </Button>
                 )}
                 <Button
                   fullWidth
                   variant="contained"
-                  color="primary"
-                  onClick={() => setShowRegistrationDialog(true)}
-                  sx={{ mt: 2 }}
-                >
-                  CONTINUE
-                </Button>
-                <Button
-                  fullWidth
-                  variant="contained"
                   color="secondary"
-                  onClick={() => navigate('/login')}
+                  onClick={() => navigate("/login")}
                   sx={{ mt: 2 }}
                 >
                   RETURN TO LOGIN

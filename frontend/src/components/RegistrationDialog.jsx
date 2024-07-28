@@ -13,6 +13,7 @@ import {
 import React, { useState, useEffect } from "react";
 import useFetch from "../hooks/useFetch";
 import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 const RegistrationDialog = ({ email, setShowRegistrationDialog }) => {
   const [password, setPassword] = useState("");
@@ -22,9 +23,12 @@ const RegistrationDialog = ({ email, setShowRegistrationDialog }) => {
   const [gender, setGender] = useState("");
   const [description, setDescription] = useState("");
   const [isFormValid, setIsFormValid] = useState(false);
+  const [isRegistrationComplete, setIsRegistrationComplete] = useState(false);
+
+  const navigate = useNavigate();
 
   const usingFetch = useFetch();
-  const { mutate, isError, error, isSuccess, data } = useMutation({
+  const { mutate, isError, isFetching, error, isSuccess, data } = useMutation({
     mutationFn: async () => {
       await usingFetch("/auth/register", "POST", {
         email,
@@ -35,6 +39,10 @@ const RegistrationDialog = ({ email, setShowRegistrationDialog }) => {
         description,
       });
     },
+    onSuccess: ()=>{
+     
+     setIsRegistrationComplete(true);
+    }
   });
 
   const handleRegister = () => {
@@ -137,7 +145,7 @@ const RegistrationDialog = ({ email, setShowRegistrationDialog }) => {
             onChange={(e) => setDescription(e.target.value)}
             margin="normal"
             multiline
-            rows={4}
+            rows={3}
             inputProps={{ maxLength: 200 }}
             helperText={`${description.length}/200`}
           />
@@ -147,13 +155,16 @@ const RegistrationDialog = ({ email, setShowRegistrationDialog }) => {
             {error.message}
           </Typography>
         )}
-        {isSuccess && (
+        {isFetching && <Typography> Fetching </Typography>}
+        {isError && <Typography> {error.message} </Typography>}
+        {isSuccess && data &&
           <Typography color="primary" sx={{ mx: 3 }}>
             Registration is successful
           </Typography>
-        )}
+        }
       </Box>
       <DialogActions>
+        {!isRegistrationComplete ? (<>
         <Button
           onClick={() => setShowRegistrationDialog(false)}
           color="secondary"
@@ -167,7 +178,15 @@ const RegistrationDialog = ({ email, setShowRegistrationDialog }) => {
           disabled={!isFormValid}
         >
           Complete
-        </Button>
+        </Button> </>) : (<>
+          <Button
+          onClick={()=>{navigate('/login')}}
+          color="primary"
+          variant="contained"
+        > 
+          Return to Login
+        </Button> </>)
+        }
       </DialogActions>
     </Dialog>
   );
