@@ -38,7 +38,7 @@ function Login({}) {
     event.preventDefault();
   }
 
-  const { isError, error, data, refetch } = useQuery({
+  const { isError, isSuccess, error, data, refetch } = useQuery({
     queryKey: ["login"],
     queryFn: async () => {
       try {
@@ -50,16 +50,19 @@ function Login({}) {
     enabled: false,
   });
 
+  
+
   useEffect(() => {
-    if (data) {
+    if (isSuccess && data) {
+      window.localStorage.setItem("access", data.access)
+      window.localStorage.setItem("refresh", data.refresh);
       userCtx.setAccessToken(data.access);
-      const decoded = jwtDecode(data.access);
-      userCtx.setRole(decoded.role);
-      userCtx.setUserId(decoded.id);
-      window.localStorage.setItem("token", data.access);
+      const decodedToken = jwtDecode(data.access);
+      userCtx.setDecoded(decodedToken);
+      userCtx.setIsLoggedIn(true) 
       navigate("/home");
     }
-  }, [data]);
+  }, [isSuccess, data]);
 
   return (
     <>
@@ -84,6 +87,7 @@ function Login({}) {
               {/* Email Field */}
               <TextField
                 fullWidth
+                autoComplete="off"
                 variant="outlined"
                 label="Email"
                 value={email}

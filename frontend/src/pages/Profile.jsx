@@ -7,11 +7,11 @@ import { Button, Typography, Box } from "@mui/material";
 
 
 const Profile = () => {
-  const [name, setName] = useState("");
-  const [gender, setGender] = useState("");
-  const [description, setDescription] = useState("");
-  const [profilePicture, setProfilePicture] = useState("");
-  const [goals, setGoals] = useState("");
+  const [name, setName] = useState('');
+  const [gender, setGender] = useState('');
+  const [description, setDescription] = useState('');
+  const [profilePicture, setProfilePicture] = useState('');
+  const [goals, setGoals] = useState('');
   const [sports, setSports] = useState('');
   const [contact, setContact] = useState("");
   const [facebook, setFacebook] = useState("");
@@ -24,7 +24,7 @@ const Profile = () => {
   const { isSuccess, isError, error, isFetching, data } = useQuery({
     queryKey: ["profile"],
     queryFn: async () => {
-    await usingFetch(
+     return await usingFetch(
         "/users/profile/" + userCtx.decoded.id,
         undefined,
         undefined,
@@ -40,7 +40,8 @@ const Profile = () => {
       setDescription(data.description);
       setProfilePicture(data.profile_picture);
       setGoals(data.goals);
-      setContact(data.contact);
+      setSports(data.sports);
+      setContact(data.contact_number);
       setFacebook(data.facebook);
       setInstagram(data.instagram);
     }
@@ -88,16 +89,16 @@ const Profile = () => {
           <img src={profilePicture} alt="" style={{ width: '100%', height: '100%' }} />
         </Box>
 
-        {/* {userCtx.decoded.role === "ATHLETE" && (
-          <> */}
+        {userCtx.decoded.role === "ATHLETE" && (
+          <>
             <Typography variant="h6">Name: {name}</Typography>
             <Typography>Gender: {gender}</Typography>
             <Typography>Description: {description}</Typography>
             <Typography>Sports: {sports}</Typography>
             <Typography>Goals: {goals}</Typography>
             <Typography>Contact Number: {contact}</Typography>
-          {/* </>
-        )} */}
+          </>
+        )}
 
         {userCtx.decoded.role === "COACH" && (
           <>

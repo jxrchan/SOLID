@@ -53,7 +53,7 @@ const client = await pool.connect();
       role: user[0].role,
     };
     const access = jwt.sign(claims, process.env.ACCESS_SECRET, {
-      expiresIn: "20m",
+      expiresIn: "60m",
       jwtid: uuidv4(),
     });
 
@@ -77,7 +77,7 @@ const refresh = async (req, res) => {
     //Checks if access token (true)
     const claims = { id: decoded.id, email: decoded.email, role: decoded.role };
     const access = jwt.sign(claims, process.env.ACCESS_SECRET, {
-      expiresIn: "20m",
+      expiresIn: "60m",
       jwtid: uuidv4(),
     });
     res.json({ access });

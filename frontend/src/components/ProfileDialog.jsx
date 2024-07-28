@@ -17,14 +17,15 @@ import UserContext from "../context/user";
 const ProfileDialog = (props) => {
   const [name, setName] = useState(props.name);
   const [description, setDescription] = useState(props.description);
-  const [goals, setGoals] = useState(props.goals);
-  const [sports, setSports] = useState(props.sports);
-  const [contact, setContact] = useState(props.contact);
-  const [facebook, setFacebook] = useState(props.facebook);
-  const [instagram, setInstagram] = useState(props.instagram);
+  const [goals, setGoals] = useState(props.goals || '');
+  const [sports, setSports] = useState(props.sports|| '');
+  const [contact, setContact] = useState(props.contact || '');
+  const [facebook, setFacebook] = useState(props.facebook || '');
+  const [instagram, setInstagram] = useState(props.instagram || '');
   const [isNewPictureUploaded, setIsNewPictureUploaded] = useState(false);
   const [fileName, setFileName] = useState('');
   const [isFormValid, setIsFormValid] = useState(false);
+  const [isUploadComplete, setIsUploadComplete] = useState(false);
 
 const usingFetch = useFetch();
 const userCtx = useContext(UserContext);
@@ -32,7 +33,7 @@ const queryClient = useQueryClient();
 
 const updateProfile = useMutation({
   mutationFn: async () => {
-    await usingFetch('/users/profile/' + userCtx.decoded.id, "PATCH", {
+    return await usingFetch('/users/profile/' + userCtx.decoded.id, "PATCH", {
       name, description, sports, goals, contact, facebook, instagram 
     }, userCtx.accessToken )
   }}
@@ -60,20 +61,34 @@ const handleFileChange = async (e) => {
   setFileName(e.name);
 }
 
+// const handleUpdate = async (event) => {
+//   event.preventDefault(); // Changed from event.prevent.default();
+//   updateProfile.mutate();
+//   if (isNewPictureUploaded) {
+//     const formData = new FormData();
+//     formData.append('image', event.target.files[0]); // Added event.target.files[0]
+//     await updateProfilePicture(formData); // Added formData as argument
+//   }
+//   setIsUploadComplete(true);
+//   queryClient.invalidateQueries('profile');
+// };
+
+
+
 const handleUpdate = async (event) => {
+event.preventDefault();
  updateProfile.mutate();
   if (isNewPictureUploaded) {
    const formData = new FormData()
    formData.append('image', event.target.files[0]);
-   await updateProfilePicture();
+   await updateProfilePicture(formData);
   }
+  setIsUploadComplete(true);
   queryClient.invalidateQueries('profile');
 }
 
 useEffect (()=>{
-  if (name.trim() && description.trim()) {
-    setIsFormValid(true);
-  }
+  setIsFormValid((name.trim() && description.trim()))
 }, [name, description]);
 
 
@@ -82,8 +97,9 @@ useEffect (()=>{
 
       <DialogTitle> Update your Profile </DialogTitle>
       <DialogContent>
-      <Box component="form" noValidate autoComplete="off">
-        {/* {userCtx.decoded.role === "ATHLETE" && <> */}
+      <Box component="form" noValidate autoComplete="off" onSubmit={handleUpdate}>
+
+        {userCtx.decoded.role === "ATHLETE" && (<>
       <Button
             variant="contained"
             component="label"
@@ -115,14 +131,14 @@ useEffect (()=>{
           onChange={(e) => setDescription(e.target.value)}
           margin="normal"
           multiline
-          rows={4}
+          rows={3}
           inputProps={{ maxLength: 200 }}
           helperText={`${description.length}/200`}
         />
         <TextField
           fullWidth
           variant="outlined"
-          label="Sports (separate each sport with a comma)"
+          label="Sports"
           value={sports}
           onChange={(e) => setSports(e.target.value)}
           margin="normal"
@@ -133,13 +149,13 @@ useEffect (()=>{
            <TextField
           fullWidth
           variant="outlined"
-          label="Goals (separate each goal with a comma)"
+          label="Goals"
           value={goals}
           onChange={(e) => setGoals(e.target.value)}
           margin="normal"
           inputProps={{ maxLength: 200 }}
           helperText={`${goals.length}/200`}
-          
+
         />
            <TextField
           fullWidth
@@ -151,10 +167,11 @@ useEffect (()=>{
           inputProps={{ maxLength: 10 }}
           
         />
-        {/* </> } */}
+        </>
+      )}
 
 
-        {/* {userCtx.decoded.role === "COACH" && <>
+        {userCtx.decoded.role === "COACH" && (<>
       <Button
             variant="contained"
             component="label"
@@ -186,14 +203,14 @@ useEffect (()=>{
           onChange={(e) => setDescription(e.target.value)}
           margin="normal"
           multiline
-          rows={4}
+          rows={3}
           inputProps={{ maxLength: 200 }}
           helperText={`${description.length}/200`}
         />
         <TextField
           fullWidth
           variant="outlined"
-          label="Sports (separate each sport with a comma)"
+          label="Sports"
           value={sports}
           onChange={(e) => setSports(e.target.value)}
           margin="normal"
@@ -229,12 +246,19 @@ useEffect (()=>{
           margin="normal"
           
         />
-        </> } */}
+        </> ) }
 
         </Box> 
+        {updateProfile.isSuccess && updateProfile.data && (
+          <Typography> 
+            Profile Updated
+          </Typography>
+        )}
 
       </DialogContent>
+ 
       <DialogActions>
+      {!isUploadComplete ? ( <>
         <Button
           onClick={() => props.setShowProfileDialog(false)}
           color="secondary"
@@ -242,13 +266,23 @@ useEffect (()=>{
           Cancel
         </Button>
         <Button
-          onClick={() => {handleUpdate()}}
+          type = "submit"
           color="primary"
           variant="contained"
           disabled={!isFormValid}
         >
           Update
-        </Button>
+        </Button> </> ) : (
+          <> 
+        <Button
+          onClick={() => props.setShowProfileDialog(false)}
+          color="secondary"
+        >
+          Close
+        </Button> </>
+  
+        )
+        }
       </DialogActions>
     </Dialog>
 

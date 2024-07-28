@@ -30,7 +30,7 @@ const RegistrationDialog = ({ email, setShowRegistrationDialog }) => {
   const usingFetch = useFetch();
   const { mutate, isError, isFetching, error, isSuccess, data } = useMutation({
     mutationFn: async () => {
-      await usingFetch("/auth/register", "POST", {
+      return await usingFetch("/auth/register", "POST", {
         email,
         password,
         role,
@@ -39,10 +39,9 @@ const RegistrationDialog = ({ email, setShowRegistrationDialog }) => {
         description,
       });
     },
-    onSuccess: ()=>{
-     
-     setIsRegistrationComplete(true);
-    }
+    onSuccess: () => {
+      setIsRegistrationComplete(true);
+    },
   });
 
   const handleRegister = () => {
@@ -155,38 +154,45 @@ const RegistrationDialog = ({ email, setShowRegistrationDialog }) => {
             {error.message}
           </Typography>
         )}
-        {isFetching && <Typography> Fetching </Typography>}
+        {/* {isFetching && <Typography> Fetching </Typography>} */}
         {isError && <Typography> {error.message} </Typography>}
-        {isSuccess && data &&
+        {isSuccess && data && (
           <Typography color="primary" sx={{ mx: 3 }}>
             Registration is successful
           </Typography>
-        }
+        )}
       </Box>
       <DialogActions>
-        {!isRegistrationComplete ? (<>
-        <Button
-          onClick={() => setShowRegistrationDialog(false)}
-          color="secondary"
-        >
-          Cancel
-        </Button>
-        <Button
-          onClick={handleRegister}
-          color="primary"
-          variant="contained"
-          disabled={!isFormValid}
-        >
-          Complete
-        </Button> </>) : (<>
-          <Button
-          onClick={()=>{navigate('/login')}}
-          color="primary"
-          variant="contained"
-        > 
-          Return to Login
-        </Button> </>)
-        }
+        {!isRegistrationComplete ? (
+          <>
+            <Button
+              onClick={() => setShowRegistrationDialog(false)}
+              color="secondary"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleRegister}
+              color="primary"
+              variant="contained"
+              disabled={!isFormValid}
+            >
+              Complete
+            </Button>{" "}
+          </>
+        ) : (
+          <>
+            <Button
+              onClick={() => {
+                navigate("/login");
+              }}
+              color="primary"
+              variant="contained"
+            >
+              Return to Login
+            </Button>{" "}
+          </>
+        )}
       </DialogActions>
     </Dialog>
   );

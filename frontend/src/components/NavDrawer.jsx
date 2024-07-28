@@ -24,9 +24,8 @@ const NavDrawer = () => {
   const userCtx = useContext(UserContext);
 
   const handleLogout = () => {
-    window.localStorage.removeItem('token');
-    userCtx.setAccessToken('');
-    userCtx.setDecode('');
+    window.localStorage.removeItem('access');
+    window.localStorage.removeItem('refresh');
     userCtx.setIsLoggedIn(false);
     window.location.reload();
   };
