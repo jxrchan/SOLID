@@ -38,8 +38,8 @@ const Coaches = () => {
     queryKey: ["ownCoaches", userCtx.decoded.id],
     queryFn: async () => {
       const data = await usingFetch(
-        "/users/coaches/" + userCtx.decoded.id,
-        "GET",
+        "/users/coaches",
+        undefined,
         undefined,
         userCtx.accessToken
       );

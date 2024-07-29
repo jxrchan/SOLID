@@ -18,6 +18,7 @@ import TextField from "@mui/material/TextField";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import AboutDialog from "../components/AboutDialog";
+import {Typography} from "@mui/material";
 import {Link} from '@mui/material';
 
 function Login({}) {
@@ -70,19 +71,32 @@ function Login({}) {
     <Box
       sx={{
         minHeight: "100vh",
-        backgroundImage: "url(../images/LandingPage.jpeg)", // Replace with your background image URL
+        backgroundImage: "url(../images/LandingPage2.jpeg)", // Replace with your background image URL
         backgroundSize: "cover",
         backgroundPosition: "center",
         display: "flex",
-        justifyContent: "flex-end",
         alignItems: "center",
         padding: 4,
-     
       }}
     >
       <Grid container justifyContent="flex-end">
-        <Grid item xs={12} sm={8} md={4}>
-          <Paper sx={{ padding: 4 }}>
+        <Grid
+          item
+          xs={12}
+          sm={6}
+          md={4}
+          lg={3}
+          sx={{
+            borderRadius: "50px", // Circular border radius
+            overflow: "hidden",  // Ensure the child elements are clipped to the border radius
+            boxShadow: 3,
+          }}
+        >
+          <Paper sx={{ padding: 4, position: "relative", textAlign: 'center'}}>
+            <Box sx={{ textAlign: "center", mb: 1 }}>
+              <img src="../images/SolidLogo.png" alt="SOLID" width="150" />
+            </Box>
+
             <form>
               {/* Email Field */}
               <TextField
@@ -92,11 +106,11 @@ function Login({}) {
                 label="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                margin="normal"
+                margin="dense"
               />
 
               {/* Password Field */}
-              <FormControl fullWidth variant="outlined" margin="normal">
+              <FormControl fullWidth variant="outlined" margin="dense">
                 <InputLabel>Password</InputLabel>
                 <OutlinedInput
                   type={showPassword ? "text" : "password"}
@@ -117,6 +131,7 @@ function Login({}) {
                   label="Password"
                 />
               </FormControl>
+
               <Button
                 fullWidth
                 variant="contained"
@@ -130,21 +145,31 @@ function Login({}) {
                 fullWidth
                 variant="contained"
                 color="secondary"
-                onClick={()=>{navigate("/register")}}
+                onClick={() => { navigate("/register") }}
                 sx={{ mt: 2 }}
               >
                 Register
               </Button>
             </form>
-            <Link
-              component="button"
-              onClick={() => setShowAboutDialog(true)}
-              sx={{ display: 'flex', alignItems: 'center', py: 1 }}
-              underline="none"
-              color="inherit"
-            >
-              What is SOLID?
-            </Link>
+
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+              <Link
+                component="button"
+                onClick={() => setShowAboutDialog(true)}
+                sx={{
+                  color: "inherit",
+                  textDecoration: "none",
+                  ':hover': {
+                    textDecoration: 'underline',
+                  }
+                }}
+                underline="none"
+              >
+                <Typography variant="body2">
+                  What is SOLID?
+                </Typography>
+              </Link>
+            </Box>
           </Paper>
         </Grid>
       </Grid>

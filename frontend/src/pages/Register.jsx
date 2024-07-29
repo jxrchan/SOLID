@@ -16,12 +16,10 @@ const Register = () => {
   const { isFetching, isSuccess, error, isError, data, refetch } = useQuery({
     queryKey: ["email", email],
     queryFn: async () => {
-      console.log("Fetching email validity...");
-      const res = await usingFetch("/auth/email", "POST", { email });
-      console.log(res);
-      return res;
+      return await usingFetch("/auth/email", "POST", { email });
     },
     enabled: false,
+    retry: 1,
   });
 
 
@@ -72,9 +70,8 @@ const Register = () => {
                   margin="normal"
                 />
 
-                {/* {isFetching && <Typography> Fetching </Typography>} */}
-                {isError && <Typography> Email already exists </Typography>}
-                {isSuccess && <Typography> Email is available. Click continue to complete registration. </Typography>}
+                {isError && <Typography> <span style ={{color: 'red'}}> Email already exists </span></Typography>}
+                {isSuccess && data && <Typography> <span style={{color: 'green'}}>Email is available. Click continue to complete registration. </span></Typography>}
                 {!isEmailValid ? (
                   <Button
                     fullWidth

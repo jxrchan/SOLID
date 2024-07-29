@@ -7,7 +7,7 @@ const getProfile = async (req, res) => {
   try {
     const { rows: user } = await client.query(
       "SELECT * FROM users WHERE id = $1 LIMIT 1",
-      [req.params.id]
+      [req.decoded.id]
     );
     if (user.length === 0) {
       return res.status(404).json({ status: "error", msg: "User not found" });
@@ -28,7 +28,7 @@ const updateProfilePicture = async (req, res) => {
   try {
     await client.query(`UPDATE users SET profile_picture = $1 WHERE id = $2`, [
       req.result,
-      req.params.id,
+      req.decoded.id,
     ]);
     res
       .status(200)
@@ -58,7 +58,7 @@ const updateProfile = async (req, res) => {
         req.body.contact,
         req.body.facebook,
         req.body.instagram,
-        req.params.id,
+        req.decoded.id,
       ]
     );
     res.json({ status: "success", msg: "User information has been updated" });
@@ -82,13 +82,25 @@ const getActivities = async (req, res) => {
     filters.push(` $${filters.length + 1})`);
     params.push(req.body.dateStart, req.body.dateEnd);
   }
+  if (req.decoded.role === "ATHLETE") {
+    filters.push('athlete_id = $'+(filters.length + 1));
+    params.push(req.decoded.id);
+  }
+
+  if(req.decoded.role === "COACH") {
+    filters.push('coach_id = $' +(filters.length + 1));
+    params.push(req.decoded.id)
+  }
+
   if (req.body.coachId) {
     filters.push("coach_id = $" + (filters.length + 1));
     params.push(req.body.coachId);
   }
+
   if (req.body.athleteId) {
     filters.push("athlete_id = $" + (filters.length + 1));
     params.push(req.body.athleteId);
+    
   }
   if (filters.length > 0) {
     console.log(JSON.stringify(filters));
@@ -190,7 +202,7 @@ const getOwnCoaches = async (req, res) => {
     const { rows: coaches } = await client.query(
       `SELECT * FROM users JOIN users_users 
       ON users.id = users_users.coach_id WHERE users_users.athlete_id = $1`,
-      [req.params.id]
+      [req.decoded.id]
     );
     if (coaches.length === 0) {
       res.status(404).json({ status: "error", msg: "No coach(es) found" });
@@ -245,7 +257,7 @@ const getOwnAthletes = async (req, res) => {
     const { rows: athletes } = await client.query(
       `SELECT * FROM users JOIN users_users ON users.id 
       = users_users.athlete_id WHERE users_users.coach_id = $1`,
-      [req.params.id]
+      [req.decoded.id]
     );
     res.json(athletes);
   } catch (error) {
@@ -274,7 +286,7 @@ const addAthlete = async (req, res) => {
     const athlete_id = user[0].id;
     await client.query(
       `INSERT into users_users (athlete_id, coach_id) VALUES ($1, $2)`,
-      [athlete_id, req.body.coach_id]
+      [athlete_id, req.decoded.id]
     );
     await client.query("COMMIT");
     res
@@ -295,7 +307,7 @@ const deleteAthlete = async (req, res) => {
     await client.query(
       `DELETE FROM users_users 
         WHERE coach_id = $1 AND athlete_id = $2`,
-      [req.body.coach_id, req.body.athlete_id]
+      [req.decoded.id, req.body.athlete_id]
     );
     res.json({ status: "success", msg: "Removed athlete" });
   } catch (error) {
@@ -329,7 +341,7 @@ const addActivity = async (req, res) => {
     date, duration, coach_comment) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
       [
         req.body.athleteId,
-        req.body.coachId,
+        req.decoded.id,
         req.body.name,
         req.body.type,
         req.body.date,

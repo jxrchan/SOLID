@@ -63,13 +63,22 @@ const RegistrationDialog = ({ email, setShowRegistrationDialog }) => {
   }, [email, password, repeatPassword, role, name, gender, description]);
 
   return (
-    <Dialog open onClose={() => setShowRegistrationDialog(false)}>
-      <DialogTitle>Complete Registration</DialogTitle>
+      <Dialog
+        open
+        onClose={() => setShowRegistrationDialog(false)}
+        sx={{
+          '.MuiPaper-root': {
+            borderRadius: 4,
+            boxShadow: 3,
+          },
+        }}
+      >
+   
+      <DialogTitle variant="h6">Complete Registration</DialogTitle>
       <Box component="form" noValidate autoComplete="off">
         <DialogContent>
-          <Typography>Email: {email}</Typography>
-          <Typography variant="h6" sx={{ mt: 2 }}>
-            Select Your Role
+          <Typography variant="body1" sx={{ mt: 0 }}>
+           Role 
           </Typography>
           <ToggleButtonGroup
             value={role}
@@ -112,8 +121,8 @@ const RegistrationDialog = ({ email, setShowRegistrationDialog }) => {
             onChange={(e) => setName(e.target.value)}
             margin="normal"
           />
-          <Typography variant="h6" sx={{ mt: 2 }}>
-            Select Your Gender
+          <Typography variant="body1" sx={{ mt: 2 }}>
+           Gender
           </Typography>
           <ToggleButtonGroup
             value={gender}
@@ -154,10 +163,9 @@ const RegistrationDialog = ({ email, setShowRegistrationDialog }) => {
             {error.message}
           </Typography>
         )}
-        {/* {isFetching && <Typography> Fetching </Typography>} */}
-        {isError && <Typography> {error.message} </Typography>}
+        {isError && <Typography color="red"> {error.message} </Typography>}
         {isSuccess && data && (
-          <Typography color="primary" sx={{ mx: 3 }}>
+          <Typography color="green" sx={{ mx: 3 }}>
             Registration is successful
           </Typography>
         )}

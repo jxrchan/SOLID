@@ -25,7 +25,7 @@ const Profile = () => {
     queryKey: ["profile", userCtx.decoded.id],
     queryFn: async () => {
      return await usingFetch(
-        "/users/profile/" + userCtx.decoded.id,
+        "/users/profile",
         undefined,
         undefined,
         userCtx.accessToken

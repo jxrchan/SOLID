@@ -2,12 +2,14 @@ import React, { Suspense, useState, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useQuery, QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {jwtDecode} from "jwt-decode";
+import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 
 
 
 import UserContext from "./context/user";
 import NavDrawer from "./components/NavDrawer";
 import useFetch from "./hooks/useFetch";
+import { fontFamily } from "@mui/system";
 
 const Home = React.lazy(() => import("./pages/Home"));
 const Profile = React.lazy(() => import("./pages/Profile"));
@@ -25,6 +27,22 @@ function App () {
 
   const queryClient = new QueryClient();
   const usingFetch = useFetch();
+
+  const theme = createTheme({
+    typography: {
+      fontFamily: 'Roboto, sans-serif',
+      fontSize: 16, // Default font
+      h6: {
+        fontFamily: 'Roboto Slab, Roboto, serif'}, // Font for h1
+      body1: {
+        fontFamily: 'Roboto Slab, Arial, sans-serif',
+        fontSize: 16, // Font for body1
+      },
+      body2: {
+        fontFamily: 'Roboto, Arial, sans-serif', // Font for body2
+      },
+    },
+    });
 
 
   const refreshAccessToken = async (refresh) => {
@@ -112,6 +130,8 @@ function App () {
           setIsLoggedIn,
         }}
       >
+        <ThemeProvider theme={theme}>
+          <CssBaseline/>
           {isLoggedIn && <NavDrawer />}
             <Suspense fallback={<div>Loading...</div>}>
               <Routes>
@@ -153,6 +173,7 @@ function App () {
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>
+            </ThemeProvider>
       </UserContext.Provider>
     </QueryClientProvider>
   );

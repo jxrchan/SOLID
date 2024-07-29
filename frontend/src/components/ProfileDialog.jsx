@@ -33,7 +33,7 @@ const ProfileDialog = (props) => {
 
   const updateProfile = useMutation({
     mutationFn: async () => {
-      return await usingFetch('/users/profile/' + userCtx.decoded.id, "PATCH", {
+      return await usingFetch('/users/profile', "PATCH", {
         name, description, sports, goals, contact, facebook, instagram
       }, userCtx.accessToken)
     }
@@ -41,7 +41,7 @@ const ProfileDialog = (props) => {
 
   const updateProfilePicture = async (formData) => {
     try {
-      const res = await fetch(import.meta.env.VITE_SERVER + '/users/upload/' + userCtx.decoded.id, {
+      const res = await fetch(import.meta.env.VITE_SERVER + '/users/upload', {
         method: "POST",
         body: formData,
         headers: {

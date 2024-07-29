@@ -26,11 +26,11 @@ const { checkErrors } = require("../validators/checkErrors");
 const { authAthlete, authUser, authCoach } = require("../middleware/auth");
 
 /*-------- for all Users -------------*/
-router.get("/profile/:id", authUser, getProfile);
-router.patch("/profile/:id", authUser, updateProfile);
+router.get("/profile", authUser, getProfile);
+router.patch("/profile", authUser, updateProfile);
 router.get("/activities", authUser, getActivities);
 router.post(
-  "/upload/:id", authUser,
+  "/upload", authUser,
   multerUpload.single("image"),
   cloudinaryProcessImageAndUpload,
   updateProfilePicture
@@ -39,13 +39,13 @@ router.patch("/activity/:id", updateActivity);
 
 /*-------- for Athletes -------------*/
 router.post("/coaches", authAthlete, getCoaches);
-router.get("/coaches/:id", authAthlete, getOwnCoaches);
+router.get("/coaches", authAthlete, getOwnCoaches);
 router.put("/coaches/:id", authAthlete, addReview);
 router.get("/coaches/review", authAthlete, getCoachReviews);
 
 /*-------- for Coaches -------------*/
 router.get("/activity_types", authCoach, getActivityTypes);
-router.get("/athletes/:id", authCoach, getOwnAthletes);
+router.get("/athletes", authCoach, getOwnAthletes);
 router.put("/athletes", authCoach, addAthlete);
 router.delete("/athletes", authCoach, deleteAthlete);
 router.put("/activity", authCoach, addActivity);

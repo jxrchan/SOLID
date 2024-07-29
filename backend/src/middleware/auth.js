@@ -10,7 +10,7 @@ const authUser = (req, res, next) => {
       const decoded = jwt.verify(token, process.env.ACCESS_SECRET);
       //verify returns the claim
       if (decoded.role === "ATHLETE" || "COACH") {
-        // req.decoded = decoded;
+        req.decoded = decoded;
         next();
       } else {
         throw new Error();
@@ -35,7 +35,7 @@ const authAthlete = (req, res, next) => {
       const decoded = jwt.verify(token, process.env.ACCESS_SECRET);
       //verify returns the claim
       if (decoded.role === "ATHLETE") {
-        // req.decoded = decoded;
+        req.decoded = decoded;
         next();
       } else {
         throw new Error();
@@ -59,7 +59,7 @@ const authCoach = (req, res, next) => {
       const decoded = jwt.verify(token, process.env.ACCESS_SECRET);
       //verify returns the claim
       if (decoded.role === "COACH") {
-        // req.decoded = decoded;
+        req.decoded = decoded;
         next();
       } else {
         throw new Error();

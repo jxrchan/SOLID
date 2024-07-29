@@ -29,7 +29,7 @@ const Athletes = () => {
     queryKey: ["ownAthletes", userCtx.decoded.id],
     queryFn: async () => {
       return await usingFetch(
-        "/users/athletes/" + userCtx.decoded.id,
+        "/users/athletes",
         undefined,
         undefined,
         userCtx.accessToken
@@ -47,7 +47,7 @@ const Athletes = () => {
       return await usingFetch(
         "/users/athletes",
         "DELETE",
-        { coach_id: userCtx.decoded.id, athlete_id },
+        { athlete_id },
         userCtx.accessToken
       );
     },
@@ -61,7 +61,7 @@ const Athletes = () => {
       return await usingFetch(
         "/users/athletes",
         "PUT",
-        { email, coach_id: userCtx.decoded.id },
+        { email },
         userCtx.accessToken
       );
     },
