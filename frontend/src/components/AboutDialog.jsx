@@ -21,8 +21,10 @@ const AboutDialog = ({ setShowAboutDialog }) => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          px: 4, // Increase the margin on the sides
-        },
+          px: 4,
+          borderRadius: 6,
+          boxShadow: 3 // Increase the margin on the sides
+        }
       }}
     >
       <Box

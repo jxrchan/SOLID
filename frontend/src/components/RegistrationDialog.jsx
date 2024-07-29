@@ -68,7 +68,7 @@ const RegistrationDialog = ({ email, setShowRegistrationDialog }) => {
         onClose={() => setShowRegistrationDialog(false)}
         sx={{
           '.MuiPaper-root': {
-            borderRadius: 4,
+            borderRadius: 6,
             boxShadow: 3,
           },
         }}
