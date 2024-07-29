@@ -22,7 +22,7 @@ const Profile = () => {
   const userCtx = useContext(UserContext);
 
   const { isSuccess, isError, error, isFetching, data } = useQuery({
-    queryKey: ["profile"],
+    queryKey: ["profile", userCtx.decoded.id],
     queryFn: async () => {
      return await usingFetch(
         "/users/profile/" + userCtx.decoded.id,

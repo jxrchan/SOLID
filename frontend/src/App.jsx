@@ -87,6 +87,8 @@ function App () {
         break;
     }
   };
+
+  
   const checkLoggedIn = (token) => {
     setAccessToken(token);
     const decodedToken = jwtDecode(token);
