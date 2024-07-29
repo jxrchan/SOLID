@@ -2,71 +2,84 @@ import React, { useContext, useState, useEffect } from "react";
 import useFetch from "../hooks/useFetch";
 import UserContext from "../context/user";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Box, Typography, TextField, Card, Stack, Grid, IconButton, Button } from "@mui/material";
+import {
+  Box,
+  Typography,
+  TextField,
+  Card,
+  CardMedia,
+  CardActions,
+  Grid,
+  IconButton,
+  Button,
+  CardContent,
+  CardHeader,
+} from "@mui/material";
 import { Delete } from "@mui/icons-material";
 
-
 const Athletes = () => {
-
-  const [email, setEmail] = useState('');
-  const [athletes, setAthletes] = useState();
-  const [athlete_id, setAthlete_id] = useState('')
+  const [email, setEmail] = useState("");
+  const [athletes, setAthletes] = useState([]);
 
   const usingFetch = useFetch();
   const userCtx = useContext(UserContext);
   const queryClient = useQueryClient();
 
   const getOwnAthletes = useQuery({
-    queryKey: ["ownAthletes"],
+    queryKey: ["ownAthletes", userCtx.decoded.id],
     queryFn: async () => {
-      await usingFetch('/users/athletes/' + userCtx.decoded.id,
-        undefined, undefined,
+      return await usingFetch(
+        "/users/athletes/" + userCtx.decoded.id,
+        undefined,
+        undefined,
         userCtx.accessToken
-      )
+      );
     },
-    onSuccess: ()=> {
-      setAthletes(data);
-    }
   });
 
+  useEffect(() => {
+    if (getOwnAthletes.isSuccess && getOwnAthletes.data)
+      setAthletes(getOwnAthletes.data);
+  }, [getOwnAthletes.isSuccess, getOwnAthletes.data]);
+
   const deleteAthlete = useMutation({
-    mutationFn: async () => {
-      await usingFetch(
-        '/users/athletes/' + userCtx.decoded.id,
+    mutationFn: async (athlete_id) => {
+      return await usingFetch(
+        "/users/athletes",
         "DELETE",
-        { athlete_id },
+        { coach_id: userCtx.decoded.id, athlete_id },
         userCtx.accessToken
       );
     },
     onSuccess: () => {
-      queryClient.invalidateQueries('ownAthletes');
-    }
+      queryClient.invalidateQueries(["ownAthletes", userCtx.decoded.id]);
+    },
   });
 
   const addAthlete = useMutation({
-    mutationFn: async ()=>{
-      await usingFetch(
-        'users/athletes/' + userCtx.decoded.id,
-        "PUT", { email }, userCtx.accessToken
-      )
+    mutationFn: async () => {
+      return await usingFetch(
+        "/users/athletes",
+        "PUT",
+        { email, coach_id: userCtx.decoded.id },
+        userCtx.accessToken
+      );
     },
     onSuccess: () => {
-      queryClient.invalidateQueries('ownAthletes');
-    }
-  })
-
-
+      queryClient.invalidateQueries(["ownAthletes", userCtx.decoded.id]);
+    },
+  });
 
   return (
     <Box
       sx={{
         ml: 37, // To accommodate the 300px NavDrawer and add some padding
         p: 3,
-        width: 'calc(100vw - 300px)', // To ensure the width accounts for the drawer
-        height: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
+        width: "calc(100vw - 300px)", // To ensure the width accounts for the drawer
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
       }}
     >
       <Grid container spacing={2}>
@@ -94,22 +107,48 @@ const Athletes = () => {
         </Grid>
       </Grid>
 
-      <Stack spacing={2} sx={{ mt: 4 }}>
-        <Typography variant="h6">My Athletes</Typography>
-        {athletes.map((item, index) => (
-          <Card key={index} sx={{ p: 2, display: 'flex', justifyContent: 'space-between' }}>
-            <Box>
-              <Typography>{item.name}</Typography>
-              <Typography>{item.gender}</Typography>
-              <Typography>{item.description}</Typography>
-              <Typography>{item.goals}</Typography>
-            </Box>
-            <IconButton onClick={() => deleteAthlete.mutate(item._id)}>
-              <Delete />
-            </IconButton>
-          </Card>
-        ))}
-      </Stack>
+      <Grid container spacing={2} sx={{ mt: 4 }}>
+        <Grid item xs={12}>
+          <Typography variant="h6">My Athletes</Typography>
+        </Grid>
+        {athletes && athletes.length !== 0 &&
+          athletes.map((item, index) => (
+            <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+              <Card
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  height: "100%",
+                }}
+              >
+                <CardHeader title={item.name} />
+                <CardMedia
+                  component="img"
+                  height="200"
+                  image={item.profile_picture}
+                  alt="Profile picture"
+                  sx={{ objectFit: "contain" }}
+                />
+                <CardContent>
+                  <Typography variant="body2" color="textSecondary">
+                    {item.description}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    {item.goals}
+                  </Typography>
+                </CardContent>
+                <CardActions disableSpacing>
+                  <IconButton
+                    onClick={() => deleteAthlete.mutate(item.athlete_id)}
+                  >
+                    <Delete />
+                  </IconButton>
+                </CardActions>
+              </Card>
+            </Grid>
+          ))}
+      </Grid>
     </Box>
   );
 };

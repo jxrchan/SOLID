@@ -192,7 +192,9 @@ const ProfileDialog = (props) => {
             ) : (
               <>
                 <Button
-                  onClick={() => props.setShowProfileDialog(false)}
+                  onClick={() => {
+                    props.setShowProfileDialog(false);
+                  setIsUploadComplete(false);}}
                   color="secondary"
                 >
                   Close

@@ -38,17 +38,16 @@ router.post(
 router.patch("/activity/:id", updateActivity);
 
 /*-------- for Athletes -------------*/
-router.get("/coaches", authAthlete, getCoaches);
+router.post("/coaches", authAthlete, getCoaches);
 router.get("/coaches/:id", authAthlete, getOwnCoaches);
 router.put("/coaches/:id", authAthlete, addReview);
 router.get("/coaches/review", authAthlete, getCoachReviews);
-// router.post("/activity/:id", commentOwnActivity);
 
 /*-------- for Coaches -------------*/
 router.get("/activity_types", authCoach, getActivityTypes);
 router.get("/athletes/:id", authCoach, getOwnAthletes);
 router.put("/athletes", authCoach, addAthlete);
-router.delete("/athletes/:id", authCoach, deleteAthlete);
+router.delete("/athletes", authCoach, deleteAthlete);
 router.put("/activity", authCoach, addActivity);
 router.delete("/activity/:id", authCoach, deleteActivity);
 

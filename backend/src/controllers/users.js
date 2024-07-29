@@ -144,7 +144,7 @@ const getCoaches = async (req, res) => {
   let query = `SELECT * FROM users WHERE role = $1`;
   const params = ["COACH"];
   if (req.body.sport) {
-    query += ` AND (sport LIKE $${params.length + 1})`;
+    query += ` AND (sports LIKE $${params.length + 1})`;
     params.push(`%${req.body.sport}%`);
   }
   if (req.body.gender) {
@@ -295,7 +295,7 @@ const deleteAthlete = async (req, res) => {
     await client.query(
       `DELETE FROM users_users 
         WHERE coach_id = $1 AND athlete_id = $2`,
-      [req.params.id, req.body.athlete_id]
+      [req.body.coach_id, req.body.athlete_id]
     );
     res.json({ status: "success", msg: "Removed athlete" });
   } catch (error) {

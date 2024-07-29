@@ -88,7 +88,7 @@ function App () {
     }
   };
 
-  
+
   const checkLoggedIn = (token) => {
     setAccessToken(token);
     const decodedToken = jwtDecode(token);
@@ -133,7 +133,7 @@ function App () {
                 <Route
                   path="/coaches"
                   element={
-                    isLoggedIn && decoded.role === "COACH" ? (
+                    isLoggedIn && decoded.role === "ATHLETE" ? (
                       <Coaches />
                     ) : (
                       <Navigate replace to="/login" />
@@ -143,7 +143,7 @@ function App () {
                 <Route
                   path="/athletes"
                   element={
-                    isLoggedIn && decoded.role === "ATHLETE" ? (
+                    isLoggedIn && decoded.role === "COACH" ? (
                       <Athletes />
                     ) : (
                       <Navigate replace to="/login" />
