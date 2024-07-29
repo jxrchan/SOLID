@@ -16,13 +16,13 @@ import UserContext from "../context/user";
 const ProfileDialog = (props) => {
   const [name, setName] = useState(props.name);
   const [description, setDescription] = useState(props.description);
-  const [goals, setGoals] = useState(props.goals || '');
-  const [sports, setSports] = useState(props.sports || '');
-  const [contact, setContact] = useState(props.contact || '');
-  const [facebook, setFacebook] = useState(props.facebook || '');
-  const [instagram, setInstagram] = useState(props.instagram || '');
+  const [goals, setGoals] = useState(props.goals || "");
+  const [sports, setSports] = useState(props.sports || "");
+  const [contact, setContact] = useState(props.contact || "");
+  const [facebook, setFacebook] = useState(props.facebook || "");
+  const [instagram, setInstagram] = useState(props.instagram || "");
   const [isNewPictureUploaded, setIsNewPictureUploaded] = useState(false);
-  const [fileName, setFileName] = useState('');
+  const [fileName, setFileName] = useState("");
   const [isFormValid, setIsFormValid] = useState(false);
   const [isUploadComplete, setIsUploadComplete] = useState(false);
   const [selectedFile, setSelectedFile] = useState();
@@ -33,22 +33,36 @@ const ProfileDialog = (props) => {
 
   const updateProfile = useMutation({
     mutationFn: async () => {
-      return await usingFetch('/users/profile', "PATCH", {
-        name, description, sports, goals, contact, facebook, instagram
-      }, userCtx.accessToken)
+      return await usingFetch(
+        "/users/profile",
+        "PATCH",
+        {
+          name,
+          description,
+          sports,
+          goals,
+          contact,
+          facebook,
+          instagram,
+        },
+        userCtx.accessToken
+      );
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["profile", userCtx.decoded.id]);
     }
   });
 
   const updateProfilePicture = async (formData) => {
     try {
-      const res = await fetch(import.meta.env.VITE_SERVER + '/users/upload', {
+      const res = await fetch(import.meta.env.VITE_SERVER + "/users/upload", {
         method: "POST",
         body: formData,
         headers: {
-          "Authorization": "Bearer " + userCtx.accessToken
-        }
+          Authorization: "Bearer " + userCtx.accessToken,
+        },
       });
-      if (!res.ok) throw new Error('fetch error');
+      if (!res.ok) throw new Error("fetch error");
       console.log(res);
     } catch (error) {
       console.error(error.message);
@@ -63,14 +77,14 @@ const ProfileDialog = (props) => {
 
   const handleUpdate = async (event) => {
     event.preventDefault();
-    updateProfile.mutate();
+   updateProfile.mutate();
     if (isNewPictureUploaded && selectedFile) {
       const formData = new FormData();
-      formData.append('image', selectedFile);
+      formData.append("image", selectedFile);
       await updateProfilePicture(formData);
+      queryClient.invalidateQueries(["profile", userCtx.decoded.id]);
     }
     setIsUploadComplete(true);
-    queryClient.invalidateQueries(['profile', userCtx.decoded.id]);
   };
 
   useEffect(() => {
@@ -78,15 +92,25 @@ const ProfileDialog = (props) => {
   }, [name, description]);
 
   return (
-    <Dialog open onClose={() => props.setShowProfileDialog(false)}>
+    <Dialog
+      open
+      onClose={() => props.setShowProfileDialog(false)}
+      sx={{
+        ".MuiPaper-root": {
+          borderRadius: 6,
+          boxShadow: 3,
+        },
+      }}
+    >
       <DialogTitle>Update your Profile</DialogTitle>
       <DialogContent>
-        <Box component="form" noValidate autoComplete="off" onSubmit={handleUpdate}>
-          <Button
-            variant="contained"
-            component="label"
-            sx={{ mt: 2 }}
-          >
+        <Box
+          component="form"
+          noValidate
+          autoComplete="off"
+          onSubmit={handleUpdate}
+        >
+          <Button variant="contained" component="label" sx={{ mt: 2 }}>
             Upload Profile Picture
             <input
               type="file"
@@ -95,7 +119,7 @@ const ProfileDialog = (props) => {
             />
           </Button>
 
-          {fileName && (<Typography sx={{ mt: 2 }}>{fileName}</Typography>)}
+          {fileName && <Typography sx={{ mt: 2 }}>{fileName}</Typography>}
 
           <TextField
             fullWidth
@@ -171,9 +195,6 @@ const ProfileDialog = (props) => {
           <DialogActions>
             {!isUploadComplete ? (
               <>
-          <Typography>
-            Profile Updated
-          </Typography>
                 <Button
                   onClick={() => props.setShowProfileDialog(false)}
                   color="secondary"
@@ -191,10 +212,12 @@ const ProfileDialog = (props) => {
               </>
             ) : (
               <>
+                <Typography color="green">Profile Updated</Typography>
                 <Button
                   onClick={() => {
                     props.setShowProfileDialog(false);
-                  setIsUploadComplete(false);}}
+                    setIsUploadComplete(false);
+                  }}
                   color="secondary"
                 >
                   Close

@@ -130,11 +130,11 @@ const Coaches = () => {
                   sx={{ objectFit: "contain" }}
                 />
                 <CardContent>
-                  <Typography variant="body2" color="textSecondary">
-                    {item.description}
+                <Typography variant="body2" color="textSecondary">
+                  {item.gender}
                   </Typography>
                   <Typography variant="body2" color="textSecondary">
-                    {item.goals}
+                    {item.description}
                   </Typography>
                 </CardContent>
                 <CardActions disableSpacing>
