@@ -78,7 +78,6 @@ const Home = () => {
         userCtx.accessToken
       );
     },
-    enabled: true,
   });
 
   useEffect(() => {
@@ -175,7 +174,7 @@ const Home = () => {
                           {item.name}
                         </MenuItem>
                       ))}
-                    </Select>{" "}
+                    </Select>
                   </>
                 )}
               </FormControl>

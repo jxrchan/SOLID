@@ -23,7 +23,8 @@ const NewActivityDialog = ({ setShowNewActivityDialog, ownAthletes }) => {
   const [name, setName] = useState('');
   const [type, setType] = useState('');
   const [date, setDate] = useState(null);
-  const [athletes, setAthletes] = useState(ownAthletes)
+  const [athlete, setAthlete] = useState('')
+  const [myAthletes, setMyAthletes] = useState(ownAthletes)
   const [duration, setDuration] = useState('');
   const [comment, setComment] = useState('');
   const [formActivityTypes, setFormActivityTypes] = useState([]);
@@ -98,11 +99,11 @@ const NewActivityDialog = ({ setShowNewActivityDialog, ownAthletes }) => {
             <InputLabel id="athlete-label">Select Athlete</InputLabel>
             <Select
               labelId="athlete-label"
-              value={athletes}
-              onChange={(e) => setAthletes(e.target.value)}
+              value={athlete}
+              onChange={(e) => setAthlete(e.target.value)}
               label="Select Athlete"
             >
-              {athletes.map((item) => (
+              {myAthletes.map((item) => (
                 <MenuItem key={item.id} value={item.id}>
                   {item.name}
                 </MenuItem>
