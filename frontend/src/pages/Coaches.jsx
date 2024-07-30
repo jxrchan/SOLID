@@ -12,15 +12,16 @@ import {
   CardMedia,
   CardContent,
   CardActions,
-  MenuItem
+  MenuItem,
 } from "@mui/material";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
-import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import useFetch from "../hooks/useFetch";
 import UserContext from "../context/user";
-
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 const Coaches = () => {
   const [sport, setSport] = useState('');
@@ -30,20 +31,16 @@ const Coaches = () => {
 
   const usingFetch = useFetch();
   const userCtx = useContext(UserContext);
-  const queryClient = useQueryClient();
-
-
 
   const getOwnCoaches = useQuery({
     queryKey: ["ownCoaches", userCtx.decoded.id],
     queryFn: async () => {
-      const data = await usingFetch(
+     return await usingFetch(
         "/users/coaches",
         undefined,
         undefined,
         userCtx.accessToken
       );
-      return data;
     },
   });
 
@@ -55,7 +52,6 @@ const Coaches = () => {
   const getCoaches = useQuery({
     queryKey: ["coaches"],
     queryFn: async () => {
-      console.log('activated')
       let queryBody = {}
       if (sport.length > 0) queryBody.sport = sport;
       if (gender.length > 0) queryBody.gender = gender;
@@ -63,31 +59,18 @@ const Coaches = () => {
       return await usingFetch(
         "/users/coaches",
         "POST",
-       queryBody,
+        queryBody,
         userCtx.accessToken
       );
     },
     enabled: false,
+    retry: 0,
   });
 
   useEffect(() => {
     if (getCoaches.isSuccess && getCoaches.data)
       setSearchedCoaches(getCoaches.data);
   }, [getCoaches.isSuccess, getCoaches.data]);
-
-  // const addReview = useMutation({
-  //   mutationFn: async ({ review, coachId }) => {
-  //     await usingFetch(
-  //       "/users/coaches/" + userCtx.decoded.id,
-  //       "PUT",
-  //       { review, coachId },
-  //       userCtx.accessToken
-  //     );
-  //   },
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries("coaches");
-  //   },
-  // });
 
   const handleSearch = () => {
     getCoaches.refetch();
@@ -105,62 +88,74 @@ const Coaches = () => {
         alignItems: "center",
       }}
     >
-      <Grid container spacing={2} sx={{ mt: 4 }}>
+      <Grid container justifyContent="center" sx={{ maxWidth: "900px", width: "100%" }}>
         <Grid item xs={12}>
-          <Typography variant="h6"> My Coaches </Typography>
+          <Typography variant="h6" align="center">My Coaches</Typography>
         </Grid>
         {ownCoaches &&
           ownCoaches.length !== 0 &&
           ownCoaches.map((item, index) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+            <Grid item xs={12} sm={6} md={4} key={index}>
               <Card
                 sx={{
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "space-between",
                   height: "100%",
+                  textAlign: "center",
                 }}
               >
                 <CardHeader title={item.name} />
-                <CardMedia
-                  component="img"
-                  height="250"
-                  image={item.profile_picture}
-                  alt="Profile picture"
-                  sx={{ objectFit: "contain" }}
+                <CardMedia>
+                <Box
+                sx={{
+                  width: 150,
+                  height: 150,
+                  borderRadius: "50%",
+                  overflow: "hidden",
+                  border: "2px solid blue",
+                  mb: 3,
+                  mx: "auto",
+                }}
+              >
+                <img
+                  src={item.profile_picture}
+                  alt="profile picture"
+                  style={{ width: "100%", height: "100%" }}
                 />
+              </Box>
+                </CardMedia>
                 <CardContent>
-                <Typography variant="body2" color="textSecondary">
-                  {item.gender}
-                  </Typography>
                   <Typography variant="body2" color="textSecondary">
                     {item.description}
                   </Typography>
                 </CardContent>
-                <CardActions disableSpacing>
+                <CardActions disableSpacing sx={{ justifyContent: "center" }}>
                   <IconButton href={item.facebook}>
                     <FacebookIcon />
                   </IconButton>
                   <IconButton href={item.instagram}>
                     <InstagramIcon />
                   </IconButton>
-               <IconButton>
-                    <WhatsAppIcon /> 
-                    </IconButton>
-                     <Typography variant='body2' color='textSecondary'> {item.contact_number} </Typography>
+                  <IconButton>
+                    <WhatsAppIcon />
+                  </IconButton>
+                  <Typography variant='body2' color='textSecondary'>
+                    {item.contact_number}
+                  </Typography>
                 </CardActions>
               </Card>
             </Grid>
           ))}
       </Grid>
 
-      <Grid container spacing={2}>
+      <Grid container justifyContent="center" spacing={2} sx={{ maxWidth: "900px", width: "100%", mt: 4 }}>
         <Grid item xs={12}>
-          <Typography variant="h6">Search for coaches</Typography>
+          <Typography variant="h6" align="center">Search for coaches</Typography>
         </Grid>
         <Grid item xs={6}>
           <TextField
-          autoComplete="off"
+            autoComplete="off"
             label="Sport"
             variant="outlined"
             value={sport}
@@ -191,36 +186,46 @@ const Coaches = () => {
         </Grid>
       </Grid>
 
-      {gender}
-      {sport}
-
-      <Grid container spacing={2} sx={{ mt: 4 }}>
+      <Grid container justifyContent="center" spacing={2} sx={{ maxWidth: "900px", width: "100%", mt: 4 }}>
         {getCoaches.isSuccess && getCoaches.data && JSON.stringify(getCoaches)}
-      {getCoaches.isError && (
-        <Typography color="error">
-          {getCoaches.error.message}
-        </Typography>
-      )}
+        {getCoaches.isError && (
+          <Typography color="error">
+            {getCoaches.error.message}
+          </Typography>
+        )}
         {searchedCoaches &&
           searchedCoaches.length !== 0 &&
           searchedCoaches.map((item, index) => (
-            <Grid item xs={12} sm={8} md={6} lg={3} key={index}>
+            <Grid item xs={12} sm={6} md={4} key={index}>
               <Card
                 sx={{
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "space-between",
                   height: "100%",
+                  textAlign: "center",
                 }}
               >
                 <CardHeader title={item.name} />
-                <CardMedia
-                  component="img"
-                  height="150"
-                  image={item.profile_picture}
-                  alt="Profile picture"
-                  sx={{ objectFit: "contain" }}
+                <CardMedia>
+                <Box
+                sx={{
+                  width: 150,
+                  height: 150,
+                  borderRadius: "50%",
+                  overflow: "hidden",
+                  border: "2px solid blue",
+                  mb: 3,
+                  mx: "auto",
+                }}
+              >
+                <img
+                  src={item.profile_picture}
+                  alt="profile picture"
+                  style={{ width: "100%", height: "100%" }}
                 />
+              </Box>
+                </CardMedia>
                 <CardContent>
                   <Typography variant="body2" color="textSecondary">
                     {item.description}
@@ -229,7 +234,7 @@ const Coaches = () => {
                     {item.goals}
                   </Typography>
                 </CardContent>
-                <CardActions disableSpacing>
+                <CardActions disableSpacing sx={{ justifyContent: "center" }}>
                   <IconButton href={item.facebook}>
                     <FacebookIcon />
                   </IconButton>

@@ -12,10 +12,10 @@ const getProfile = async (req, res) => {
     if (user.length === 0) {
       return res.status(404).json({ status: "error", msg: "User not found" });
     }
-    res.json(user[0]);
+    return res.json(user[0]);
   } catch (error) {
     console.error(error);
-    res
+    return res
       .status(400)
       .json({ status: "error", msg: "Error retrieving user information" });
   } finally {
@@ -30,12 +30,12 @@ const updateProfilePicture = async (req, res) => {
       req.result,
       req.decoded.id,
     ]);
-    res
+    return res
       .status(200)
       .json({ status: "success", msg: "Profile picture has been updated" });
   } catch (error) {
     console.error(error);
-    res
+   return res
       .status(400)
       .json({ status: "error", msg: "Error uploading profile picture" });
   } finally {
@@ -61,16 +61,16 @@ const updateProfile = async (req, res) => {
         req.decoded.id,
       ]
     );
-    res.json({ status: "success", msg: "User information has been updated" });
+    return res.json({ status: "success", msg: "User information has been updated" });
   } catch (error) {
     console.error(error);
-    res.status(400).json({ status: "error", msg: "" });
+    return res.status(400).json({ status: "error", msg: "" });
   } finally {
     client.release();
   }
 };
 
-// Read Up Coalesce 
+// Read Up Coalesce
 
 const getActivities = async (req, res) => {
   const client = await pool.connect();
@@ -83,13 +83,13 @@ const getActivities = async (req, res) => {
     params.push(req.body.dateStart, req.body.dateEnd);
   }
   if (req.decoded.role === "ATHLETE") {
-    filters.push('athlete_id = $'+(filters.length + 1));
+    filters.push("athlete_id = $" + (filters.length + 1));
     params.push(req.decoded.id);
   }
 
-  if(req.decoded.role === "COACH") {
-    filters.push('coach_id = $' +(filters.length + 1));
-    params.push(req.decoded.id)
+  if (req.decoded.role === "COACH") {
+    filters.push("coach_id = $" + (filters.length + 1));
+    params.push(req.decoded.id);
   }
 
   if (req.body.coachId) {
@@ -100,7 +100,6 @@ const getActivities = async (req, res) => {
   if (req.body.athleteId) {
     filters.push("athlete_id = $" + (filters.length + 1));
     params.push(req.body.athleteId);
-    
   }
   if (filters.length > 0) {
     console.log(JSON.stringify(filters));
@@ -110,11 +109,11 @@ const getActivities = async (req, res) => {
   try {
     const { rows: activities } = await client.query(query, params);
     if (activities.length === 0)
-      res.status(404).json({ status: "error", msg: "No activities found" });
-    res.json(activities);
+      return res.status(404).json({ status: "error", msg: "No activities found" });
+    return res.json(activities);
   } catch (error) {
     console.error(error);
-    res
+   return res
       .status(400)
       .json({ status: "error", msg: "Error retrieiving activities" });
   } finally {
@@ -139,10 +138,10 @@ const updateActivity = async (req, res) => {
         req.params.id,
       ]
     );
-    res.status(200).json({ status: "success", msg: "Updated activity" });
+   return res.status(200).json({ status: "success", msg: "Updated activity" });
   } catch (error) {
     console.error(error);
-    res.status(400).json({ status: "error", msg: "Error updating activity" });
+   return res.status(400).json({ status: "error", msg: "Error updating activity" });
   } finally {
     client.release();
   }
@@ -152,9 +151,9 @@ const updateActivity = async (req, res) => {
 
 const getCoaches = async (req, res) => {
   const client = await pool.connect();
-  let filters = 1;
   let query = `SELECT * FROM users WHERE role = $1`;
   const params = ["COACH"];
+
   if (req.body.sport) {
     query += ` AND (sports LIKE $${params.length + 1})`;
     params.push(`%${req.body.sport}%`);
@@ -163,16 +162,25 @@ const getCoaches = async (req, res) => {
     query += ` AND gender = $${params.length + 1}`;
     params.push(req.body.gender);
   }
+
   try {
     console.log(query);
     console.log(params);
+
     const { rows: coaches } = await client.query(query, params);
-    if (coaches.length === 0)
-      res.status(404).json({ status: "error", msg: "No coach(es) found" });
-    res.json(coaches);
+
+    if (coaches.length === 0) {
+      return res
+        .status(404)
+        .json({ status: "error", msg: "No coach(es) found" });
+    }
+
+    return res.json(coaches);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ status: "error", msg: "Error retrieving coaches" });
+    return res
+      .status(400)
+      .json({ status: "error", msg: "Error retrieving coaches" });
   } finally {
     client.release();
   }
@@ -187,10 +195,10 @@ const getCoachReviews = async (req, res) => {
       [req.body.coachId]
     );
     const reviews = athleteAndCoach.map((item) => item.review);
-    res.json(reviews);
+    return res.json(reviews);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ status: "error", msg: "Error obtaining reviews" });
+    return res.status(400).json({ status: "error", msg: "Error obtaining reviews" });
   } finally {
     client.release();
   }
@@ -205,9 +213,9 @@ const getOwnCoaches = async (req, res) => {
       [req.decoded.id]
     );
     if (coaches.length === 0) {
-      res.status(404).json({ status: "error", msg: "No coach(es) found" });
+      return res.status(404).json({ status: "error", msg: "No coach(es) found" });
     }
-    res.json(coaches);
+    return res.json(coaches);
   } catch (error) {
     console.error(error);
     res
@@ -240,10 +248,10 @@ const addReview = async (req, res) => {
           AND coach_id = $3`,
       [req.body.review, req.params.id, req.body.coachId]
     );
-    res.status(200).json({ status: "success", msg: "Added coach review" });
+    return res.status(200).json({ status: "success", msg: "Added coach review" });
   } catch (error) {
     console.error(error);
-    res.status(400).json({ status: "error", msg: "Error adding coach review" });
+    return res.status(400).json({ status: "error", msg: "Error adding coach review" });
   } finally {
     client.release();
   }
@@ -259,10 +267,10 @@ const getOwnAthletes = async (req, res) => {
       = users_users.athlete_id WHERE users_users.coach_id = $1`,
       [req.decoded.id]
     );
-    res.json(athletes);
+    return res.json(athletes);
   } catch (error) {
     console.error(error);
-    res
+    return res
       .status(400)
       .json({ status: "error", msg: "Error retrieving own athletes" });
   } finally {
@@ -281,7 +289,7 @@ const addAthlete = async (req, res) => {
     );
     console.log(JSON.stringify(user));
     if (user.length === 0) {
-      res.status(404).json({ status: "error", msg: "No athlete found" });
+      return res.status(404).json({ status: "error", msg: "No athlete found" });
     }
     const athlete_id = user[0].id;
     await client.query(
@@ -289,13 +297,13 @@ const addAthlete = async (req, res) => {
       [athlete_id, req.decoded.id]
     );
     await client.query("COMMIT");
-    res
+   return  res
       .status(200)
       .json({ status: "success", msg: "Added athlete successfully" });
   } catch (error) {
     await client.query("ROLLBACK");
     console.error(error);
-    res.status(400).json({ status: "error", msg: "Error adding athlete" });
+    return res.status(400).json({ status: "error", msg: "Error adding athlete" });
   } finally {
     client.release();
   }
@@ -309,10 +317,10 @@ const deleteAthlete = async (req, res) => {
         WHERE coach_id = $1 AND athlete_id = $2`,
       [req.decoded.id, req.body.athlete_id]
     );
-    res.json({ status: "success", msg: "Removed athlete" });
+    return res.json({ status: "success", msg: "Removed athlete" });
   } catch (error) {
     console.error(error);
-    res.status(400).json({ status: "error", msg: "Error removing athlete" });
+    return res.status(400).json({ status: "error", msg: "Error removing athlete" });
   } finally {
     client.release();
   }
@@ -322,10 +330,10 @@ const getActivityTypes = async (req, res) => {
   const client = await pool.connect();
   try {
     const { rows: sports } = await client.query(`SELECT * FROM activitytypes`);
-    res.json(sports);
+    return res.json(sports);
   } catch (error) {
     console.error(error.message);
-    res
+   return res
       .status(400)
       .json({ status: "error", msg: "Error retrieving activity types" });
   } finally {
@@ -349,12 +357,12 @@ const addActivity = async (req, res) => {
         req.body.comment,
       ]
     );
-    res
+   return res
       .status(200)
       .json({ status: "success", msg: "successfully added activity" });
   } catch (error) {
     console.error(error);
-    res.status(400).json({ status: "error", msg: "" });
+   return res.status(400).json({ status: "error", msg: "" });
   } finally {
     client.release();
   }
@@ -364,10 +372,10 @@ const deleteActivity = async (req, res) => {
   const client = await pool.connect();
   try {
     await client.query(`DELETE FROM activities WHERE id = $1`, [req.params.id]);
-    res.status(200).json({ status: "success", msg: "Deleted activity" });
+    return res.status(200).json({ status: "success", msg: "Deleted activity" });
   } catch (error) {
     console.error(error);
-    res.status(400).json({ status: "error", msg: "Error deleting activity" });
+    return res.status(400).json({ status: "error", msg: "Error deleting activity" });
   } finally {
     client.release();
   }

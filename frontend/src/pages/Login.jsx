@@ -71,9 +71,9 @@ function Login({}) {
     <Box
       sx={{
         minHeight: "100vh",
-        backgroundImage: "url(../images/LandingPage2.jpeg)", // Replace with your background image URL
+        backgroundImage: "url(../images/LandingPage2.jpeg)", 
         backgroundSize: "cover",
-        backgroundPosition: "center",
+        backgroundPosition: "center top",
         display: "flex",
         alignItems: "center",
         padding: 4,
@@ -88,7 +88,7 @@ function Login({}) {
           lg={3}
           sx={{
             borderRadius: "50px", // Circular border radius
-            overflow: "hidden",  // Ensure the child elements are clipped to the border radius
+            overflow: "hidden",  
             boxShadow: 3,
           }}
         >
@@ -165,7 +165,7 @@ function Login({}) {
                 }}
                 underline="none"
               >
-                <Typography variant="body2">
+                <Typography variant="body1">
                   What is SOLID?
                 </Typography>
               </Link>

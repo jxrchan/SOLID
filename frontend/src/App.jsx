@@ -2,6 +2,8 @@ import React, { Suspense, useState, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useQuery, QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {jwtDecode} from "jwt-decode";
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 
 
@@ -120,6 +122,7 @@ function App () {
   }, []);
 
   return (
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
     <QueryClientProvider client={queryClient}>
       <UserContext.Provider
         value={{
@@ -176,6 +179,7 @@ function App () {
             </ThemeProvider>
       </UserContext.Provider>
     </QueryClientProvider>
+    </LocalizationProvider>
   );
 }
 

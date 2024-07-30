@@ -2,15 +2,17 @@ import React, { useContext } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import useFetch from '../hooks/useFetch';
 import UserContext from '../context/user';
+import UpdateActivityDialog from './UpdateActivityDialog';
 
 
-const ActivityStack = (props) => {
+const ActivityCard = (props) => {
 
-
-    const [showUpdateDialog, setUpdateDialog] = useState(false);
+    const [showUpdateDialog, setShowUpdateDialog] = useState(false);
     const usingFetch = useFetch();
     const userCtx = useContext(UserContext);
 
+
+      
     const deleteActivity = useMutation({
         mutationFn: async () => {await usingFetch('/users/activities/' + activityId, 'DELETE',
       undefined, userCtx.accessToken)},
@@ -18,10 +20,14 @@ const ActivityStack = (props) => {
        queryClient.invalidateQueries('activities')
       }})
     return (
+        <>
+        {showUpdateDialog && <UpdateActivityDialog />}
+
         <div>
             
         </div>
+        </>
     );
 };
 
-export default ActivityStack;
+export default ActivityCard;

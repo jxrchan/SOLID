@@ -15,7 +15,7 @@ import {
   CardContent,
   CardHeader,
 } from "@mui/material";
-import { Delete } from "@mui/icons-material";
+import { Delete, SportsScore } from "@mui/icons-material";
 
 const Athletes = () => {
   const [email, setEmail] = useState("");
@@ -82,9 +82,9 @@ const Athletes = () => {
         alignItems: "center",
       }}
     >
-      <Grid container spacing={2}>
+      <Grid container spacing={2} justifyContent="center" sx={{ maxWidth: "900px", width: "100%" }}>
         <Grid item xs={12}>
-          <Typography variant="h6">Add Athletes by Email</Typography>
+          <Typography variant="h6" align="center">Add Athletes by Email</Typography>
         </Grid>
         <Grid item xs={8}>
           <TextField
@@ -107,38 +107,51 @@ const Athletes = () => {
         </Grid>
       </Grid>
 
-      <Grid container spacing={2} sx={{ mt: 4 }}>
+      <Grid container spacing={2} justifyContent="center" sx={{ maxWidth: "900px", width: "100%", mt: 4 }}>
         <Grid item xs={12}>
-          <Typography variant="h6">My Athletes</Typography>
+          <Typography variant="h6" align="center">My Athletes</Typography>
         </Grid>
         {athletes && athletes.length !== 0 &&
           athletes.map((item, index) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+            <Grid item xs={12} sm={6} md={4} key={index}>
               <Card
                 sx={{
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "space-between",
                   height: "100%",
+                  textAlign: "center",
                 }}
               >
                 <CardHeader title={item.name} />
-                <CardMedia
-                  component="img"
-                  height="200"
-                  image={item.profile_picture}
-                  alt="Profile picture"
-                  sx={{ objectFit: "contain" }}
+                <CardMedia>
+                <Box
+                sx={{
+                  width: 150,
+                  height: 150,
+                  borderRadius: "50%",
+                  overflow: "hidden",
+                  border: "2px solid blue",
+                  mb: 3,
+                  mx: "auto",
+                }}
+              >
+                <img
+                  src={item.profile_picture}
+                  alt="profile picture"
+                  style={{ width: "100%", height: "100%" }}
                 />
+              </Box>
+              </CardMedia>
                 <CardContent>
                   <Typography variant="body2" color="textSecondary">
                     {item.description}
                   </Typography>
-                  <Typography variant="body2" color="textSecondary">
-                    {item.goals}
-                  </Typography>
+                  <br/>
+                    <SportsScore  />
+                    <Typography>{item.goals}</Typography>
                 </CardContent>
-                <CardActions disableSpacing>
+                <CardActions disableSpacing sx={{ justifyContent: "center" }}>
                   <IconButton
                     onClick={() => deleteAthlete.mutate(item.athlete_id)}
                   >
