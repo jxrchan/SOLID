@@ -5,7 +5,7 @@ import {useMutation, useQueryClient } from '@tanstack/react-query';
 
 const UpdateActivityDialog = (props) => {
 
-const [activityId, setActivityId] = useState(props.activityId)
+const [id, setId] = useState(props.id)
 const [name, setName] = useState(props.name);
 const [type, setType] = useState(props.type);
 const [date, setDate] = useState(props.date);
@@ -43,7 +43,7 @@ const getActivityTypes = useQuery({
 
 const updateActivity = useMutation({
     mutationFn: async () => {
-        await usingFetch('/users/activity/' + activityId, "PATCH",
+        await usingFetch('/users/activity/' + id, "PATCH",
             {name, type, date, duration, coachComment, athleteComment, activityLink},
             userCtx.accessToken)
     },
@@ -113,13 +113,6 @@ useEffect(() => {
               )}
               format="yyyy-MM-dd"
             />
-      
-      {date && (
-              <Typography variant="body1" sx={{ mt: 2 }}>
-                Selected Date: {format(date, 'yyyy-MM-dd')}
-              </Typography>
-            )}
-  
   
             <TextField
               fullWidth

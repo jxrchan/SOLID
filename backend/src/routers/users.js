@@ -21,6 +21,8 @@ const {
   deleteAthlete,
   updateProfilePicture,
   getCoachReviews,
+  getOwnCoachName,
+  getOwnAthleteName,
 } = require("../controllers/users");
 const { checkErrors } = require("../validators/checkErrors");
 const { authAthlete, authUser, authCoach } = require("../middleware/auth");
@@ -40,12 +42,14 @@ router.patch("/activity/:id", updateActivity);
 /*-------- for Athletes -------------*/
 router.post("/coaches", authAthlete, getCoaches);
 router.get("/coaches", authAthlete, getOwnCoaches);
+router.post('/coach', authAthlete, getOwnCoachName);
 router.put("/coaches/:id", authAthlete, addReview);
 router.get("/coaches/review", authAthlete, getCoachReviews);
 
 /*-------- for Coaches -------------*/
 router.get("/activity_types", authCoach, getActivityTypes);
 router.get("/athletes", authCoach, getOwnAthletes);
+router.post('/athlete', authCoach, getOwnAthleteName )
 router.put("/athletes", authCoach, addAthlete);
 router.delete("/athletes", authCoach, deleteAthlete);
 router.put("/activity", authCoach, addActivity);

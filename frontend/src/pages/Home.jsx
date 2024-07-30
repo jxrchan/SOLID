@@ -12,10 +12,12 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  IconButton,
 } from "@mui/material";
 import { DateCalendar } from "@mui/x-date-pickers";
 import ActivityCard from "../components/ActivityCard";
 import NewActivityDialog from "../components/NewActivityDialog";
+import AddIcon from '@mui/icons-material/Add'
 
 const Home = () => {
   const usingFetch = useFetch();
@@ -188,11 +190,11 @@ const Home = () => {
           </Box>
 
           {userCtx.decoded.role === "COACH" && (
-            <Grid item xs={10} textAlign="right">
-              <Button onClick={() => setShowNewActivityDialog(true)}>
-                New Activity
-              </Button>
-            </Grid>
+             <Grid item xs={10} textAlign="right">
+             <IconButton onClick={() => setShowNewActivityDialog(true)} color="primary">
+               <AddIcon />
+             </IconButton>
+           </Grid>
           )}
 
           <Stack>
@@ -210,6 +212,7 @@ const Home = () => {
                     duration={item.duration}
                     coachComment={item.coach_comment}
                     athleteComment={item.athlete_comment}
+                    activityLink = {item.activity_link}
                   />
                 </Grid>
               ))}

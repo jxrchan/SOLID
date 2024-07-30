@@ -43,7 +43,7 @@ const NavDrawer = () => {
             boxSizing: 'border-box',
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'space-between', // to align items at the bottom
+            justifyContent: 'space-between', 
           },
         }}
       >

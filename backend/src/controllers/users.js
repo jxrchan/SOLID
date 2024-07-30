@@ -226,6 +226,26 @@ const getOwnCoaches = async (req, res) => {
   }
 };
 
+const getOwnCoachName = async (req, res) => {
+  const client = await pool.connect();
+  try{
+    const {rows: coach} = await client.query(
+      `SELECT name from users WHERE users.id = $1 LIMIT 1`, 
+      [req.coachId]
+    );
+    if (coach.length === 0) {
+      return res.status(404).json({status: 'error', msg: 'No coach found'})
+    }
+    return res.json(coach[0]);}
+    catch (error)
+    {console.error(error);
+    return res.status(400).json({status: 'error', msg: 'error retrieving coach'})
+
+    } finally {
+      client.release()
+    }
+  }
+
 // const commentOwnActivity = async (req, res) => {
 //   const client = await pool.connect();
 //   try {
@@ -277,6 +297,27 @@ const getOwnAthletes = async (req, res) => {
     client.release();
   }
 };
+
+
+const getOwnAthleteName = async (req, res) => {
+  const client = await pool.connect();
+  try{
+    const {rows: athlete} = await client.query(
+      `SELECT name from users WHERE users.id = $1 LIMIT 1`, 
+      [req.athleteId]
+    );
+    if (coach.length === 0) {
+      return res.status(404).json({status: 'error', msg: 'No athlete found'})
+    }
+    return res.json(coach[0]);}
+    catch (error)
+    {console.error(error);
+    return res.status(400).json({status: 'error', msg: 'error retrieving athlete'})
+
+    } finally {
+      client.release()
+    }
+  }
 
 const addAthlete = async (req, res) => {
   const client = await pool.connect();
@@ -392,7 +433,9 @@ module.exports = {
   addReview,
   getCoachReviews,
   getOwnCoaches,
+  getOwnCoachName,
   getOwnAthletes,
+  getOwnAthleteName,
   getCoaches,
   addActivity,
   addAthlete,
