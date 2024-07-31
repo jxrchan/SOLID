@@ -146,12 +146,7 @@ const NewActivityDialog = ({ setShowNewActivityDialog, ownAthletes }) => {
             )}
             format="yyyy-MM-dd"
           />
-          {date && (
-            <Typography variant="body1" sx={{ mt: 2 }}>
-              Selected Date: {format(date, "yyyy-MM-dd")}
-            </Typography>
-          )}
-
+          
           <TextField
             fullWidth
             variant="outlined"
