@@ -356,7 +356,7 @@ const deleteAthlete = async (req, res) => {
     await client.query(
       `DELETE FROM users_users 
         WHERE coach_id = $1 AND athlete_id = $2`,
-      [req.decoded.id, req.body.athlete_id]
+      [req.decoded.id, req.body.athleteId]
     );
     return res.json({ status: "success", msg: "Removed athlete" });
   } catch (error) {

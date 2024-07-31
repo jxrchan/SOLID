@@ -43,11 +43,11 @@ const Athletes = () => {
   }, [getOwnAthletes.isSuccess, getOwnAthletes.data]);
 
   const deleteAthlete = useMutation({
-    mutationFn: async (athlete_id) => {
+    mutationFn: async (athleteId) => {
       return await usingFetch(
         "/users/athletes",
         "DELETE",
-        { athlete_id },
+        { athleteId },
         userCtx.accessToken
       );
     },

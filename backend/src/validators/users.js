@@ -1,4 +1,4 @@
-const { body } = require("express-validator");
+const { body, param } = require("express-validator");
 
 
 const validateUpdateProfile = [
@@ -35,10 +35,27 @@ const validateGetOwnAthleteName = [
 ]
 
 const validateAddAthlete = [
-    
+    body('email', 'email is required').notEmpty(),
+    body('email', 'email is invalid').isEmail(),
+];
+
+const validateDeleteAthlete = [
+    body('athleteId', 'athlete ID is required').notEmpty(),
+    body('athleteId', 'athlete id must be uuid').isUUID(),
+];
+
+const validateAddActivity = [
+    body('athleteId', 'athlete ID is required').notEmpty(),
+    body('athleteId', 'athlete id must be uuid').isUUID(),
+    body('name', 'name is required').notEmpty().isString(),
+    body('type', 'type is required').notEmpty().isString(),
+    body('date', 'date is required').notEmpty(),
+    body('date', 'date is invalid').isDate(),
 ]
 
-
+const validateDeleteActivity = [
+    param('id', 'activity id is required').notEmpty(),
+]
 
 
 
@@ -46,6 +63,11 @@ module.exports = {
     validateUpdateProfile,
     validateGetActivities,
     validateUpdateActivities,
-
-
+    validateGetCoaches,
+    validateGetOwnAthleteName,
+    validateGetOwnCoachName,
+    validateAddActivity,
+    validateAddAthlete,
+    validateDeleteActivity,
+    validateDeleteAthlete,
 };
