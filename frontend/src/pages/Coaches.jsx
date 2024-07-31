@@ -88,9 +88,9 @@ const Coaches = () => {
         alignItems: "center",
       }}
     >
-      <Grid container justifyContent="center" sx={{ maxWidth: "900px", width: "100%" }}>
+      <Grid container justifyContent="center" sx={{ maxWidth: "lg" }}>
         <Grid item xs={12}>
-          <Typography variant="h6" align="center">My Coaches</Typography>
+          <Typography variant="h6" textAlign="left">My Coaches</Typography>
         </Grid>
         {ownCoaches &&
           ownCoaches.length !== 0 &&
@@ -149,9 +149,9 @@ const Coaches = () => {
           ))}
       </Grid>
 
-      <Grid container justifyContent="center" spacing={2} sx={{ maxWidth: "900px", width: "100%", mt: 4 }}>
+      <Grid container justifyContent="center" spacing={2} sx={{ maxWidth: 'lg', mt: 4 }}>
         <Grid item xs={12}>
-          <Typography variant="h6" align="center">Search for coaches</Typography>
+          <Typography variant="h6" textAlign="left">Search for coaches</Typography>
         </Grid>
         <Grid item xs={6}>
           <TextField

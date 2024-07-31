@@ -86,8 +86,8 @@ const Athletes = () => {
         <Grid item xs={12}>
           <Typography variant="h6" textAlign="left">Add Athletes by Email</Typography>
         </Grid>
-        <Grid item xs = {2}></Grid>
-        <Grid item xs={5}>
+        <Grid item xs = {3}></Grid>
+        <Grid item xs={6}>
           <TextField
             fullWidth
             variant="outlined"
@@ -98,6 +98,10 @@ const Athletes = () => {
           />
         </Grid>
         <Grid item xs={3}>
+          </Grid>
+          <Grid item xs={3}>
+            </Grid>
+            <Grid item xs={6}>
           <Button
             fullWidth
             variant="contained"
@@ -106,8 +110,7 @@ const Athletes = () => {
             ADD
           </Button>
         </Grid>
-        <Grid item xs={2}>
-          
+        <Grid item xs={3}>
         </Grid>
       </Grid>
 

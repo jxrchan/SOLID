@@ -54,21 +54,14 @@ const UpdateActivityDialog = (props) => {
   });
 
   useEffect(() => {
-    if (userCtx.decoded.role === 'COACH' && name.length > 0 && type.length > 0 && date) {
-      setIsFormValid(true);
+    if (userCtx.decoded.role === 'COACH') {
+      setIsFormValid(name.length > 0 && type.length > 0 && date);
+    } else if (userCtx.decoded.role === 'ATHLETE') {
+      setIsFormValid(athleteComment.length > 0);
     } else {
       setIsFormValid(false);
     }
-  }, [userCtx.decoded.role, name, type, date]);
-
-  useEffect(()=> {
-    if (userCtx.decoded.role === 'ATHLETE' && athleteComment
-    )
-    setIsFormValid(true);
-    else {
-      setIsFormValid(false);
-    }
-  }, [userCtx.decoded.role, athleteComment])
+  }, [userCtx.decoded.role, name, type, date, athleteComment]);
 
   return (
     <Dialog

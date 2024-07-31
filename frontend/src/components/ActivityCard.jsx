@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import useFetch from "../hooks/useFetch";
 import UserContext from "../context/user";
 import UpdateActivityDialog from "./UpdateActivityDialog";
-import { Card, CardActionArea, CardContent, Typography, IconButton } from "@mui/material";
+import { Card, Grid, CardActionArea, CardContent, Typography, IconButton } from "@mui/material";
 import { DeleteOutline, EditNote } from "@mui/icons-material";
 import {format} from 'date-fns';
 
@@ -29,7 +29,7 @@ const ActivityCard = ({
 
   
   const getOwnAthleteName = useQuery({
-    queryKey: ['athleteName', userCtx.decoded.id],
+    queryKey: ['athleteName', userCtx.decoded.id, id],
     queryFn: async () => {
         return await usingFetch('/users/athlete', 'POST', { athleteId }, userCtx.accessToken);
       },
@@ -85,21 +85,31 @@ const ActivityCard = ({
       />}
       <Card>
         <CardContent>
-          <Typography>{format(date, 'yyyy-MM-dd')}</Typography>
-          <Typography>{name}</Typography>
-          {userCtx.decoded.role === 'COACH' && <Typography>{athleteName}</Typography>}
-          {userCtx.decoded.role === 'ATHLETE' && <Typography>{coachName}</Typography>}
+          <Grid
+          sx = {{
+            display: 'flex',
+            justifyContent: 'space-between'
+          }}
+          >
+          <Typography> <b> {format(date, 'yyyy-MM-dd')} </b> </Typography>
           <Typography>{type}</Typography>
+          {userCtx.decoded.role === 'COACH' && <Typography> <em> {athleteName} </em></Typography>}
+          {userCtx.decoded.role === 'ATHLETE' && <Typography> <em> {coachName} </em></Typography>}
+          </Grid>
+          <br/>
+          <Typography> {name} </Typography>
           <Typography>{duration}</Typography>
-          <Typography>{coachComment}</Typography>
-          <Typography>{athleteComment}</Typography>
+          <Typography> {coachComment}</Typography>
+          <Grid textAlign="left"> 
+          <Typography> <u> Athlete Comments </u> <br/> {athleteComment}</Typography>
+          </Grid>
         </CardContent>
         <CardActionArea>
           <IconButton onClick={() => setShowUpdateDialog(true)}>
-            <EditNote />
+            <EditNote fontSize ='medium'/>
           </IconButton>
           <IconButton onClick={() => deleteActivity.mutate()}>
-            <DeleteOutline />
+            <DeleteOutline fontSize ='medium' />
           </IconButton>
         </CardActionArea>
       </Card>

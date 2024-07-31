@@ -7,6 +7,7 @@ import { DateCalendar } from "@mui/x-date-pickers";
 import ActivityCard from "../components/ActivityCard";
 import NewActivityDialog from "../components/NewActivityDialog";
 import AddIcon from '@mui/icons-material/Add'
+import { format } from "date-fns";
 
 const Home = () => {
   const usingFetch = useFetch();
@@ -61,8 +62,8 @@ const Home = () => {
     queryKey: ["activities", userCtx.decoded.id],
     queryFn: async () => {
       let queryBody = {};
-      if (dateStart) queryBody.dateStart = dateStart;
-      if (dateEnd) queryBody.dateEnd = dateEnd;
+      if (dateStart) queryBody.dateStart = format(dateStart, 'yyyy-MM-dd');
+      if (dateEnd) queryBody.dateEnd = format(dateEnd, 'yyyy-MM-dd');
       if (athleteId) queryBody.athleteId = athleteId;
       if (coachId) queryBody.coachId = coachId;
       return await usingFetch(
@@ -112,16 +113,30 @@ const Home = () => {
               <Typography variant='h6'>Activity Dashboard</Typography>
             </Grid>
 
-            <Grid item xs={8}>
-              <FormControl fullWidth margin="normal">
-                <InputLabel>Select by Date</InputLabel>
-                <br/>
-                <br/>
-                <DateCalendar onChange={(newDate) => setDateStart(newDate)} />
-              </FormControl>
+            <Grid item xs={2}>
+
             </Grid>
 
             <Grid item xs={8}>
+              <FormControl fullWidth margin="normal">
+                <InputLabel>Select by Date</InputLabel>
+                <DateCalendar
+                  onChange={(newDate) => {setDateStart(newDate);
+                    setDateEnd(newDate);}
+                  }
+                />
+              </FormControl>
+            </Grid>
+
+            <Grid item xs={2}>
+              </Grid>
+
+
+              <Grid item xs={3}>
+              </Grid>
+  
+
+            <Grid item xs={6}>
               <FormControl fullWidth margin="normal">
                 {userCtx.decoded.role === "ATHLETE" && (
                   <>
@@ -147,7 +162,7 @@ const Home = () => {
                       labelId="athlete-label"
                       value={athleteId}
                       onChange={(e) => setAthleteId(e.target.value)}
-                      label="Select Athlete"
+                      label="Select by Athlete"
                     >
                       {athletes.map((item) => (
                         <MenuItem key={item.id} value={item.id}>
@@ -160,10 +175,27 @@ const Home = () => {
               </FormControl>
             </Grid>
 
-            <Grid item xs={8}>
-              <Button onClick={() => getActivities.refetch()} color="secondary">
-                Search
+            <Grid item xs={3}>
+
+            </Grid>
+
+            <Grid item xs={3}>
+              
+            </Grid>
+
+            <Grid item xs={6}>
+              <Button fullWidth variant="contained" onClick={() => {getActivities.refetch();
+                setDateStart(null);
+                setDateEnd(null);
+                setCoachId('');
+                setAthleteId('');
+              }} color="primary">
+                SEARCH
               </Button>
+            </Grid>
+
+            <Grid item xs={3}>
+              
             </Grid>
 
             {userCtx.decoded.role === "COACH" && (

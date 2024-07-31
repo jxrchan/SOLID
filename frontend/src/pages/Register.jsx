@@ -70,8 +70,8 @@ const Register = () => {
                   margin="normal"
                 />
 
-                {isError && <Typography> <span style ={{color: 'red'}}> Email already exists </span></Typography>}
-                {isSuccess && data && <Typography> <span style={{color: 'green'}}>Email is available. Click continue to complete registration. </span></Typography>}
+                {isError && <Typography> <span style ={{color: 'red'}}> Invalid email or email already exists </span></Typography>}
+                {isSuccess && data && <Typography> <span style={{color: 'green'}}> Email is available. Click continue to complete registration. </span></Typography>}
                 {!isEmailValid ? (
                   <Button
                     fullWidth
