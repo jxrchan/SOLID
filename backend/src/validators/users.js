@@ -21,9 +21,31 @@ const validateUpdateActivities = [
     body('date', 'date is invalid').isDate(),
 ]
 
+const validateGetCoaches = [
+    body('sport', 'sport must be a string').optional().isString(),
+    body('gender','gender must be a string').optional().isString(),
+]
+
+const validateGetOwnCoachName = [
+    body('coachId', 'coach id must be uuid').isUUID(),
+]
+
+const validateGetOwnAthleteName = [
+    body('athleteId', 'athlete id must be uuid').isUUID(),
+]
+
+const validateAddAthlete = [
+    
+]
+
+
+
 
 
 module.exports = {
-    validateUpdateProfile
+    validateUpdateProfile,
+    validateGetActivities,
+    validateUpdateActivities,
+
 
 };
