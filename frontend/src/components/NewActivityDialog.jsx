@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { useContext, useEffect, useState } from "react";
 import useFetch from "../hooks/useFetch";
 import UserContext from "../context/user";
@@ -33,6 +33,7 @@ const NewActivityDialog = ({ setShowNewActivityDialog, ownAthletes }) => {
 
   const usingFetch = useFetch();
   const userCtx = useContext(UserContext);
+  const queryClient = useQueryClient();
 
   const getActivityTypes = useQuery({
     queryKey: ["activity types"],
@@ -54,7 +55,7 @@ const NewActivityDialog = ({ setShowNewActivityDialog, ownAthletes }) => {
   const addActivity = useMutation({
     mutationFn: async (athleteId) => {
       return await usingFetch(
-        "/users/activities",
+        "/users/activity",
         "PUT",
         {
           athleteId,

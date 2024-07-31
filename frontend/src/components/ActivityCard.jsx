@@ -5,6 +5,7 @@ import UserContext from "../context/user";
 import UpdateActivityDialog from "./UpdateActivityDialog";
 import { Card, CardActionArea, CardContent, Typography, IconButton } from "@mui/material";
 import { DeleteOutline, EditNote } from "@mui/icons-material";
+import {format} from 'date-fns';
 
 const ActivityCard = ({
   id,
@@ -26,6 +27,7 @@ const ActivityCard = ({
   const userCtx = useContext(UserContext);
   const queryClient = useQueryClient();
 
+  
   const getOwnAthleteName = useQuery({
     queryKey: ['athleteName', userCtx.decoded.id],
     queryFn: async () => {
@@ -57,7 +59,7 @@ const ActivityCard = ({
   const deleteActivity = useMutation({
     mutationFn: async () => {
       await usingFetch(
-        "/users/activities/" + id,
+        "/users/activity/" + id,
         "DELETE",
         undefined,
         userCtx.accessToken
@@ -74,14 +76,16 @@ const ActivityCard = ({
       id = {id} 
       name = {name} 
       type = {type} 
+      date = {date}
       duration = {duration}
       coachComment = {coachComment}
       athleteComment = {athleteComment} 
       activityLink = {activityLink}
+      setShowUpdateDialog = {setShowUpdateDialog}
       />}
       <Card>
         <CardContent>
-          <Typography>{date}</Typography>
+          <Typography>{format(date, 'yyyy-MM-dd')}</Typography>
           <Typography>{name}</Typography>
           {userCtx.decoded.role === 'COACH' && <Typography>{athleteName}</Typography>}
           {userCtx.decoded.role === 'ATHLETE' && <Typography>{coachName}</Typography>}

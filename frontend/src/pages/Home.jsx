@@ -2,18 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import useFetch from "../hooks/useFetch";
 import UserContext from "../context/user";
 import { useQuery } from "@tanstack/react-query";
-import { Box } from "@mui/system";
-import {
-  Grid,
-  Typography,
-  Stack,
-  Button,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  IconButton,
-} from "@mui/material";
+import { Box, Container, Grid, Typography, Stack, Button, FormControl, InputLabel, Select, MenuItem, IconButton } from "@mui/material";
 import { DateCalendar } from "@mui/x-date-pickers";
 import ActivityCard from "../components/ActivityCard";
 import NewActivityDialog from "../components/NewActivityDialog";
@@ -42,8 +31,13 @@ const Home = () => {
         userCtx.accessToken
       );
     },
-    enabled: false,
+    enabled: (userCtx.decoded.role === 'COACH'),
   });
+
+  useEffect(() => {
+    if (getOwnAthletes.isSuccess && getOwnAthletes.data)
+      setAthletes(getOwnAthletes.data)
+  }, [getOwnAthletes.isSuccess, getOwnAthletes.data]);
 
   const getOwnCoaches = useQuery({
     queryKey: ["coachesHome", userCtx.decoded.id],
@@ -55,18 +49,16 @@ const Home = () => {
         userCtx.accessToken
       );
     },
-    enabled: false,
+    enabled: (userCtx.decoded.role === 'ATHLETE'),
   });
 
+  useEffect(() => {
+    if (getOwnCoaches.isSuccess && getOwnCoaches.data)
+      setCoaches(getOwnCoaches.data)
+  }, [getOwnCoaches.isSuccess, getOwnCoaches.data]);
+
   const getActivities = useQuery({
-    queryKey: [
-      "activities",
-      userCtx.decoded.id,
-      dateStart,
-      dateEnd,
-      athleteId,
-      coachId,
-    ],
+    queryKey: ["activities", userCtx.decoded.id],
     queryFn: async () => {
       let queryBody = {};
       if (dateStart) queryBody.dateStart = dateStart;
@@ -75,36 +67,20 @@ const Home = () => {
       if (coachId) queryBody.coachId = coachId;
       return await usingFetch(
         "/users/activities/",
-        undefined,
+        "POST",
         queryBody,
         userCtx.accessToken
       );
     },
+    retry: 1,
   });
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (userCtx.decoded.role === "ATHLETE") {
-        await getOwnCoaches.refetch();
-        if (getOwnCoaches.isSuccess && getOwnCoaches.data) {
-          setCoaches(getOwnCoaches.data);
-        }
-      } else if (userCtx.decoded.role === "COACH") {
-        await getOwnAthletes.refetch();
-        if (getOwnAthletes.isSuccess && getOwnAthletes.data) {
-          setAthletes(getOwnAthletes.data);
-        }
-      }
-    };
-
-    fetchData();
-  }, [userCtx.decoded.role]);
 
   useEffect(() => {
     if (getActivities.isSuccess && getActivities.data) {
       setActivities(getActivities.data);
     }
   }, [getActivities]);
+
   return (
     <>
       {showNewActivityDialog && (
@@ -124,21 +100,23 @@ const Home = () => {
           alignItems: "center",
         }}
       >
-        <Grid
-          container
-          justifyContent="center"
-          spacing={2}
-          textAlign="center"
-          sx={{ maxWidth: "900px", width: "100%" }}
-        >
-          <Grid item xs={12} textAlign="left">
-            <Typography>Activity Dashboard</Typography>
-          </Grid>
+        <Container maxWidth="lg">
+          <Grid
+            container
+            justifyContent="center"
+            spacing={2}
+            textAlign="center"
+            sx={{ width: "100%" }}
+          >
+            <Grid item xs={12} textAlign="left">
+              <Typography variant='h6'>Activity Dashboard</Typography>
+            </Grid>
 
-          <Box component="form" noValidate autoComplete="off">
             <Grid item xs={8}>
               <FormControl fullWidth margin="normal">
                 <InputLabel>Select by Date</InputLabel>
+                <br/>
+                <br/>
                 <DateCalendar onChange={(newDate) => setDateStart(newDate)} />
               </FormControl>
             </Grid>
@@ -147,19 +125,19 @@ const Home = () => {
               <FormControl fullWidth margin="normal">
                 {userCtx.decoded.role === "ATHLETE" && (
                   <>
-                    <InputLabel id="athlete-label">Select Coach</InputLabel>
+                    <InputLabel id="coach-label">Select Coach</InputLabel>
                     <Select
-                      labelId="athlete-label"
+                      labelId="coach-label"
                       value={coachId}
                       onChange={(e) => setCoachId(e.target.value)}
-                      label="Select Athlete"
+                      label="Select Coach"
                     >
-                      {athletes.map((item) => (
+                      {coaches.map((item) => (
                         <MenuItem key={item.id} value={item.id}>
                           {item.name}
                         </MenuItem>
                       ))}
-                    </Select>{" "}
+                    </Select>
                   </>
                 )}
                 {userCtx.decoded.role === "COACH" && (
@@ -187,37 +165,37 @@ const Home = () => {
                 Search
               </Button>
             </Grid>
-          </Box>
 
-          {userCtx.decoded.role === "COACH" && (
-             <Grid item xs={10} textAlign="right">
-             <IconButton onClick={() => setShowNewActivityDialog(true)} color="primary">
-               <AddIcon />
-             </IconButton>
-           </Grid>
-          )}
+            {userCtx.decoded.role === "COACH" && (
+              <Grid item xs={12} textAlign="right">
+                <IconButton onClick={() => setShowNewActivityDialog(true)} color="primary">
+                  <AddIcon fontSize="large"/>
+                </IconButton>
+              </Grid>
+            )}
 
-          <Stack>
-            {getActivities.isSuccess &&
-              activities.length !== 0 &&
-              activities.map((item, index) => (
-                <Grid item xs={10} key={index}>
-                  <ActivityCard
-                    id={item.id}
-                    athleteId={item.athlete_id}
-                    coachId={item.coach_id}
-                    name={item.name}
-                    type={item.type}
-                    date={item.date}
-                    duration={item.duration}
-                    coachComment={item.coach_comment}
-                    athleteComment={item.athlete_comment}
-                    activityLink = {item.activity_link}
-                  />
-                </Grid>
-              ))}
-          </Stack>
-        </Grid>
+            <Grid item xs={12}>
+              <Stack spacing={2} alignItems="center">
+                {getActivities.isSuccess && activities.length !== 0 && activities.map((item, index) => (
+                  <Box key={index} sx={{ width: "80%" }}>
+                    <ActivityCard
+                      id={item.id}
+                      athleteId={item.athlete_id}
+                      coachId={item.coach_id}
+                      name={item.name}
+                      type={item.type}
+                      date={item.date}
+                      duration={item.duration}
+                      coachComment={item.coach_comment}
+                      athleteComment={item.athlete_comment}
+                      activityLink={item.activity_link}
+                    />
+                  </Box>
+                ))}
+              </Stack>
+            </Grid>
+          </Grid>
+        </Container>
       </Box>
     </>
   );

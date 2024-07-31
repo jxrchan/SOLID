@@ -82,11 +82,12 @@ const Athletes = () => {
         alignItems: "center",
       }}
     >
-      <Grid container spacing={2} justifyContent="center" sx={{ maxWidth: "900px", width: "100%" }}>
+      <Grid container spacing={1} justifyContent="center" sx={{ maxWidth: 'lg'}}>
         <Grid item xs={12}>
-          <Typography variant="h6" align="center">Add Athletes by Email</Typography>
+          <Typography variant="h6" textAlign="left">Add Athletes by Email</Typography>
         </Grid>
-        <Grid item xs={8}>
+        <Grid item xs = {2}></Grid>
+        <Grid item xs={5}>
           <TextField
             fullWidth
             variant="outlined"
@@ -96,7 +97,7 @@ const Athletes = () => {
             margin="normal"
           />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={3}>
           <Button
             fullWidth
             variant="contained"
@@ -105,11 +106,14 @@ const Athletes = () => {
             ADD
           </Button>
         </Grid>
+        <Grid item xs={2}>
+          
+        </Grid>
       </Grid>
 
-      <Grid container spacing={2} justifyContent="center" sx={{ maxWidth: "900px", width: "100%", mt: 4 }}>
+      <Grid container spacing={2} justifyContent="center" sx={{ maxWidth: 'lg', mt: 4 }}>
         <Grid item xs={12}>
-          <Typography variant="h6" align="center">My Athletes</Typography>
+          <Typography variant="h6" textAlign="left">My Athletes</Typography>
         </Grid>
         {athletes && athletes.length !== 0 &&
           athletes.map((item, index) => (

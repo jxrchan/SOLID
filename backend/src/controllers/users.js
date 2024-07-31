@@ -126,7 +126,7 @@ const updateActivity = async (req, res) => {
   try {
     await client.query(
       `UPDATE activities SET name = $1, type = $2, date = $3, duration = $4, 
-    coach_comment = $5, athlete_comment = $6, activity_link = $7, WHERE id = $8`,
+    coach_comment = $5, athlete_comment = $6, activity_link = $7 WHERE id = $8`,
       [
         req.body.name,
         req.body.type,
@@ -231,7 +231,7 @@ const getOwnCoachName = async (req, res) => {
   try{
     const {rows: coach} = await client.query(
       `SELECT name from users WHERE users.id = $1 LIMIT 1`, 
-      [req.coachId]
+      [req.body.coachId]
     );
     if (coach.length === 0) {
       return res.status(404).json({status: 'error', msg: 'No coach found'})
@@ -304,12 +304,12 @@ const getOwnAthleteName = async (req, res) => {
   try{
     const {rows: athlete} = await client.query(
       `SELECT name from users WHERE users.id = $1 LIMIT 1`, 
-      [req.athleteId]
+      [req.body.athleteId]
     );
-    if (coach.length === 0) {
+    if (athlete.length === 0) {
       return res.status(404).json({status: 'error', msg: 'No athlete found'})
     }
-    return res.json(coach[0]);}
+    return res.json(athlete[0]);}
     catch (error)
     {console.error(error);
     return res.status(400).json({status: 'error', msg: 'error retrieving athlete'})

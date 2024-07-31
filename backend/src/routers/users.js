@@ -30,7 +30,7 @@ const { authAthlete, authUser, authCoach } = require("../middleware/auth");
 /*-------- for all Users -------------*/
 router.get("/profile", authUser, getProfile);
 router.patch("/profile", authUser, updateProfile);
-router.get("/activities", authUser, getActivities);
+router.post("/activities", authUser, getActivities);
 router.post(
   "/upload", authUser,
   multerUpload.single("image"),
