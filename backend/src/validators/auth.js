@@ -14,7 +14,8 @@ const validateRegistrationData = [
   body("role", "role is required").notEmpty().isString(),
   body("name", "name is required").notEmpty().isString(),
   body("description", "description is required").notEmpty(),
-  body("gender", "gender is required").notEmpty(),
+  body('description', 'description not more than 200 characters').isLength({min: 1, max: 200}),
+  body("gender", "gender is required").notEmpty().isString(),
 ];
 
 const validateLoginData = [
