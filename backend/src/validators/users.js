@@ -10,11 +10,11 @@ const validateUpdateProfile = [
 const validateGetActivities = [
     body('dateStart', 'date is invalid').optional().isDate(),
     body('dataEnd', 'date is invalid').optional().isDate(),
-    body('athleteId', 'athlete ID must be UUID').optional().isUUID(),
-    body('coachId', 'coach ID must be UUID').optional().isUUID(),
+    body('athleteId', 'athlete id must be UUID').optional().isUUID(),
+    body('coachId', 'coach id must be UUID').optional().isUUID(),
 ];
 
-const validateUpdateActivities = [
+const validateUpdateActivity = [
     body('name', 'name is required').notEmpty().isString(),
     body('type', 'type is required').notEmpty().isString(),
     body('date', 'date is required').notEmpty(),
@@ -40,12 +40,12 @@ const validateAddAthlete = [
 ];
 
 const validateDeleteAthlete = [
-    body('athleteId', 'athlete ID is required').notEmpty(),
+    body('athleteId', 'athlete id is required').notEmpty(),
     body('athleteId', 'athlete id must be uuid').isUUID(),
 ];
 
 const validateAddActivity = [
-    body('athleteId', 'athlete ID is required').notEmpty(),
+    body('athleteId', 'athlete id is required').notEmpty(),
     body('athleteId', 'athlete id must be uuid').isUUID(),
     body('name', 'name is required').notEmpty().isString(),
     body('type', 'type is required').notEmpty().isString(),
@@ -62,7 +62,7 @@ const validateDeleteActivity = [
 module.exports = {
     validateUpdateProfile,
     validateGetActivities,
-    validateUpdateActivities,
+    validateUpdateActivity,
     validateGetCoaches,
     validateGetOwnAthleteName,
     validateGetOwnCoachName,
