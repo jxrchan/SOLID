@@ -53,7 +53,7 @@ function Login({}) {
   });
 
   
-
+// Storing Access and Refresh Tokens
   useEffect(() => {
     if (isSuccess && data) {
       window.localStorage.setItem("access", data.access)
@@ -88,7 +88,7 @@ function Login({}) {
           md={4}
           lg={3}
           sx={{
-            borderRadius: "50px", // Circular border radius
+            borderRadius: "50px", 
             overflow: "hidden",  
             boxShadow: 3,
           }}
@@ -138,7 +138,7 @@ function Login({}) {
                 />
               </FormControl>
 
-              {isError && <Typography color='error'> Email or password is invalid. Please try again.  </Typography>}
+              {isError && error && <Typography color='error'> Email or password is invalid. Please try again.  </Typography>}
 
               <Button
                 fullWidth

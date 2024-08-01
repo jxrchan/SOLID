@@ -59,7 +59,8 @@ const Register = () => {
         <Grid container justifyContent="center" alignItems="center">
           <Grid item xs={12} sm={8} md={4}>
             <Paper sx={{ padding: 4 }}>
-              <form>
+            <Box component="form" noValidate autoComplete="off">
+              {/* EMAIL */}
                 <TextField
                   autoComplete="off"
                   fullWidth
@@ -68,10 +69,11 @@ const Register = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   margin="normal"
+                  type='email'
                 />
 
-                {isError && <Typography> <span style ={{color: 'red'}}> Invalid email or email already exists </span></Typography>}
-                {isSuccess && data && <Typography> <span style={{color: 'green'}}> Email is available. Click continue to complete registration. </span></Typography>}
+                {isError && error && <Typography color = 'error'> Invalid email or email already exists </Typography>}
+                {isSuccess && data && <Typography color = 'success'> Email is available. Click continue to complete registration. </Typography>}
                 {!isEmailValid ? (
                   <Button
                     fullWidth
@@ -103,7 +105,7 @@ const Register = () => {
                 >
                   RETURN TO LOGIN
                 </Button>
-              </form>
+              </Box>
             </Paper>
           </Grid>
         </Grid>

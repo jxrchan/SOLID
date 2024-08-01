@@ -96,6 +96,8 @@ const NewActivityDialog = ({ setShowNewActivityDialog, ownAthletes }) => {
 
       <Box component="form" noValidate autoComplete="off">
         <DialogContent>
+
+          {/* Select Athlete */}
           <FormControl fullWidth margin="normal">
             <InputLabel id="athlete-label">Select Athlete</InputLabel>
             <Select
@@ -112,6 +114,7 @@ const NewActivityDialog = ({ setShowNewActivityDialog, ownAthletes }) => {
             </Select>
           </FormControl>
 
+          {/*  Activity Name */}
           <TextField
             fullWidth
             variant="outlined"
@@ -121,6 +124,7 @@ const NewActivityDialog = ({ setShowNewActivityDialog, ownAthletes }) => {
             margin="normal"
           />
 
+        {/* Type of Activity  */}
           <FormControl fullWidth margin="normal">
             <InputLabel id="activity-type-label">Type of Activity</InputLabel>
             <Select
@@ -137,6 +141,7 @@ const NewActivityDialog = ({ setShowNewActivityDialog, ownAthletes }) => {
             </Select>
           </FormControl>
 
+            {/* Date */}
           <DatePicker
             label="Date"
             value={date}
@@ -146,7 +151,8 @@ const NewActivityDialog = ({ setShowNewActivityDialog, ownAthletes }) => {
             )}
             format="yyyy-MM-dd"
           />
-          
+
+          {/* Duration */}
           <TextField
             fullWidth
             variant="outlined"
@@ -157,6 +163,7 @@ const NewActivityDialog = ({ setShowNewActivityDialog, ownAthletes }) => {
             multiline
           />
 
+          {/* Coach Comments */}
           <TextField
             fullWidth
             variant="outlined"
@@ -168,17 +175,20 @@ const NewActivityDialog = ({ setShowNewActivityDialog, ownAthletes }) => {
             rows={2}
           />
         </DialogContent>
-        {addActivity.isError && (
+        {/* Error */}
+        {addActivity.isError && addActivity.error && (
           <Typography color="error" sx={{ mx: 3 }}>
-            {addActivity.error.message}
+            Error adding activity
           </Typography>
         )}
+        {/* Success */}
         {addActivity.isSuccess && addActivity.data && (
           <Typography color="green" sx={{ mx: 3 }}>
             Activity has been successfully added
           </Typography>
         )}
       </Box>
+      {/* Buttons */}
       <DialogActions>
         {!isActivityAdded ? (
           <>

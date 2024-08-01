@@ -173,7 +173,7 @@ const RegistrationDialog = ({ email, setShowRegistrationDialog }) => {
           />
         </DialogContent>
         {/* ERROR */}
-        {isError && <Typography color="red"> {error.message} </Typography>}
+        {isError && error && <Typography color="error"> Unsuccessful registration </Typography>}
         {/* SUCCESSFUL */}
         {isSuccess && data && (
           <Typography color="green" sx={{ mx: 3 }}>

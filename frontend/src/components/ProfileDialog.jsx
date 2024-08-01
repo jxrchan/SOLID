@@ -110,6 +110,7 @@ const ProfileDialog = (props) => {
           autoComplete="off"
           onSubmit={handleUpdate}
         >
+          {/* Profile Picture */}
           <Button variant="contained" component="label" sx={{ mt: 2 }}>
             Upload Profile Picture
             <input
@@ -120,7 +121,7 @@ const ProfileDialog = (props) => {
           </Button>
 
           {fileName && <Typography sx={{ mt: 2 }}>{fileName}</Typography>}
-
+{/* Name */}
           <TextField
             fullWidth
             variant="outlined"
@@ -129,6 +130,7 @@ const ProfileDialog = (props) => {
             onChange={(e) => setName(e.target.value)}
             margin="normal"
           />
+    {/* Description  */}
           <TextField
             fullWidth
             variant="outlined"
@@ -141,6 +143,8 @@ const ProfileDialog = (props) => {
             inputProps={{ maxLength: 200 }}
             helperText={`${description.length}/200`}
           />
+
+          {/* Sports */}
           <TextField
             fullWidth
             variant="outlined"
@@ -151,6 +155,7 @@ const ProfileDialog = (props) => {
             inputProps={{ maxLength: 200 }}
             helperText={`${sports.length}/200`}
           />
+          {/* Goals */}
           {userCtx.decoded.role === "ATHLETE" && (
             <TextField
               fullWidth
@@ -163,6 +168,7 @@ const ProfileDialog = (props) => {
               helperText={`${goals.length}/200`}
             />
           )}
+          {/* Contact */}
           <TextField
             fullWidth
             variant="outlined"
@@ -174,6 +180,7 @@ const ProfileDialog = (props) => {
           />
           {userCtx.decoded.role === "COACH" && (
             <>
+            {/* Facebook */}
               <TextField
                 fullWidth
                 variant="outlined"
@@ -182,6 +189,7 @@ const ProfileDialog = (props) => {
                 onChange={(e) => setFacebook(e.target.value)}
                 margin="normal"
               />
+              {/* Instagram */}
               <TextField
                 fullWidth
                 variant="outlined"
@@ -212,7 +220,15 @@ const ProfileDialog = (props) => {
               </>
             ) : (
               <>
-                <Typography color="green">Profile Updated</Typography>
+              {/* Success and error messages */}
+                {updateProfile.isError && updateProfile.error && 
+                 <Typography color = 'error'> Error updating profile</Typography>}
+                {updateProfile.isSuccess && updateProfile.data &&
+                  <Typography color="success">Profile updated</Typography>}
+                {updateProfilePicture.isError && updateProfilePicture.error && 
+                 <Typography color = 'error'> Error updating profile picture</Typography>}
+                {updateProfilePicture.isSuccess && updateProfilePicture.data &&
+                  <Typography color="success">Profile picture updated</Typography>}
                 <Button
                   onClick={() => {
                     props.setShowProfileDialog(false);

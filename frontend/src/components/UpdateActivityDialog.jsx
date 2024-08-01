@@ -80,6 +80,7 @@ const UpdateActivityDialog = (props) => {
         <DialogContent>
           {userCtx.decoded.role === 'COACH' &&
             <>
+            {/* Activity Name */}
               <TextField
                 fullWidth
                 variant="outlined"
@@ -89,6 +90,7 @@ const UpdateActivityDialog = (props) => {
                 margin="normal"
               />
 
+              {/* Type of Activity */}
               <FormControl fullWidth margin="normal">
                 <InputLabel id="activity-type-label">Type of Activity</InputLabel>
                 <Select
@@ -105,6 +107,7 @@ const UpdateActivityDialog = (props) => {
                 </Select>
               </FormControl>
 
+            {/* Date */}    
               <DatePicker
                 label="Date"
                 value={date}
@@ -115,6 +118,7 @@ const UpdateActivityDialog = (props) => {
                 format="yyyy-MM-dd"
               />
 
+              {/* Duration */}
               <TextField
                 fullWidth
                 variant="outlined"
@@ -125,6 +129,7 @@ const UpdateActivityDialog = (props) => {
                 multiline
               />
 
+              {/* Coach Comments */}
               <TextField
                 fullWidth
                 variant="outlined"
@@ -139,6 +144,7 @@ const UpdateActivityDialog = (props) => {
           }
           {userCtx.decoded.role === 'ATHLETE' &&
             <>
+            {/* Athlete Comments */}
               <TextField
                 fullWidth
                 variant="outlined"
@@ -152,9 +158,10 @@ const UpdateActivityDialog = (props) => {
             </>
           }
         </DialogContent>
-        {updateActivity.isError && (
+        {/* ERROR */}
+        {updateActivity.isError && updateActivity.error && (
           <Typography color="error" sx={{ mx: 3 }}>
-            {updateActivity.error.message}
+            Error updating activity
           </Typography>
         )}
       </Box>
@@ -181,6 +188,7 @@ const UpdateActivityDialog = (props) => {
             </Button>
           </>
         ) : (
+          // Successful Update
           <>
           <Typography color="green" sx={{ mx: 3 }}>
           Activity is updated
