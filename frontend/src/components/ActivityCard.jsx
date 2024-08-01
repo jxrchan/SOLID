@@ -108,9 +108,10 @@ const ActivityCard = ({
           <IconButton onClick={() => setShowUpdateDialog(true)}>
             <EditNote sx = {{'&:hover': {color: '#757DE8'}}}/>
           </IconButton>
+          {userCtx.decoded.role === 'COACH' && (
           <IconButton onClick={() => deleteActivity.mutate()}>
             <DeleteOutline sx = {{'&:hover': {color: '#FF7961'}}} />
-          </IconButton>
+          </IconButton>)}
         </CardActionArea>
       </Card>
     </>
