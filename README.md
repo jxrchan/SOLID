@@ -31,6 +31,7 @@ SOLID was made as part of a professional software course and it was inspired by 
 ## Getting Started
 
 Access the project's public board [here](https://github.com/users/jxrchan/projects/2).
+Access the project's wireframe [here](https://docs.google.com/presentation/d/1e1E35ut5cHZZzKBFxfDevC6X4SL6xwMvk2FoBCwo4Z8/edit?usp=sharing)
 
 ### Setting Up Guide
 
