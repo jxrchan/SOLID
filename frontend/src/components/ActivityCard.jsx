@@ -106,15 +106,16 @@ const ActivityCard = ({
         </CardContent>
         <CardActionArea>
           <IconButton onClick={() => setShowUpdateDialog(true)}>
-            <EditNote fontSize ='medium'/>
+            <EditNote sx = {{'&:hover': {color: '#757DE8'}}}/>
           </IconButton>
           <IconButton onClick={() => deleteActivity.mutate()}>
-            <DeleteOutline fontSize ='medium' />
+            <DeleteOutline sx = {{'&:hover': {color: '#FF7961'}}} />
           </IconButton>
         </CardActionArea>
       </Card>
     </>
   );
 };
+
 
 export default ActivityCard;

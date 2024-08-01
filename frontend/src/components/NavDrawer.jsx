@@ -61,21 +61,21 @@ const NavDrawer = () => {
               </ListItem>
               <Divider />
               <ListItem component={RouterLink} to="/home">
-                <ListItemIcon><HomeIcon /></ListItemIcon>
-                <ListItemText sx={{fontSize: '20'}} primary="HOME" />
+                <ListItemIcon><HomeIcon sx = {{color: 'navy'}}/></ListItemIcon>
+                <ListItemText primary="HOME" />
               </ListItem>
               <ListItem component={RouterLink} to="/profile">
-                <ListItemIcon><PersonIcon /></ListItemIcon>
+                <ListItemIcon><PersonIcon sx ={{color: 'navy'}} /></ListItemIcon>
                 <ListItemText primary="PROFILE" />
               </ListItem>
               {userCtx.decoded.role === "ATHLETE" &&
               <ListItem component={RouterLink} to="/coaches">
-                <ListItemIcon><GroupIcon /></ListItemIcon>
+                <ListItemIcon><GroupIcon sx ={{color: 'navy'}} /></ListItemIcon>
                 <ListItemText primary="COACHES" />
               </ListItem>}
               {userCtx.decoded.role === "COACH" &&
               <ListItem component={RouterLink} to="/athletes">
-                <ListItemIcon><GroupIcon /></ListItemIcon>
+                <ListItemIcon><GroupIcon sx = {{color: 'navy'}}/></ListItemIcon>
                 <ListItemText primary="ATHLETES" />
               </ListItem>}
             </List>
@@ -93,7 +93,7 @@ const NavDrawer = () => {
               underline="none"
               color="inherit"
             >
-              <ExitToAppIcon sx={{ mr: 1 }} />
+              <ExitToAppIcon sx={{ color: 'navy', mr: 1 }} />
               Logout
             </MuiLink>
             <MuiLink
@@ -103,7 +103,7 @@ const NavDrawer = () => {
               underline="none"
               color="inherit"
             >
-              <InfoIcon sx={{ mr: 1 }} />
+              <InfoIcon sx={{ color: 'navy', mr: 1 }} />
               What is SOLID?
             </MuiLink>
           </Box>

@@ -162,7 +162,7 @@ const Athletes = () => {
                   <IconButton
                     onClick={() => deleteAthlete.mutate(item.athlete_id)}
                   >
-                    <Delete />
+                    <Delete sx={{'&:hover': {color: '#FF7961'}}} />
                   </IconButton>
                 </CardActions>
               </Card>
