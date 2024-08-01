@@ -1,6 +1,6 @@
 # SOLID
 
-<img src="./frontend/images/SolidLogowithTitle.png" width="300px" height="300px" style="display: block; margin-left: auto; margin-right: auto;" />
+<img src="./frontend/images/SolidLogowithTitle_no_bg.png" width="300px" height="300px" style="display: block; margin-left: auto; margin-right: auto;" />
 
 ## About
 
@@ -40,7 +40,7 @@ Set-up PostgreSQL on your computer. Create a user and an empty database. These u
 
 Run the following commands in PostgreSQL to set up your database:
 
-    ```sql
+    ```
     CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
     CREATE TABLE users (
@@ -95,7 +95,7 @@ Run the following commands in PostgreSQL to set up your database:
     );
     ```
 
-    <img src="./READMEscreenshots/solid_ERD.drawio.png">
+<img src='./READMEscreenshots/solid_ERD.drawio.png'>
 
     The ERD relating to the above tables is depicted above.
 
