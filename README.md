@@ -1,6 +1,6 @@
 # SOLID
 
-<img src="./frontend/images/SolidLogowithTitle_no_bg.png" width="300px" height="300px" style="display: block; margin-left: auto; margin-right: auto;" />
+<img src="./frontend/images/SolidLogo-removebg.png" width="300px" height="300px" style="display: block; margin-left: auto; margin-right: auto;" />
 
 ## About
 
@@ -69,15 +69,15 @@ Run the following commands in PostgreSQL to set up your database:
     );
 
     CREATE TABLE activitytypes (
-        type varchar(30) PRIMARY KEY 
+        type varchar(30) PRIMARY KEY
     );
 
     INSERT INTO activitytypes VALUES
-    ('RUNNING'), ('CYCLING'), ('SWIMMING'), ('HIKING'), ('MOUNTAIN BIKING'), 
-    ('WALKING'), ('RUNNING (TREADMILL)'), ('CYCLING (INDOOR)'), 
-    ('ELLIPTICAL TRAINER'), ('ROWING'), ('SKIING'), ('SNOWBOARDING'), 
-    ('CROSSFIT'), ('YOGA'), ('SURFING'), ('KITESURFING'), ('WINDSURFING'), 
-    ('ROCK CLIMBING'), ('HORSEBACK RIDING'), ('PADDLEBOARDING'), 
+    ('RUNNING'), ('CYCLING'), ('SWIMMING'), ('HIKING'), ('MOUNTAIN BIKING'),
+    ('WALKING'), ('RUNNING (TREADMILL)'), ('CYCLING (INDOOR)'),
+    ('ELLIPTICAL TRAINER'), ('ROWING'), ('SKIING'), ('SNOWBOARDING'),
+    ('CROSSFIT'), ('YOGA'), ('SURFING'), ('KITESURFING'), ('WINDSURFING'),
+    ('ROCK CLIMBING'), ('HORSEBACK RIDING'), ('PADDLEBOARDING'),
     ('OTHER');
 
     CREATE TABLE activities (
@@ -101,58 +101,58 @@ Run the following commands in PostgreSQL to set up your database:
 
 1. Clone the Repository
 
-    ```bash
-    git clone https://github.com/jxrchan/SOLID
-    ```
+   ```bash
+   git clone https://github.com/jxrchan/SOLID
+   ```
 
 2. Navigate to the frontend directory
 
-    ```bash
-    cd ./frontend
-    ```
+   ```bash
+   cd ./frontend
+   ```
 
 3. Create a `.env` file within the root
 
-    ```bash
-    touch .env
-    ```
+   ```bash
+   touch .env
+   ```
 
 4. Add the following environmental variable inside the `.env` file
 
-    ```
-    VITE_SERVER=http://localhost:5001
-    ```
+   ```
+   VITE_SERVER=http://localhost:5001
+   ```
 
 5. Install Dependencies
 
-    ```bash
-    npm i
-    ```
+   ```bash
+   npm i
+   ```
 
 6. Start the Development Server
 
-    ```bash
-    npm run dev
-    ```
+   ```bash
+   npm run dev
+   ```
 
 7. Start a new terminal
 
 8. Navigate to the backend directory
 
-    ```bash
-    cd ../backend
-    ```
+   ```bash
+   cd ../backend
+   ```
 
 9. Create a `.env` file within the root
 
-    ```bash
-    touch .env
-    ```
+   ```bash
+   touch .env
+   ```
 
 10. Add the following environmental variables inside the `.env` file and populate them with your own configurations
 
     ```
-    PORT=5001 
+    PORT=5001
     DATABASE_USER
     DATABASE_PASS
     DATABASE
@@ -219,8 +219,8 @@ The activities dashboard provides an overview of the activities communicated bet
 ## Credits & Attributions
 
 - Google for the Material UI library and fonts (Roboto & Roboto Slab)
-- Cloudinary for its simple-to-use SDKs 
-- Bing's image generator which runs on Microsoft Copilot for all the images that are on the application 
+- Cloudinary for its simple-to-use SDKs
+- Bing's image generator which runs on Microsoft Copilot for all the images that are on the application
 - TrainingPeaks for the inspiration of this project
 
 ## Next Steps
