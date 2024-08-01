@@ -204,7 +204,7 @@ _Dialogs are modals prompting an action and is a built-in component in MUI's Mat
 
 There are two types of users in SOLID, the ATHLETE and the COACH. The UIs for both users are similar. However, there are differences in functions for the ATHLETE and the COACH.
 
-Firstly, the COACH has access to more 'CRUD' functions. COACHES have the ability to add, delete athletes, as well as activities. Athletes do not. On the other hand, athletes have access to the entire coach database, and the coaches do not have access to the converse.
+Firstly, the COACH has access to more 'CRUD' functions. COACHES have the ability to add and delete athletes. Likewise, the COACH can add and delete activities. ATHLETES do not have either functions. On the other hand, athletes have access to the entire coach database, and the coaches do not have access to the converse.
 
 _The idea for these difference are deliberate. A coach should have full reign or 'control' over the programmes for his or her athletes. The athlete 'listens' and provides feedback on said programme. Separately, athletes should have access to the entire coach database because they are looking for the best fit. The coaches have to do their best to market themselves through their profiles, and wait for athletes to contact them._
 
