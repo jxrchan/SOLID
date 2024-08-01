@@ -56,8 +56,13 @@ const Register = () => {
           padding: 4,
         }}
       >
-        <Grid container justifyContent="center" alignItems="center">
-          <Grid item xs={12} sm={8} md={4}>
+        <Grid container justifyContent="center" alignItems="center"
+        >
+          <Grid item xs={12} sm={8} md={4}  sx={{
+            borderRadius: "20px", 
+            overflow: "hidden",  
+            boxShadow: 3,
+          }}>
             <Paper sx={{ padding: 4 }}>
             <Box component="form" noValidate autoComplete="off">
               {/* EMAIL */}
@@ -73,7 +78,7 @@ const Register = () => {
                 />
 
                 {isError && error && <Typography color = 'error'> Invalid email or email already exists </Typography>}
-                {isSuccess && data && <Typography color = 'success'> Email is available. Click continue to complete registration. </Typography>}
+                {isSuccess && data && <Typography color = 'green'> Email is available. Click continue to complete registration. </Typography>}
                 {!isEmailValid ? (
                   <Button
                     fullWidth

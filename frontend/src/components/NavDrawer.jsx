@@ -140,7 +140,7 @@ const NavDrawer = () => {
                     },
                   }}
                 >
-                  <ListItemIcon sx={{ minWidth: "auto", marginRight: 2 }}>
+                  <ListItemIcon sx={{ minWidth: "auto", marginRight: 9.5 }}>
                     <GroupIcon />
                   </ListItemIcon>
                   <ListItemText

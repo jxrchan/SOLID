@@ -70,6 +70,7 @@ const RegistrationDialog = ({ email, setShowRegistrationDialog }) => {
           '.MuiPaper-root': {
             borderRadius: 6,
             boxShadow: 3,
+            padding: 2,
           },
         }}
       >
@@ -167,7 +168,7 @@ const RegistrationDialog = ({ email, setShowRegistrationDialog }) => {
             onChange={(e) => setDescription(e.target.value)}
             margin="normal"
             multiline
-            rows={3}
+            rows={2}
             inputProps={{ maxLength: 200 }}
             helperText={`${description.length}/200`}
           />
@@ -210,7 +211,7 @@ const RegistrationDialog = ({ email, setShowRegistrationDialog }) => {
               variant="contained"
             >
               Return to Login
-            </Button>{" "}
+            </Button>
           </>
         )}
       </DialogActions>

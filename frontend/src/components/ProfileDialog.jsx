@@ -224,11 +224,11 @@ const ProfileDialog = (props) => {
                 {updateProfile.isError && updateProfile.error && 
                  <Typography color = 'error'> Error updating profile</Typography>}
                 {updateProfile.isSuccess && updateProfile.data &&
-                  <Typography color="success">Profile updated</Typography>}
+                  <Typography color="green">Profile updated</Typography>}
                 {updateProfilePicture.isError && updateProfilePicture.error && 
                  <Typography color = 'error'> Error updating profile picture</Typography>}
                 {updateProfilePicture.isSuccess && updateProfilePicture.data &&
-                  <Typography color="success">Profile picture updated</Typography>}
+                  <Typography color="green">Profile picture updated</Typography>}
                 <Button
                   onClick={() => {
                     props.setShowProfileDialog(false);

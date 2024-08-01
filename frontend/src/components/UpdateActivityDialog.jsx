@@ -7,17 +7,18 @@ import UserContext from '../context/user';
 import {format} from 'date-fns';
 
 const UpdateActivityDialog = (props) => {
-  const [id, setId] = useState(props.id);
-  const [name, setName] = useState(props.name);
-  const [type, setType] = useState(props.type);
-  const [date, setDate] = useState(props.date);
-  const [duration, setDuration] = useState(props.duration);
-  const [coachComment, setCoachComment] = useState(props.coachComment);
-  const [athleteComment, setAthleteComment] = useState(props.athleteComment);
-  const [activityLink, setActivityLink] = useState(props.activityLink);
+  const [id, setId] = useState(props.id || '');
+  const [name, setName] = useState(props.name || '');
+  const [type, setType] = useState(props.type || '');
+  const [date, setDate] = useState(props.date || null);
+  const [duration, setDuration] = useState(props.duration || '');
+  const [coachComment, setCoachComment] = useState(props.coachComment || '');
+  const [athleteComment, setAthleteComment] = useState(props.athleteComment || '');
+  const [activityLink, setActivityLink] = useState(props.activityLink || '');
   const [formActivityTypes, setFormActivityTypes] = useState([]);
   const [isFormValid, setIsFormValid] = useState(false);
   const [isUpdateComplete, setIsUpdateComplete] = useState(false);
+
 
   const usingFetch = useFetch();
   const userCtx = useContext(UserContext);
@@ -71,6 +72,7 @@ const UpdateActivityDialog = (props) => {
         ".MuiPaper-root": {
           borderRadius: 6,
           boxShadow: 3,
+          padding: 2,
         },
       }}
     >

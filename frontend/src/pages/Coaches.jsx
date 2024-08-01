@@ -13,6 +13,8 @@ import {
   CardContent,
   CardActions,
   MenuItem,
+  FormControl,
+  InputLabel,
 } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import FacebookIcon from "@mui/icons-material/Facebook";
@@ -67,21 +69,24 @@ const Coaches = () => {
     retry: 0,
   });
 
+  const handleSearch = async () => {
+    await getCoaches.refetch();
+    setSport('');
+    setGender('');
+  };
+
   useEffect(() => {
     if (getCoaches.isSuccess && getCoaches.data)
       setSearchedCoaches(getCoaches.data);
   }, [getCoaches.isSuccess, getCoaches.data]);
 
-  const handleSearch = () => {
-    getCoaches.refetch();
-  };
 
   return (
     <Box
       sx={{
-        ml: 37, // To accommodate the 300px NavDrawer and add some padding
+        ml: 37,
         p: 3,
-        width: "calc(100vw - 300px)", // To ensure the width accounts for the drawer
+        width: "calc(100vw - 300px)",
         height: "100vh",
         display: "flex",
         flexDirection: "column",
@@ -149,10 +154,11 @@ const Coaches = () => {
           ))}
       </Grid>
 
-      <Grid container justifyContent="center" spacing={2} sx={{ maxWidth: 'lg', mt: 4 }}>
+      <Grid container justifyContent="center" sx={{ maxWidth: 'lg', mt: 4 }}>
         <Grid item xs={12}>
           <Typography variant="h6" textAlign="left">Search for coaches</Typography>
         </Grid>
+        <Grid item xs={3}/>
         <Grid item xs={6}>
           <TextField
             autoComplete="off"
@@ -164,35 +170,34 @@ const Coaches = () => {
             fullWidth
           />
         </Grid>
+        <Grid item xs={3}/>
+        <Grid item xs={3}/>
         <Grid item xs={6}>
-          <Select
-            label="Gender"
-            variant="outlined"
-            value={gender}
-            onChange={(e) => setGender(e.target.value)}
-            fullWidth
-          >
-            <MenuItem value=''>All</MenuItem>
-            <MenuItem value="MALE">Male</MenuItem>
-            <MenuItem value="FEMALE">Female</MenuItem>
-            <MenuItem value='NON-BINARY'>Non-Binary</MenuItem>
-            <MenuItem value='OTHER'> Other </MenuItem>
-          </Select>
+          <FormControl fullWidth margin="normal">
+            <InputLabel id='select-gender'> Gender </InputLabel>
+            <Select
+              value={gender}
+              onChange={(e) => setGender(e.target.value)}
+              label='Select Gender'
+            >
+              <MenuItem value="MALE">Male</MenuItem>
+              <MenuItem value="FEMALE">Female</MenuItem>
+              <MenuItem value='NON-BINARY'>Non-Binary</MenuItem>
+              <MenuItem value='OTHER'> Other </MenuItem>
+            </Select>
+          </FormControl>
         </Grid>
-        <Grid item xs={12}>
-          <Button variant="contained" color="primary" onClick={handleSearch}>
+        <Grid item xs={3}/>
+        <Grid item xs={3}/>
+        <Grid item xs={6}>
+          <Button fullWidth variant="contained" color="primary" onClick={handleSearch}>
             SEARCH
           </Button>
         </Grid>
+        <Grid item xs={3}/>
       </Grid>
 
       <Grid container justifyContent="center" spacing={2} sx={{ maxWidth: "900px", width: "100%", mt: 4 }}>
-        {getCoaches.isSuccess && getCoaches.data && JSON.stringify(getCoaches)}
-        {getCoaches.isError && (
-          <Typography color="error">
-            {getCoaches.error.message}
-          </Typography>
-        )}
         {searchedCoaches &&
           searchedCoaches.length !== 0 &&
           searchedCoaches.map((item, index) => (
