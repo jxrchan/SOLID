@@ -49,6 +49,7 @@ function Login({}) {
       }
     },
     enabled: false,
+    retry: 1,
   });
 
   
@@ -97,25 +98,30 @@ function Login({}) {
               <img src="../images/SolidLogo.png" alt="SOLID" width="150" />
             </Box>
 
-            <form>
-              {/* Email Field */}
+            <Box component="form" noValidate autoComplete="off">
+              {/* EMAIL */}
               <TextField
                 fullWidth
                 autoComplete="off"
                 variant="outlined"
                 label="Email"
+                type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 margin="dense"
               />
 
-              {/* Password Field */}
+              {/* PASSWORD */}
               <FormControl fullWidth variant="outlined" margin="dense">
                 <InputLabel>Password</InputLabel>
                 <OutlinedInput
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  inputProps={{
+                    minLength: 8,
+                    maxLength: 50,
+                  }}
                   endAdornment={
                     <InputAdornment position="end">
                       <IconButton
@@ -132,6 +138,8 @@ function Login({}) {
                 />
               </FormControl>
 
+              {isError && <Typography color='error'> Email or password is invalid. Please try again.  </Typography>}
+
               <Button
                 fullWidth
                 variant="contained"
@@ -144,13 +152,12 @@ function Login({}) {
               <Button
                 fullWidth
                 variant="contained"
-                color="secondary"
                 onClick={() => { navigate("/register") }}
-                sx={{ mt: 2 }}
+                sx={{ backgroundColor: '#357a38', mt: 2 }}
               >
                 Register
               </Button>
-            </form>
+            </Box>
 
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
               <Link
@@ -160,7 +167,7 @@ function Login({}) {
                   color: "inherit",
                   textDecoration: "none",
                   ':hover': {
-                    textDecoration: 'underline',
+                    color: '#3f51b5',
                   }
                 }}
                 underline="none"

@@ -98,9 +98,8 @@ const Register = () => {
                 <Button
                   fullWidth
                   variant="contained"
-                  color="secondary"
                   onClick={() => navigate("/login")}
-                  sx={{ mt: 2 }}
+                  sx={{ backgroundColor: '#357a38', mt: 2 }}
                 >
                   RETURN TO LOGIN
                 </Button>

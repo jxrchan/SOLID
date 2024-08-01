@@ -77,6 +77,7 @@ const RegistrationDialog = ({ email, setShowRegistrationDialog }) => {
       <DialogTitle variant="h6">Complete Registration</DialogTitle>
       <Box component="form" noValidate autoComplete="off">
         <DialogContent>
+          {/* SELECT ROLE */}
           <Typography variant="body1" sx={{ mt: 0 }}>
            Role 
           </Typography>
@@ -95,6 +96,7 @@ const RegistrationDialog = ({ email, setShowRegistrationDialog }) => {
               Coach
             </ToggleButton>
           </ToggleButtonGroup>
+          {/* PASSWORD */}
           <TextField
             fullWidth
             variant="outlined"
@@ -103,7 +105,12 @@ const RegistrationDialog = ({ email, setShowRegistrationDialog }) => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             margin="normal"
+            inputProps ={{
+              minLength: 8,
+              maxLength: 50,
+            }}
           />
+          {/* CONFIRM PASSWORD */}
           <TextField
             fullWidth
             variant="outlined"
@@ -112,7 +119,12 @@ const RegistrationDialog = ({ email, setShowRegistrationDialog }) => {
             value={repeatPassword}
             onChange={(e) => setRepeatPassword(e.target.value)}
             margin="normal"
+            inputProps ={{
+              minLength: 8,
+              maxLength: 50,
+            }}
           />
+          {/* NAME */}
           <TextField
             fullWidth
             variant="outlined"
@@ -121,6 +133,7 @@ const RegistrationDialog = ({ email, setShowRegistrationDialog }) => {
             onChange={(e) => setName(e.target.value)}
             margin="normal"
           />
+          {/* SELECT GENDER */}
           <Typography variant="body1" sx={{ mt: 2 }}>
            Gender
           </Typography>
@@ -145,6 +158,7 @@ const RegistrationDialog = ({ email, setShowRegistrationDialog }) => {
               Other
             </ToggleButton>
           </ToggleButtonGroup>
+          {/* PERSONAL DESCRIPTION */}
           <TextField
             fullWidth
             variant="outlined"
@@ -158,18 +172,16 @@ const RegistrationDialog = ({ email, setShowRegistrationDialog }) => {
             helperText={`${description.length}/200`}
           />
         </DialogContent>
-        {isError && (
-          <Typography color="error" sx={{ mx: 3 }}>
-            {error.message}
-          </Typography>
-        )}
+        {/* ERROR */}
         {isError && <Typography color="red"> {error.message} </Typography>}
+        {/* SUCCESSFUL */}
         {isSuccess && data && (
           <Typography color="green" sx={{ mx: 3 }}>
             Registration is successful
           </Typography>
         )}
       </Box>
+      {/* Buttons */}
       <DialogActions>
         {!isRegistrationComplete ? (
           <>
