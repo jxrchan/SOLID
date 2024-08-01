@@ -89,6 +89,7 @@ const NewActivityDialog = ({ setShowNewActivityDialog, ownAthletes }) => {
         ".MuiPaper-root": {
           borderRadius: 6,
           boxShadow: 3,
+          padding: 2, 
         },
       }}
     >

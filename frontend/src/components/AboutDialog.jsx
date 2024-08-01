@@ -35,7 +35,7 @@ const AboutDialog = ({ setShowAboutDialog }) => {
 
       <DialogContent>
         <Typography variant="body1" sx={{ textAlign: "justify" }}>
-          SOLID borrows its name from the word's multiple uses in Singapore.
+          <b> SOLID </b> borrows its name from the word's multiple uses in Singapore.
           <b> SOLID </b> is a common utterance added at the end of sentences,
           meaning great or superb. For example, 'Your code was written so well.
           Solid la!' <b> SOLID </b> also maintains its traditional definition ,
