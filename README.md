@@ -199,22 +199,25 @@ _Dialogs are modals prompting an action and is a built-in component in MUI's Mat
 
 <img src="./READMEscreenshots/profile.png">
 <img src='./READMEscreenshots/profile_update.png'>
-
-There are two types of users in SOLID, the 'ATHLETE' and the 'COACH'. The UI for both users is similar, especially with the profile page.
-
-_There are minor differences between profile fields between users. Only 'essential' information for each user is needed._
-
 <img src="./READMEscreenshots/coach_search.png">
 <img src="./READMEscreenshots/athlete.png">
 
-_A 'COACH' account, however, has access to more 'CRUD' functions. The idea for doing so is that the coach 'controls' the programmes for his or her athletes while the athlete 'listens' and provides feedback on said program._
+There are two types of users in SOLID, the ATHLETE and the COACH. The UIs for both users are similar.
 
-Athletes do have access to the entire coach database so that they can shop for the right coach. The coaches do not, however, have access to the athlete database.
+However, there are  differences in functions for the ATHLETE and the COACH.
+
+Firstly, the COACH has access to more 'CRUD' functions. COACHES have the ability to add, delete athletes, as well as activities
+
+_The idea for doing so is that a coach  has full reign or 'controls' the programmes for his or her athletes. The athlete 'listens' and provides feedback on said programme._
+
+Separately, athletes do have access to the entire coach database. The coaches do not, however, have access to the athlete database.
+
+_This is deliberate, because athletes should have free reign over they choose as their coach(es). The coach(es) market themselves through their profile and are contactable._
 
 <img src="./READMEscreenshots/coach_add.png">
 <img src="./READMEscreenshots/athlete_update.png">
 
-The activities dashboard provides an overview of the activities communicated between coaches and athletes. Optional filtering is provided.
+The activities dashboard provides an overview of the activities communicated between coaches and athletes. Optional filtering is provided. Once again, there is a difference between what an ATHLETE and a COACH can update the activity with.
 
 ## Credits & Attributions
 
