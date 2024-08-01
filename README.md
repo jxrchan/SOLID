@@ -36,66 +36,66 @@ Access the project's public board [here](https://github.com/users/jxrchan/projec
 
 0. As pre-requisital work, sign up for an account with Cloudinary. Your account credentials are needed for your backend environmental variables. Cloudinary will be used for uploading profile pictures. If you are not interested in this feature, skip this step, and delete codes accordingly.
 
-Set-up PostgreSQL on your computer. Create a user and an empty database. These user and database information are also needed for the backend environmental variables.
+    Set-up PostgreSQL on your computer. Create a user and an empty database. These user and database information are also needed for the backend environmental variables.
 
-Run the following commands in PostgreSQL to set up your database:
+    Run the following commands in PostgreSQL to set up your database:
 
-    ```
-    CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+        ```
+        CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-    CREATE TABLE users (
-        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-        email varchar(30) NOT NULL,
-        password text NOT NULL,
-        role varchar(7) NOT NULL,
-        name varchar(40),
-        gender varchar (20),
-        description varchar(200),
-        profile_picture text,
-        sports varchar(200),
-        goals varchar(200),
-        contact_number char(10),
-        facebook text,
-        instagram text
-    );
+        CREATE TABLE users (
+            id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+            email varchar(30) NOT NULL,
+            password text NOT NULL,
+            role varchar(7) NOT NULL,
+            name varchar(40),
+            gender varchar (20),
+            description varchar(200),
+            profile_picture text,
+            sports varchar(200),
+            goals varchar(200),
+            contact_number char(10),
+            facebook text,
+            instagram text
+        );
 
-    CREATE TABLE users_users (
-        athlete_id UUID,
-        coach_id UUID,
-        review text,
-        PRIMARY KEY (athlete_id, coach_id),
-        FOREIGN KEY (athlete_id) REFERENCES users (id),
-        FOREIGN KEY (coach_id) REFERENCES users (id)
-    );
+        CREATE TABLE users_users (
+            athlete_id UUID,
+            coach_id UUID,
+            review text,
+            PRIMARY KEY (athlete_id, coach_id),
+            FOREIGN KEY (athlete_id) REFERENCES users (id),
+            FOREIGN KEY (coach_id) REFERENCES users (id)
+        );
 
-    CREATE TABLE activitytypes (
-        type varchar(30) PRIMARY KEY
-    );
+        CREATE TABLE activitytypes (
+            type varchar(30) PRIMARY KEY
+        );
 
-    INSERT INTO activitytypes VALUES
-    ('RUNNING'), ('CYCLING'), ('SWIMMING'), ('HIKING'), ('MOUNTAIN BIKING'),
-    ('WALKING'), ('RUNNING (TREADMILL)'), ('CYCLING (INDOOR)'),
-    ('ELLIPTICAL TRAINER'), ('ROWING'), ('SKIING'), ('SNOWBOARDING'),
-    ('CROSSFIT'), ('YOGA'), ('SURFING'), ('KITESURFING'), ('WINDSURFING'),
-    ('ROCK CLIMBING'), ('HORSEBACK RIDING'), ('PADDLEBOARDING'),
-    ('OTHER');
+        INSERT INTO activitytypes VALUES
+        ('RUNNING'), ('CYCLING'), ('SWIMMING'), ('HIKING'), ('MOUNTAIN BIKING'),
+        ('WALKING'), ('RUNNING (TREADMILL)'), ('CYCLING (INDOOR)'),
+        ('ELLIPTICAL TRAINER'), ('ROWING'), ('SKIING'), ('SNOWBOARDING'),
+        ('CROSSFIT'), ('YOGA'), ('SURFING'), ('KITESURFING'), ('WINDSURFING'),
+        ('ROCK CLIMBING'), ('HORSEBACK RIDING'), ('PADDLEBOARDING'),
+        ('OTHER');
 
-    CREATE TABLE activities (
-        id serial PRIMARY KEY,
-        athlete_id UUID,
-        coach_id UUID,
-        name varchar(40) NOT NULL,
-        type varchar(30) NOT NULL REFERENCES sportstype(type),
-        date date NOT NULL,
-        duration varchar(20),
-        coach_comment text,
-        athlete_comment text,
-        activity_link varchar(50),
-        FOREIGN KEY (athlete_id, coach_id) REFERENCES users_users (athlete_id, coach_id)
-    );
-    ```
+        CREATE TABLE activities (
+            id serial PRIMARY KEY,
+            athlete_id UUID,
+            coach_id UUID,
+            name varchar(40) NOT NULL,
+            type varchar(30) NOT NULL REFERENCES sportstype(type),
+            date date NOT NULL,
+            duration varchar(20),
+            coach_comment text,
+            athlete_comment text,
+            activity_link varchar(50),
+            FOREIGN KEY (athlete_id, coach_id) REFERENCES users_users (athlete_id, coach_id)
+        );
+        ```
 
-<img src='./READMEscreenshots/solid_ERD.drawio.png'>
+    <img src='./READMEscreenshots/solid_ERD.drawio.png'>
 
     The ERD relating to the above tables is depicted above.
 
