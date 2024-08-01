@@ -60,23 +60,23 @@ const NavDrawer = () => {
                 />
               </ListItem>
               <Divider />
-              <ListItem button component={RouterLink} to="/home">
+              <ListItem component={RouterLink} to="/home">
                 <ListItemIcon><HomeIcon /></ListItemIcon>
-                <ListItemText primary="Home" />
+                <ListItemText sx={{fontSize: '20'}} primary="HOME" />
               </ListItem>
-              <ListItem button component={RouterLink} to="/profile">
+              <ListItem component={RouterLink} to="/profile">
                 <ListItemIcon><PersonIcon /></ListItemIcon>
-                <ListItemText primary="Profile" />
+                <ListItemText primary="PROFILE" />
               </ListItem>
               {userCtx.decoded.role === "ATHLETE" &&
-              <ListItem button component={RouterLink} to="/coaches">
+              <ListItem component={RouterLink} to="/coaches">
                 <ListItemIcon><GroupIcon /></ListItemIcon>
-                <ListItemText primary="Coaches" />
+                <ListItemText primary="COACHES" />
               </ListItem>}
               {userCtx.decoded.role === "COACH" &&
-              <ListItem button component={RouterLink} to="/athletes">
+              <ListItem component={RouterLink} to="/athletes">
                 <ListItemIcon><GroupIcon /></ListItemIcon>
-                <ListItemText primary="Athletes" />
+                <ListItemText primary="ATHLETES" />
               </ListItem>}
             </List>
           </Box>

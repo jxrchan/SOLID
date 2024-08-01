@@ -8,7 +8,6 @@ const authUser = (req, res, next) => {
   if (token) {
     try {
       const decoded = jwt.verify(token, process.env.ACCESS_SECRET);
-      //verify returns the claim
       if (decoded.role === "ATHLETE" || "COACH") {
         req.decoded = decoded;
         next();
@@ -33,7 +32,6 @@ const authAthlete = (req, res, next) => {
   if (token) {
     try {
       const decoded = jwt.verify(token, process.env.ACCESS_SECRET);
-      //verify returns the claim
       if (decoded.role === "ATHLETE") {
         req.decoded = decoded;
         next();
@@ -57,7 +55,6 @@ const authCoach = (req, res, next) => {
   if (token) {
     try {
       const decoded = jwt.verify(token, process.env.ACCESS_SECRET);
-      //verify returns the claim
       if (decoded.role === "COACH") {
         req.decoded = decoded;
         next();

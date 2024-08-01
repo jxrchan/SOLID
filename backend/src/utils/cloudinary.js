@@ -7,15 +7,16 @@ cloudinary.config({
   });
 
   /* ------ Testing Connection is established ---- */
-  // const testConnection = async () => {
-  //   try {
-  //     const result = await cloudinary.api.resources();
-  //     console.log('Connected to Cloudinary successfully!');
-  //     console.log('Resources:', result);
-  //   } catch (error) {
-  //     console.error('Error connecting to Cloudinary:', error.message);
-  //   }
-  // }; 
-  // testConnection();
+  /* const testConnection = async () => {
+    try {
+      const result = await cloudinary.api.resources();
+      console.log('Connected to Cloudinary successfully!');
+      console.log('Resources:', result);
+    } catch (error) {
+      console.error('Error connecting to Cloudinary:', error.message);
+    }
+  }; 
+  testConnection(); 
+  */
 
 module.exports = {cloudinary};

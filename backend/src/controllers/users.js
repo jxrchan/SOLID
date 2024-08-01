@@ -70,8 +70,6 @@ const updateProfile = async (req, res) => {
   }
 };
 
-// Read Up Coalesce
-
 const getActivities = async (req, res) => {
   const client = await pool.connect();
   const filters = [];
@@ -108,8 +106,6 @@ const getActivities = async (req, res) => {
   }
   try {
     const { rows: activities } = await client.query(query, params);
-    if (activities.length === 0)
-      return res.status(404).json({ status: "error", msg: "No activities found" });
     return res.json(activities);
   } catch (error) {
     console.error(error);
@@ -186,23 +182,6 @@ const getCoaches = async (req, res) => {
   }
 };
 
-const getCoachReviews = async (req, res) => {
-  const client = await pool.connect();
-  try {
-    const { rows: athleteAndCoach } = await client.query(
-      `
-    SELECT * FROM users_users WHERE coach_id = $1`,
-      [req.body.coachId]
-    );
-    const reviews = athleteAndCoach.map((item) => item.review);
-    return res.json(reviews);
-  } catch (error) {
-    console.error(error);
-    return res.status(400).json({ status: "error", msg: "Error obtaining reviews" });
-  } finally {
-    client.release();
-  }
-};
 
 const getOwnCoaches = async (req, res) => {
   const client = await pool.connect();
@@ -246,36 +225,40 @@ const getOwnCoachName = async (req, res) => {
     }
   }
 
-// const commentOwnActivity = async (req, res) => {
+// const addReview = async (req, res) => {
 //   const client = await pool.connect();
 //   try {
-//     await client.query(`UPDATE activities SET athlete_comment = $1 WHERE id = $2`,
-//         [req.body.comment, req.params.id]);
-//     res.status(200).json({status: 'success', msg: 'User commented on activity'})
+//     await client.query(
+//       `UPDATE users_users SET review = $1 WHERE athlete_id = $2 
+//           AND coach_id = $3`,
+//       [req.body.review, req.params.id, req.body.coachId]
+//     );
+//     return res.status(200).json({ status: "success", msg: "Added coach review" });
 //   } catch (error) {
 //     console.error(error);
-//     res.status(400).json({ status: "error", msg: "Error commenting on activity" });
+//     return res.status(400).json({ status: "error", msg: "Error adding coach review" });
 //   } finally {
 //     client.release();
 //   }
 // };
 
-const addReview = async (req, res) => {
-  const client = await pool.connect();
-  try {
-    await client.query(
-      `UPDATE users_users SET review = $1 WHERE athlete_id = $2 
-          AND coach_id = $3`,
-      [req.body.review, req.params.id, req.body.coachId]
-    );
-    return res.status(200).json({ status: "success", msg: "Added coach review" });
-  } catch (error) {
-    console.error(error);
-    return res.status(400).json({ status: "error", msg: "Error adding coach review" });
-  } finally {
-    client.release();
-  }
-};
+// const getCoachReviews = async (req, res) => {
+//   const client = await pool.connect();
+//   try {
+//     const { rows: athleteAndCoach } = await client.query(
+//       `
+//     SELECT * FROM users_users WHERE coach_id = $1`,
+//       [req.body.coachId]
+//     );
+//     const reviews = athleteAndCoach.map((item) => item.review);
+//     return res.json(reviews);
+//   } catch (error) {
+//     console.error(error);
+//     return res.status(400).json({ status: "error", msg: "Error obtaining reviews" });
+//   } finally {
+//     client.release();
+//   }
+// };
 
 /* ------ functions for coaches ------ */
 
@@ -297,7 +280,6 @@ const getOwnAthletes = async (req, res) => {
     client.release();
   }
 };
-
 
 const getOwnAthleteName = async (req, res) => {
   const client = await pool.connect();

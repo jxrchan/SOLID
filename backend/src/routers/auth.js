@@ -10,4 +10,4 @@ router.post('/login', validateLoginData, checkErrors ,login);
 router.post('/refresh', validateRefreshToken, checkErrors, refresh);
 
 
-module.exports = router
+module.exports = router;

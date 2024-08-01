@@ -11,12 +11,12 @@ const multerUpload = multer({
   storage: storage,
   limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
-    console.log("Multer file filter hit");
+    // console.log("Multer file filter hit");
     if (file.mimetype.startsWith("image/")) {
-      console.log("it is an image");
+      // console.log("it is an image");
       cb(null, true);
     } else {
-      console.log("This is not an image");
+      // console.log("This is not an image");
       cb(new Error("File is not an image. Please choose only images"));
     }
   },
@@ -30,7 +30,7 @@ const cloudinaryProcessImageAndUpload =  (req, res, next) => {
     return res.status(400).json({ message: "No file uploaded" });
   }
 
-  console.log(req.file);
+  // console.log(req.file);
 
    cloudinary.uploader.upload(
     req.file.path,
@@ -87,9 +87,9 @@ const cloudinaryProcessImageAndUpload =  (req, res, next) => {
 //           resolve(result);}}
 //       )
 //       streamifier.createReadStream(buffer).pipe(uploadStream);
-//     });}
+//  });}
 
-//       const cloudinaryProcessImageAndUpload = async (req, res, next) => {
+// const cloudinaryProcessImageAndUpload = async (req, res, next) => {
 //         if (!req.file) {
 //           console.log('No file uploaded');
 //           return next();}
@@ -108,7 +108,6 @@ const cloudinaryProcessImageAndUpload =  (req, res, next) => {
 //           console.error(error.message);
 //           res.status(400).json({ status: "error", msg: "Error uploading photo to Cloudinary" });
 //         }
-//       };
-    
+//  };
 
 module.exports = { multerUpload, cloudinaryProcessImageAndUpload };

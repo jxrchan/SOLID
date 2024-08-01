@@ -14,9 +14,9 @@ const limiter = rateLimit({
   legacyHeaders: false,
 });
 
-//Connect to Database
-const app = express();
 //Create Express App
+const app = express();
+
 
 //Middleware - runs first whenever any endpoint is called
 app.use(cors());
@@ -27,9 +27,10 @@ app.use(limiter);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+//Routing
 app.use('/auth', auth);
 app.use('/users', users);
-//routing goes here
+
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {

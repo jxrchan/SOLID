@@ -8,6 +8,7 @@ const pool = new Pool({
   database: process.env.DATABASE
 });
 
+/* ------------ Testing Connection ------------- */
 // const checkConnection = async () => {
 //   try {
 //     const res = await pool.query("SELECT NOW()");
@@ -18,9 +19,7 @@ const pool = new Pool({
 //     await pool.end();
 //   }
 // };
-
-// checkConnection();
-
+// checkConnection(); 
 
 module.exports = {
   pool
