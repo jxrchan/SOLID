@@ -43,7 +43,7 @@ const AboutDialog = ({ setShowAboutDialog }) => {
           stable, like, 'The foundation of that building is solid.'
         </Typography>
         <Typography variant="body1" sx={{ textAlign: "justify", mt: 2 }}>
-          The <b> SOLID </b> facilitates athletes in building a stable
+          <b> SOLID </b> facilitates athletes in building a stable
           foundation for their own physical wellness, and in doing so, paves the
           way for greater achievements. Fitness and sport coaches advertise
           their experience and services on our platform. Athletes browse our

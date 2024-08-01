@@ -34,7 +34,7 @@ Access the project's public board [here](https://github.com/users/jxrchan/projec
 
 ### Setting Up Guide
 
-0. As pre-requisital work, sign up for an account with Cloudinary. Your account credentials are needed for your backend environmental variables. Cloudinary will be used for uploading profile pictures. If you are not interested in this feature, skip this step, and delete codes accordingly.
+0.  As pre-requisital work, sign up for an account with Cloudinary. Your account credentials are needed for your backend environmental variables. Cloudinary will be used for uploading profile pictures. If you are not interested in this feature, skip this step, and delete codes accordingly.
 
     Set-up PostgreSQL on your computer. Create a user and an empty database. These user and database information are also needed for the backend environmental variables.
 
@@ -97,57 +97,57 @@ Access the project's public board [here](https://github.com/users/jxrchan/projec
 
     <img src='./READMEscreenshots/solid_ERD.drawio.png'>
 
-    The ERD relating to the above tables is depicted above.
+    The ERD relating to my database is depicted above.
 
-1. Clone the Repository
+1.  Clone the Repository
 
-   ```bash
-   git clone https://github.com/jxrchan/SOLID
-   ```
+    ```bash
+    git clone https://github.com/jxrchan/SOLID
+    ```
 
-2. Navigate to the frontend directory
+2.  Navigate to the frontend directory
 
-   ```bash
-   cd ./frontend
-   ```
+    ```bash
+    cd ./frontend
+    ```
 
-3. Create a `.env` file within the root
+3.  Create a `.env` file within the root
 
-   ```bash
-   touch .env
-   ```
+    ```bash
+    touch .env
+    ```
 
-4. Add the following environmental variable inside the `.env` file
+4.  Add the following environmental variable inside the `.env` file
 
-   ```
-   VITE_SERVER=http://localhost:5001
-   ```
+    ```
+    VITE_SERVER=http://localhost:5001
+    ```
 
-5. Install Dependencies
+5.  Install Dependencies
 
-   ```bash
-   npm i
-   ```
+    ```bash
+    npm i
+    ```
 
-6. Start the Development Server
+6.  Start the Development Server
 
-   ```bash
-   npm run dev
-   ```
+    ```bash
+    npm run dev
+    ```
 
-7. Start a new terminal
+7.  Start a new terminal
 
-8. Navigate to the backend directory
+8.  Navigate to the backend directory
 
-   ```bash
-   cd ../backend
-   ```
+    ```bash
+    cd ../backend
+    ```
 
-9. Create a `.env` file within the root
+9.  Create a `.env` file within the root
 
-   ```bash
-   touch .env
-   ```
+    ```bash
+    touch .env
+    ```
 
 10. Add the following environmental variables inside the `.env` file and populate them with your own configurations
 
@@ -202,17 +202,11 @@ _Dialogs are modals prompting an action and is a built-in component in MUI's Mat
 <img src="./READMEscreenshots/coach_search.png">
 <img src="./READMEscreenshots/athlete.png">
 
-There are two types of users in SOLID, the ATHLETE and the COACH. The UIs for both users are similar.
+There are two types of users in SOLID, the ATHLETE and the COACH. The UIs for both users are similar. However, there are differences in functions for the ATHLETE and the COACH.
 
-However, there are  differences in functions for the ATHLETE and the COACH.
+Firstly, the COACH has access to more 'CRUD' functions. COACHES have the ability to add, delete athletes, as well as activities. Athletes do not. On the other hand, athletes have access to the entire coach database, and the coaches do not have access to the converse.
 
-Firstly, the COACH has access to more 'CRUD' functions. COACHES have the ability to add, delete athletes, as well as activities
-
-_The idea for doing so is that a coach  has full reign or 'controls' the programmes for his or her athletes. The athlete 'listens' and provides feedback on said programme._
-
-Separately, athletes do have access to the entire coach database. The coaches do not, however, have access to the athlete database.
-
-_This is deliberate, because athletes should have free reign over they choose as their coach(es). The coach(es) market themselves through their profile and are contactable._
+_The idea for these difference are deliberate. A coach should have full reign or 'control' over the programmes for his or her athletes. The athlete 'listens' and provides feedback on said programme. Separately, athletes should have access to the entire coach database because they are looking for the best fit. The coaches have to do their best to market themselves through their profiles, and wait for athletes to contact them._
 
 <img src="./READMEscreenshots/coach_add.png">
 <img src="./READMEscreenshots/athlete_update.png">
