@@ -195,7 +195,7 @@ Clicking through to registration brings you to an intermediate page where the us
 
 <img src="./READMEscreenshots/registration.png">
 
-A registration dialog appears, prompting the user to fill up more required information to complete registration.
+A registration dialog appears, prompting the user to fill up more required information to complete registration. Once registration is complete, the user can login. The interface will look like below.
 
 _Dialogs are modals prompting an action and is a built-in component in MUI's Material library. Dialogs are used throughout SOLID to prevent unnecessary navigating_
 
