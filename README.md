@@ -12,25 +12,27 @@ SOLID was made as part of a professional software course and it was inspired by 
 
 ## Technologies
 
-### Main
+#### Main
 
 - PostgreSQL
 - Express
 - React
 - Node.js
 
-### Adjunctive Tools and Noteworthy Packages
+#### Adjunctive Tools and Noteworthy Packages
 
 - Material UI (datefns)
 - Cloudinary (multer, cloudinary)
 
-### Development Tools
+#### Development Tools
 
 - Postman
 
 ## Getting Started
 
-Access the project's public board [here](https://github.com/users/jxrchan/projects/2).
+Access the project's public board [here](https://github.com/users/jxrchan/projects/2)
+
+Access the project's wireframe [here](https://docs.google.com/presentation/d/1e1E35ut5cHZZzKBFxfDevC6X4SL6xwMvk2FoBCwo4Z8/edit?usp=sharing)
 
 ### Setting Up Guide
 
@@ -193,7 +195,7 @@ Clicking through to registration brings you to an intermediate page where the us
 
 <img src="./READMEscreenshots/registration.png">
 
-A registration dialog appears, prompting the user to fill up more required information to complete registration.
+A registration dialog appears, prompting the user to fill up more required information to complete registration. Once registration is complete, the user can login. The interface will look like below.
 
 _Dialogs are modals prompting an action and is a built-in component in MUI's Material library. Dialogs are used throughout SOLID to prevent unnecessary navigating_
 
