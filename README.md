@@ -12,7 +12,7 @@ SOLID was made as part of a professional software course and it was inspired by 
 
 ## Technologies
 
-### Main
+#### Main
 
 - PostgreSQL
 - Express
