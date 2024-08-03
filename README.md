@@ -10,7 +10,7 @@ SOLID facilitates athletes in building a stable foundation for their own physica
 
 SOLID was made as part of a professional software course and it was inspired by the extant coaching application TrainingPeaks.
 
-### Technologies
+## Technologies
 
 #### Main
 
@@ -28,13 +28,13 @@ SOLID was made as part of a professional software course and it was inspired by 
 
 - Postman
 
-### Getting Started
+## Getting Started
 
 Access the project's public board [here](https://github.com/users/jxrchan/projects/2)
 
 Access the project's wireframe [here](https://docs.google.com/presentation/d/1e1E35ut5cHZZzKBFxfDevC6X4SL6xwMvk2FoBCwo4Z8/edit?usp=sharing)
 
-#### Setting Up Guide
+### Setting Up Guide
 
 0.  As pre-requisital work, sign up for an account with Cloudinary. Your account credentials are needed for your backend environmental variables. Cloudinary will be used for uploading profile pictures. If you are not interested in this feature, skip this step, and delete codes accordingly.
 
@@ -181,7 +181,7 @@ Access the project's wireframe [here](https://docs.google.com/presentation/d/1e1
 
     Open your browser and visit [http://localhost:5173](http://localhost:5173).
 
-### Application Interface
+## Application Interface
 
 <img src="./READMEscreenshots/login.png">
 
@@ -215,14 +215,14 @@ _The idea for these difference are deliberate. A coach should have full reign or
 
 The activities dashboard provides an overview of the activities communicated between coaches and athletes. Optional filtering is provided. Once again, there is a difference between what an ATHLETE and a COACH can update the activity with.
 
-### Credits & Attributions
+## Credits & Attributions
 
 - Google for the Material UI library and fonts (Roboto & Roboto Slab)
 - Cloudinary for its simple-to-use SDKs
 - Bing's image generator which runs on Microsoft Copilot for all the images that are on the application
 - TrainingPeaks for the inspiration of this project
 
-### Next Steps
+## Next Steps
 
 Future iterations of the project may include the following:
 
